@@ -6,4 +6,4 @@ if ($_SERVER["REQUEST_URI"] === "/webhook")
 	shell_exec("cd {$GIT_PATH}; git pull origin master; service apache2 reload;");
 }
 
-print "Hello, World!";
+print "Hello, World! Test!!!";
