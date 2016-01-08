@@ -44,4 +44,6 @@ fi
 ln -s /var/www/AutomataFiddle/config/apache2/apache2.conf /etc/apache2/apache2.conf
 ln -s /var/www/AutomataFiddle/config/apache2/automatafiddle.conf /etc/apache2/sites-enabled/automatafiddle.conf
 
+a2enmod rewrite
+
 service apache2 start
