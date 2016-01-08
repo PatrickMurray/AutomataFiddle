@@ -21,7 +21,7 @@ chmod -R g+w /var/www
 chmod g+s /var/www
 
 # Setup Git
-su automatafiddle -c "cd ~; if [ -d 'AutomataFiddle']; then; rm -rf AutomataFiddle; fi; git clone https://github.com/PatrickMurray/AutomataFiddle.git"
+su automatafiddle -c "cd ~; if [ -d 'AutomataFiddle']; then\n\t rm -rf AutomataFiddle;\nfi\ngit clone https://github.com/PatrickMurray/AutomataFiddle.git"
 
 # Setup Configurations
 if [ -f /etc/apache2/sites-enabled/000-default.conf]; then
