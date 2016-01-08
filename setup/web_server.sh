@@ -24,4 +24,4 @@ su automatafiddle -c "cd ~; git clone https://github.com/PatrickMurray/AutomataF
 rm /etc/apache2/sites-enabled/000-default.conf
 ln -s /home/automatafiddle/AutomataFiddle/config/apache2/automatafiddle.conf /etc/apache2/sites-enabled/automatafiddle.conf
 
-service restart apache2
+service apache2 reload
