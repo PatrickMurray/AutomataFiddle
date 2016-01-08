@@ -21,10 +21,13 @@ chmod -R g+w /var/www
 chmod g+s /var/www
 
 # Setup Git
-su automatafiddle -c "cd ~; git clone https://github.com/PatrickMurray/AutomataFiddle.git"
+su automatafiddle -c "cd ~; if [ -d 'AutomataFiddle']; then; rm -rf AutomataFiddle; fi; git clone https://github.com/PatrickMurray/AutomataFiddle.git"
 
 # Setup Configurations
-rm /etc/apache2/sites-enabled/000-default.conf
+if [ -f /etc/apache2/sites-enabled/000-default.conf]; then
+	rm /etc/apache2/sites-enabled/000-default.conf
+fi
+
 ln -s /var/www/AutomataFiddle/config/apache2/automatafiddle.conf /etc/apache2/sites-enabled/automatafiddle.conf
 
 service apache2 reload
