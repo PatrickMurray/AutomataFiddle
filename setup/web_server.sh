@@ -1,27 +1,14 @@
 #! /usr/bin/env bash
 
-USER_NAME = "automatafiddle"
-USER_HOME = "/var/www"
-APCH_GRUP = "www-data"
+USER_NAME="automatafiddle"
+USER_HOME="/var/www"
+APCH_GRUP="www-data"
 
 apt-get update
 apt-get upgrade -y
 
-
-# Apache
-apt-get install apache2 -y
-
-
-# PHP
-apt-get install php5 -y
-apt-get install libapache2-mod-php5 -y
-apt-get install php5-mysql -y
-apt-get install php5-mcrypt -y
-
-
-# Install Git
-apt-get install git -y
-
+# Install Apache, PHP, and Git
+apt-get install apache2 php5 libapache2-mod-php5 php5-mysql php5-mcrypt git -y
 
 # Add User
 adduser $USER_NAME --home $USER_HOME --ingroup $APCH_GRUP
