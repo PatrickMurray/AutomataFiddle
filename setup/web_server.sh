@@ -25,8 +25,14 @@ fi
 su automatafiddle -c "git clone https://github.com/PatrickMurray/AutomataFiddle.git"
 cd ~;
 
+# Configure Apache
+service apache2 stop
 
-# Setup Configurations
+# Delete the default Apache configuration
+if [ -f /etc/apache2/apache2.conf ] ; then
+	rm /etc/apache2/apache2.conf;
+fi
+
 if [ -f /etc/apache2/sites-enabled/000-default.conf ] ; then
 	rm /etc/apache2/sites-enabled/000-default.conf;
 fi
@@ -35,6 +41,7 @@ if [ -f /etc/apache2/sites-enabled/automatafiddle.conf ] ; then
 	rm /etc/apache2/sites-enabled/automatafiddle.conf;
 fi
 
+ln -s /var/www/AutomataFiddle/config/apache2/apache2.conf /etc/apache2/apache2.conf
 ln -s /var/www/AutomataFiddle/config/apache2/automatafiddle.conf /etc/apache2/sites-enabled/automatafiddle.conf
 
-service apache2 reload
+service apache2 start
