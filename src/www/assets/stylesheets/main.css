@@ -1,0 +1,183 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url(core.css);
+
+body {
+	display: flex;
+	flex-direction: column;
+	
+	background: white;
+	font-family: "Open Sans", sans-serif;
+	
+	margin: 0;
+	min-height: 100vh;
+	font-size: 90%;
+}
+
+.error {
+	background: #F44336;
+	color: white;
+	text-shadow: 0 1px #B71C1C;
+	
+	padding: 0.5em;
+	border: 1px solid #B71C1C;
+}
+
+header {
+	display: flex;
+	align-items: center;
+}
+
+.logo,
+.sidebar {
+	min-width: 320px;
+	max-width: 320px;
+}
+
+.logo h1 {
+	font-size: 1em;
+	text-align: center;
+	
+	margin: 0;
+	padding: 0;
+}
+
+.logo sub {
+	background-color: rgb(163, 38, 56);
+	color: white;
+	
+	padding: 0.1rem 0.25rem;
+}
+
+.logo em {
+	font-weight: normal;
+	font-size: small;
+	color: rgba(0, 0, 0, 0.75);
+}
+
+.actions {
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	
+	color: rgba(0, 0, 0, 0.75);
+}
+
+.actions a {
+	text-decoration: none;
+	
+	border: 2px solid transparent;
+	padding: calc(1em - 2px);
+}
+
+.actions a:hover {
+	border-bottom: 2px solid rgb(163, 38, 56);
+}
+
+.actions a i {
+	margin-right: 0.5em;
+}
+
+.container {
+	display: flex;
+	flex: 1;
+	
+	max-width: 100vw;
+}
+
+.sidebar {
+	display: flex;
+	flex-direction: column;
+	
+	padding: 0.75em;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.toggle-menu {
+	flex: 1;
+}
+
+.toggle-menu header {
+	display: flex;
+	flex-direction: row;
+	padding: 0.5em 0;
+}
+
+.toggle-menu header.activated {
+	font-weight: bold;
+}
+
+.toggle-menu header p {
+	flex: 1;
+	margin: 0;
+}
+
+
+.properties input,
+.properties textarea,
+.properties label,
+.properties select {
+	width: 100%;
+}
+
+.states .form input,
+.transitions .form input {
+	width: 100%;
+}
+
+.states .form .lower,
+.transitions .form .lower {
+	display: flex;
+	flex-direction: row;
+}
+
+.states .form select,
+.transitions .form select {
+	flex: 1;
+}
+
+.list .element {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	
+	padding: 0.5em;
+}
+
+.element:nth-child(odd) {
+	background: rgba(0, 0, 0, 0.05);
+}
+
+.element .expand {
+	flex: 1;
+}
+
+.element .remove {
+	color: rgba(0, 0, 0, 0.25);
+	padding: 0.5em 0;
+}
+
+.element .remove:hover {
+	color: rgba(0, 0, 0, 0.75);
+}
+
+footer {
+	font-size: small;
+}
+
+
+
+.preview {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+	align-items: center;
+	
+	background: rgba(0, 0, 0, 0.05);
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	box-shadow: inset 0 0 1em rgba(0, 0, 0, 0.1);
+}
+
+.preview img {
+	max-width: 100%;
+	height: auto;
+}

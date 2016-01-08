@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<title>Automata Fiddle</title>
+		
+		<meta charset="UTF-8" />
+
+		<link rel="stylesheet" href="assets/stylesheets/main.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		
+		<script type="text/javascript" src="assets/javascript/jquery-2.1.4.min.js"></script>
+		<script type="text/javascript" src="assets/javascript/main.js"></script>
+	</head>
+	<body>
+		<div class="errors">
+			<noscript>
+				<div class="error">
+					<i class="fa fa-exclamation-triangle"></i> <strong>Warning:</strong> JavaScript must be enabled to use Automata Fiddle.
+				</div>
+			</noscript>
+		</div>
+
+		<header>
+			<aside class="logo">
+				<h1>automata <sub>fiddle</sub> <em>alpha</em></h1>
+			</aside>
+			
+			<nav class="actions">
+				<a href=""><i class="fa fa-refresh"></i>Refresh</a>
+				<a href=""><i class="fa fa-download"></i>Download</a>
+				<a href=""><i class="fa fa-share"></i>Share</a>
+				<a href=""><i class="fa fa-trash"></i>Delete</a>
+			</nav>
+		</header>
+		
+		<div class="container">
+			<aside class="sidebar">
+				<div class="toggle-menu">
+					<div class="properties">
+						<header class="activated">
+							<p>Automaton Properties</p>
+							<i class="fa fa-angle-up"></i>
+						</header>
+						
+						<div class="collapsable">
+							<input type="text" name="title" placeholder="Untitled automaton">
+							<textarea name="description" rows="4" placeholder="No description"></textarea>
+							
+							<label>Graph Direction</label>
+							<select name="graph-direction">
+								<option selected>Left to Right</option>
+								<option>Right to Left</option>
+								<option>Top to Bottom</option>
+								<option>Bottom to Top</option>
+							</select>
+							
+							<label>Export Format</label>
+							<select name="export-format">
+								<option selected>SVG image (.svg)</option>
+								<option>PNG image (.png)</option>
+								<option>GIF image (.gif)</option>
+								<option>PostScript document (.ps)</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="states">
+						<header class="activated">
+							<p>States</p>
+							<i class="fa fa-angle-up"></i>
+						</header>
+						
+						<div class="collapsable">
+							<div class="form">
+								<input type="text" name="state-name" placeholder="State name">
+								
+								<div class="lower">
+									<select name="state-shape">
+										<option selected>Circle</option>
+										<option>Double Circle</option>
+										<option>Oval</option>
+										<option>Triangle</option>
+										<option>Box</option>
+										<option>Rectangle</option>
+										<option>Diamond</option>
+										<option>Star</option>
+										<option>Point</option>
+										<option>Plaintext</option>
+										<option>None</option>
+									</select>
+									<button><i class="fa fa-plus"></i>Add</button>
+								</div>
+							</div>
+							
+							<div class="list">
+								<div class="element">
+									<div class="expand">
+										Q0 - Oval
+									</div>
+									
+									<div class="remove">
+										<i class="fa fa-close"></i>
+									</div>
+								</div>
+								
+								<div class="element">
+									<div class="expand">
+										Q1 - Double Circle
+									</div>
+									
+									<div class="remove">
+										<i class="fa fa-close"></i>
+									</div>
+								</div>
+								
+								<div class="element">
+									<div class="expand">
+										Q2 - Double Circle
+									</div>
+									
+									<div class="remove">
+										<i class="fa fa-close"></i>
+									</div>
+								</div>
+								
+								<div class="element">
+									<div class="expand">
+										Q3 - Oval
+									</div>
+									
+									<div class="remove">
+										<i class="fa fa-close"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="transitions">
+						<header class="activated">
+							<p>Transitions</p>
+							<i class="fa fa-angle-up"></i>
+						</header>
+						
+						<div class="collapsable">
+							<div class="form">
+								<input type="text" name="transition-label" placeholder="Transition label">
+								
+								<div class="lower">
+									<select name="transition-origin">
+										<option disabled selected hidden>Origin</option>
+										<option>Q0</option>
+										<option>Q1</option>
+										<option>Q2</option>
+										<option>Q3</option>
+									</select>
+									<select name="transition-destination">
+										<option disabled selected hidden>Destination</option>
+										<option>Q0</option>
+										<option>Q1</option>
+										<option>Q2</option>
+										<option>Q3</option>
+									</select>
+									<button><i class="fa fa-plus"></i>Add</button>
+								</div>
+							</div>
+							
+							<div class="list">
+								<div class="element">
+									<div class="expand">
+										Q0 &rarr; Q1 : A
+									</div>
+									
+									<div class="remove">
+										<i class="fa fa-close"></i>
+									</div>
+								</div>
+								
+								<div class="element">
+									<div class="expand">
+										Q0 &rarr; Q3 : B
+									</div>
+									
+									<div class="remove">
+										<i class="fa fa-close"></i>
+									</div>
+								</div>
+								
+								<div class="element">
+									<div class="expand">
+										Q1 &rarr; Q1 : A
+									</div>
+									
+									<div class="remove">
+										<i class="fa fa-close"></i>
+									</div>
+								</div>
+								
+								<div class="element">
+									<div class="expand">
+										Q1 &rarr; Q2 : B
+									</div>
+									
+									<div class="remove">
+										<i class="fa fa-close"></i>
+									</div>
+								</div>
+								
+								<div class="element">
+									<div class="expand">
+										Q2 &rarr; Q2 : A
+									</div>
+									
+									<div class="remove">
+										<i class="fa fa-close"></i>
+									</div>
+								</div>
+								
+								<div class="element">
+									<div class="expand">
+										Q2 &rarr; Q3 : B
+									</div>
+									
+									<div class="remove">
+										<i class="fa fa-close"></i>
+									</div>
+								</div>
+								
+								<div class="element">
+									<div class="expand">
+										Q3 &rarr; Q3 : A, B
+									</div>
+									
+									<div class="remove">
+										<i class="fa fa-close"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<footer>
+					<p>Hosted by <a href="https://www.linode.com/">Linode</a>.</p>
+					<p>Created by Patrick Murray with support from <a href="https://www.stevens.edu/">Stevens Institute of Technology</a>. All source code is available on <a href=""><i class="fa fa-github"></i> GitHub</a> under an open license.</p>
+				</footer>
+			</aside>
+			
+			<div class="preview">
+				<img src="assets/images/automaton.svg" alt="Automata Preview">
+			</div>
+		</div>
+	</body>
+</html>
