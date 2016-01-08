@@ -25,8 +25,8 @@ su automatafiddle -c "if [ -d '~/AutomataFiddle' ] ; then rm -rf ~/AutomataFiddl
 su automatafiddle -c "cd ~; git clone https://github.com/PatrickMurray/AutomataFiddle.git"
 
 # Setup Configurations
-if [ -f /etc/apache2/sites-enabled/000-default.conf]; then
-	rm /etc/apache2/sites-enabled/000-default.conf
+if [ -f /etc/apache2/sites-enabled/000-default.conf ] ; then
+	rm /etc/apache2/sites-enabled/000-default.conf;
 fi
 
 ln -s /var/www/AutomataFiddle/config/apache2/automatafiddle.conf /etc/apache2/sites-enabled/automatafiddle.conf
