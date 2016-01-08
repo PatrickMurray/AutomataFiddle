@@ -15,7 +15,10 @@ apt-get install php5-mcrypt -y
 apt-get install git -y
 
 # Add User
-adduser automatafiddle
+adduser automatafiddle -d /var/www -G www-data
+chgrp -R www-data /var/www
+chmod -R g+w /var/www
+chmod g+s /var/www
 
 # Setup Git
 su automatafiddle -c "cd ~; git clone https://github.com/PatrickMurray/AutomataFiddle.git"
