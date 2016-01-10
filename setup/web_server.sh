@@ -2,21 +2,31 @@
 
 USER_NAME="www-data"
 USER_HOME="/var/www"
-APCH_GRUP="www-data"
+APACHE_GROUP="www-data"
 
+if [ "$EUID" -ne 0 ] then
+	echo "The web server setup script must be run as root."
+	exit
+fi
+
+# Update package list and upgrade all installed packages
 apt-get update
 apt-get upgrade -y
 
-# Install Apache, PHP, and Git
+# Install Apache, PHP, MySQL Interface, and Git
 apt-get install sudo apache2 php5 libapache2-mod-php5 php5-mysql php5-mcrypt git -y
 
-# Setup Git
-echo "git      ALL = (www-data) /usr/bin/git pull"   >> /etc/sudoers
-echo "www-data ALL = NOPASSWD:  /etc/init.d/apache2" >> /etc/sudoers
+
+# Grant www-data permission to use Git and modify the Apache service
+echo "git        ALL = ($USER_NAME): /usr/bin/git pull"   >> /etc/sudoers
+echo "$USER_NAME ALL = NOPASSWD:     /etc/init.d/apache2" >> /etc/sudoers
+
+# Grant www-data permission to modify /var/www
 chgrp -R $APCH_GRUP $USER_HOME
 chmod -R g+w $USER_HOME
 chmod g+s $USER_HOME
 
+# Remove the git repository if it exists, and clone it again.
 cd $USER_HOME;
 if [ -d $USER_NAME ] ; then
 	sudo -u $USER_NAME rm -rf AutomataFiddle
@@ -24,10 +34,10 @@ fi
 sudo -u $USER_NAME git clone https://github.com/PatrickMurray/AutomataFiddle.git
 cd ~;
 
-# Configure Apache
+
+# Stop the Apache2 service before we begin modifying configuration files
 service apache2 stop
 
-# Delete the default Apache configuration
 if [ -f /etc/apache2/apache2.conf ] ; then
 	rm /etc/apache2/apache2.conf;
 fi
