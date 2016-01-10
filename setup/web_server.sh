@@ -4,7 +4,7 @@ USER_NAME="www-data"
 USER_HOME="/var/www"
 APACHE_GROUP="www-data"
 
-if [[$EUID -ne 0 ]] ; then
+if [ $EUID -ne 0 ] ; then
 	echo "The web server setup script must be run as root."
 	exit 1
 fi
