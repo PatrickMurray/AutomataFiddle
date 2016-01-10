@@ -13,8 +13,8 @@ fi
 apt-get update
 apt-get upgrade -y
 
-# Install Apache, PHP, MySQL Interface, and Git
-apt-get install sudo apache2 php5 libapache2-mod-php5 php5-mysql php5-mcrypt git -y
+# Install Fail2Ban, Apache, PHP, MySQL Interface, and Git
+apt-get install sudo fail2ban apache2 php5 libapache2-mod-php5 php5-mysql php5-mcrypt git -y
 
 
 # Grant www-data permission to use Git and modify the Apache service
