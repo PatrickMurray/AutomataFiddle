@@ -1,6 +1,6 @@
 <?php
 
-echo "test";
+echo "test another one";
 
 if ($_SERVER["REQUEST_URI"] === "/webhook")
 {
