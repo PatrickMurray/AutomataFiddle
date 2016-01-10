@@ -4,9 +4,9 @@ USER_NAME="www-data"
 USER_HOME="/var/www"
 APACHE_GROUP="www-data"
 
-if [ "$EUID" -ne 0 ] ; then
-	echo "The web server setup script must be run as root.";
-	exit;
+if [[$EUID -ne 0 ]] ; then
+	echo "The web server setup script must be run as root."
+	exit 1
 fi
 
 # Update package list and upgrade all installed packages
