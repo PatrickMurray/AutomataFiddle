@@ -19,9 +19,9 @@ chmod g+s $USER_HOME
 
 cd $USER_HOME;
 if [ -d $USER_NAME ] ; then
-	sudo -u $USER_NAME "rm -rf AutomataFiddle"
+	sudo -u $USER_NAME rm -rf AutomataFiddle
 fi
-sudo -u $USER_NAME "git clone https://github.com/PatrickMurray/AutomataFiddle.git"
+sudo -u $USER_NAME git clone https://github.com/PatrickMurray/AutomataFiddle.git
 cd ~;
 
 # Configure Apache
