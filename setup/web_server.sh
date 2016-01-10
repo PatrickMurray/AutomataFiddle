@@ -11,6 +11,7 @@ apt-get upgrade -y
 apt-get install sudo apache2 php5 libapache2-mod-php5 php5-mysql php5-mcrypt git -y
 
 # Setup Git
+echo "git    ALL = (www-data) /usr/bin/git pull" >> /etc/sudoers
 cd $USER_HOME;
 if [ -d $USER_NAME ] ; then
 	sudo -u $USER_NAME "rm -rf AutomataFiddle"
