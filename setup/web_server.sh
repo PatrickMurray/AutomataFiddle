@@ -18,11 +18,11 @@ apt-get install sudo fail2ban apache2 php5 libapache2-mod-php5 php5-mysql php5-m
 
 
 # Grant www-data permission to use Git and modify the Apache service
-echo "git        ALL = ($USER_NAME): /usr/bin/git"        >> /etc/sudoers
+echo "git        ALL = ($USER_NAME) /usr/bin/git"         >> /etc/sudoers
 echo "$USER_NAME ALL = NOPASSWD:     /etc/init.d/apache2" >> /etc/sudoers
 
 # Grant www-data permission to modify /var/www
-chgrp -R $APCH_GRUP $USER_HOME
+chgrp -R $APACHE_GROUP $USER_HOME
 chmod -R g+w $USER_HOME
 chmod g+s $USER_HOME
 
