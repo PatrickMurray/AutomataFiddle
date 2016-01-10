@@ -8,14 +8,14 @@ apt-get update
 apt-get upgrade -y
 
 # Install Apache, PHP, and Git
-apt-get install apache2 php5 libapache2-mod-php5 php5-mysql php5-mcrypt git -y
+apt-get install sudo apache2 php5 libapache2-mod-php5 php5-mysql php5-mcrypt git -y
 
 # Setup Git
 cd $USER_HOME;
 if [ -d $USER_NAME ] ; then
-	su - $USER_NAME -c "rm -rf AutomataFiddle"
+	sudo -u $USER_NAME "rm -rf AutomataFiddle"
 fi
-su - $USER_NAME -c "git clone https://github.com/PatrickMurray/AutomataFiddle.git"
+sudo -u $USER_NAME "git clone https://github.com/PatrickMurray/AutomataFiddle.git"
 cd ~;
 
 # Configure Apache
