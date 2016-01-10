@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-USER_NAME="automatafiddle"
+USER_NAME="www-data"
 USER_HOME="/var/www"
 APCH_GRUP="www-data"
 
@@ -19,10 +19,10 @@ chmod g+s $USER_HOME
 
 # Setup Git
 cd $USER_HOME;
-if [ -d AutomataFiddle ] ; then
-	su automatafiddle -c "rm -rf AutomataFiddle"
+if [ -d $USER_NAME ] ; then
+	su $USER_NAME -c "rm -rf AutomataFiddle"
 fi
-su automatafiddle -c "git clone https://github.com/PatrickMurray/AutomataFiddle.git"
+su $USER_NAME -c "git clone https://github.com/PatrickMurray/AutomataFiddle.git"
 cd ~;
 
 # Configure Apache
