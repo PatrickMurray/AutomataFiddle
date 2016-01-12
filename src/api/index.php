@@ -17,9 +17,15 @@ if ($_SERVER["REQUEST_URI"] === "/webhook")
 	{
 		header("HTTP/1.1 500 Internal Server Error");
 		trigger_error("Webhook Error: git returned " . $git_code . ", apache returned " . $apache_code);
+		exit(1);
 	}
+	
+	header("HTTP/1.1 202 Accepted");
+	exit(0);
 }
 else
 {
-	print "Body:\n" . http_get_request_body();
+	$body = http_get_request_body();
+	$data = json_decode($body);
+	print_r($data);
 }
