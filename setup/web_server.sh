@@ -14,7 +14,7 @@ apt-get update
 apt-get upgrade -y
 
 # Install Fail2Ban, Apache, PHP, MySQL Interface, Git, and GraphViz
-apt-get install sudo fail2ban apache2 php5 libapache2-mod-php5 php5-mysql php5-mcrypt git graphviz -y
+apt-get install sudo fail2ban apache2 php5 libapache2-mod-php5 php5-mysql php5-mcrypt php5-pecl-http git graphviz -y
 
 
 # Grant www-data permission to use Git and modify the Apache service
