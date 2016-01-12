@@ -2,6 +2,9 @@
 
 if ($_SERVER["REQUEST_URI"] === "/webhook")
 {
+	$git_code    = -1;
+	$apache_code = -1;
+	
 	exec("git pull origin master",          $null, $git_code);
 	exec("sudo /etc/init.d/apache2 reload", $null, $apache_code);
 	
