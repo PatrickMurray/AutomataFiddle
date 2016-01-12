@@ -8,8 +8,11 @@ if ($_SERVER["REQUEST_URI"] === "/webhook")
 	exec("git pull origin master",          $null, $git_code);
 	exec("sudo /etc/init.d/apache2 reload", $null, $apache_code);
 	
-	print "Git: " . $git_code . "\n";
-	print "Apache: " . $apache_code . "\n";
+	if ($git_code < 0 || $apache_code < 0)
+	{
+		header("HTTP/1.1 500 Internal Server Error");
+		trigger_error("Webhook Error: git returned " . $git_code . ", apache returned " . $apache_code);
+	}
 }
 else
 {
