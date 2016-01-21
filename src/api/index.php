@@ -25,7 +25,13 @@ if ($_SERVER["REQUEST_URI"] === "/webhook")
 }
 else if ($_SERVER["REQUEST_URI"] == "/supported")
 {
-	print(json_encode(array("hello", "world")));
+	$supported = array(
+		"directions" => $GRAPH_DIRECTIONS,
+		"formats"    => $GRAPH_EXPORT_FORMATS,
+		"shapes"     => $GRAPH_NODE_SHAPES
+	);
+
+	print(json_encode($supported));
 	exit(0);
 }
 else
