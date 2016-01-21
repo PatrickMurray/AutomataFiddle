@@ -4,42 +4,95 @@
 require_once "../graph.php";
 
 
-function http_get_request_body()
+switch ($_SERVER["REQUEST_URI"])
 {
-	return file_get_contents("php://input");
+	case "/webhook":
+		if ($_SERVER["REQUEST_METHOD"] !== "POST")
+		{
+			http_response_code(405);;
+			die();
+		}
+
+		update_source();
+		
+		http_response_code(202);
+		die("Source update and server reload were successful.");
+	
+	case "/supported":
+		if ($_SERVER["REQUEST_METHOD"] !== "GET")
+		{
+			http_response_code(405);
+			die();
+		}
+
+		$features = array(
+			"directions" => $GRAPH_DIRECTIONS,
+			"formats"    => $GRAPH_EXPORT_FORMATS,
+			"shapes"     => $GRAPH_NODE_SHAPES
+		);
+
+		$supported = json_encode($features);
+		
+		if (json_last_error() !== JSON_ERROR_NONE)
+		{
+			http_response_code(500);
+			die("An error occured while encoding our JSON response!");
+		}
+		
+		http_response_code(200);
+		die($supported);
+	
+	case "/render":
+		if ($_SERVER["REQUEST_METHOD"] !== "GET")
+		{
+			http_response_code(405);
+			die();
+		}
+		
+		$payload = file_get_contents("php://input");
+		$request = json_decode($payload);
+		
+		if (json_last_error() !== JSON_ERROR_NONE)
+		{
+			http_response_code(400);
+			die("An error occurred while decoding your JSON request!");
+		}
+		
+		if (!valid_request($request))
+		{
+			http_response_code(400);
+			die("Your JSON request is not valid!");
+		}
+		
+		$response = handle_request($json);
+		
+		http_response_code(200);
+		die($response);
+	
+	default:
+		http_response_code(501);
+		die("Huh, looks like we haven't finished this yet!");
 }
 
 
-if ($_SERVER["REQUEST_URI"] === "/webhook")
+function update_source()
 {
-	$git_code    = -1;
-	$apache_code = -1;
+	$git_exit    = -1;
+	$apache_exit = -1;
 	
-	exec("git pull origin master",          $null, $git_code);
-	exec("sudo /etc/init.d/apache2 reload", $null, $apache_code);
+	exec("git pull origin master",          $null, $git_exit);
+	exec("sudo /etc/init.d/apache2 reload", $null, $apache_exit);
 	
-	if ($git_code < 0 || $apache_code < 0)
+	if ($git_exit < 0 || $apache_exit < 0)
 	{
-		header("HTTP/1.1 500 Internal Server Error");
-		trigger_error("Webhook Error: git={$git_code}, apache={$apache_code}");
+		http_response_code(500);
+		trigger_error("Webhook Error: git exited with code {$git_exit}, apache2 exited with code {$apache_exit}");
 		exit(1);
 	}
-	
-	header("HTTP/1.1 202 Accepted");
-	exit(0);
 }
-else if ($_SERVER["REQUEST_URI"] === "/supported")
-{
-	$supported = array(
-		"directions" => $GRAPH_DIRECTIONS,
-		"formats"    => $GRAPH_EXPORT_FORMATS,
-		"shapes"     => $GRAPH_NODE_SHAPES
-	);
-	
-	print(json_encode($supported));
-	exit(0);
-}
-else if ($_SERVER["REQUEST_URI"] === "/render")
+
+
+function handle_request($json)
 {
 	/*
 	$body = http_get_request_body();
@@ -47,6 +100,53 @@ else if ($_SERVER["REQUEST_URI"] === "/render")
 	print_r($data);
 	*/
 	
+	/*
+	
+	CLIENT -> SERVER
+	{
+		"direction": "LR",
+		"export": "svg",
+		"nodes": [
+			{
+				"name": "Q0",
+				"shape": "circle"
+			},
+			{
+				...
+			}
+			.
+			.
+			.
+		],
+		"edges": [
+			{
+				"origin": "Q0",
+				"destination": "Q1",
+				"label": "A"
+			},
+			{
+				...
+			}
+			.
+			.
+			.
+		]
+	}
+
+	SERVER -> CLIENT
+	{
+		"src": "data:image/png;base64,iVBORw0KGg..."
+	}
+
+	OR
+	
+	{
+		"error": 501,
+		"message": "An unknown error occurred!"
+	}
+
+	*/
+
 	$graph = new Graph();
 	
 	$graph->set_direction("LR");
@@ -73,10 +173,5 @@ else if ($_SERVER["REQUEST_URI"] === "/render")
 	$graph->add_edge("Q2", "Q3", "B");
 	$graph->add_edge("Q3", "Q3", "A, B");
 	
-	print $graph->export();
-}
-else
-{
-	header("HTTP/1.1 400 Bad Request");
-	exit(1);
+	return $graph->export();
 }
