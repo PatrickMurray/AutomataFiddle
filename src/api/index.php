@@ -72,8 +72,8 @@ else if ($_SERVER["REQUEST_URI"] === "/render")
 	$graph->add_edge("Q2", "Q2", "A");
 	$graph->add_edge("Q2", "Q3", "B");
 	$graph->add_edge("Q3", "Q3", "A, B");
-
-	print $graph->compile();
+	
+	print $graph->export();
 }
 else
 {
