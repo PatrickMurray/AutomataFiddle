@@ -4,25 +4,27 @@
 require_once "../graph.php";
 
 
+header('Content-Type: application/json');
+
 switch ($_SERVER["REQUEST_URI"])
 {
 	case "/webhook":
 		if ($_SERVER["REQUEST_METHOD"] !== "POST")
 		{
 			http_response_code(405);;
-			die("HTTP 405 Method Not Allowed");
+			trigger_json_response(405, "Method Not Allowed");
 		}
 
 		update_source();
 		
 		http_response_code(202);
-		die("Source update and server reload were successful.");
+		trigger_json_response(202, "Source update and server reload were successful.");
 	
 	case "/supported":
 		if ($_SERVER["REQUEST_METHOD"] !== "GET")
 		{
 			http_response_code(405);
-			die("HTTP 405 Method Not Allowed");
+			trigger_json_response(405, "Method Not Allowed");
 		}
 
 		$features = array(
@@ -36,7 +38,7 @@ switch ($_SERVER["REQUEST_URI"])
 		if (json_last_error() !== JSON_ERROR_NONE)
 		{
 			http_response_code(500);
-			die("An error occured while encoding our JSON response!");
+			trigger_json_response(500, "An error occured while encoding our JSON response!");
 		}
 		
 		http_response_code(200);
@@ -46,7 +48,7 @@ switch ($_SERVER["REQUEST_URI"])
 		if ($_SERVER["REQUEST_METHOD"] !== "GET")
 		{
 			http_response_code(405);
-			die("HTTP 405 Method Not Allowed");
+			trigger_json_response(405, "Method Not Allowed");
 		}
 		/*
 		$payload = file_get_contents("php://input");
@@ -71,7 +73,17 @@ switch ($_SERVER["REQUEST_URI"])
 	
 	default:
 		http_response_code(501);
-		die("Huh, looks like we haven't finished this yet!");
+		trigger_json_response(501, "Huh, looks like we haven't finished this yet!");
+}
+
+
+function trigger_json_response($code, $message)
+{
+	$error = array(
+		"code"    => $code,
+		"message" => $message
+	);
+	die(json_encode($error, JSON_PRETTY_PRINT));
 }
 
 
