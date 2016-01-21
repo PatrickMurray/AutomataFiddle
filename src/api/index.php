@@ -10,7 +10,7 @@ switch ($_SERVER["REQUEST_URI"])
 		if ($_SERVER["REQUEST_METHOD"] !== "POST")
 		{
 			http_response_code(405);;
-			die();
+			die("HTTP 405 Method Not Allowed");
 		}
 
 		update_source();
@@ -22,7 +22,7 @@ switch ($_SERVER["REQUEST_URI"])
 		if ($_SERVER["REQUEST_METHOD"] !== "GET")
 		{
 			http_response_code(405);
-			die();
+			die("HTTP 405 Method Not Allowed");
 		}
 
 		$features = array(
@@ -46,9 +46,9 @@ switch ($_SERVER["REQUEST_URI"])
 		if ($_SERVER["REQUEST_METHOD"] !== "GET")
 		{
 			http_response_code(405);
-			die();
+			die("HTTP 405 Method Not Allowed");
 		}
-		
+		/*
 		$payload = file_get_contents("php://input");
 		$request = json_decode($payload);
 		
@@ -63,8 +63,8 @@ switch ($_SERVER["REQUEST_URI"])
 			http_response_code(400);
 			die("Your JSON request is not valid!");
 		}
-		
-		$response = handle_request($json);
+		*/
+		$response = handle_request($request);
 		
 		http_response_code(200);
 		die($response);
@@ -92,7 +92,13 @@ function update_source()
 }
 
 
-function handle_request($json)
+function valid_request($request)
+{
+	return True;
+}
+
+
+function handle_request($request)
 {
 	/*
 	$body = http_get_request_body();
