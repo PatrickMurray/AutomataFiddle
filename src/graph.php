@@ -1,5 +1,36 @@
 <?php
 
+if (!isset($GRAPH_TYPES))
+{
+	$GRAPH_TYPES = array("digraph", "graph");
+}
+
+if (!isset($GRAPH_EDGE_SYMBOL))
+{
+	$GRAPH_EDGE_SYMBOL = array(
+		"digraph" => "->",
+		"graph"   => "--"
+	);
+}
+
+if (!isset($GRAPH_DIRECTIONS))
+{
+	$GRAPH_DIRECTIONS = array("TB", "LR", "BT", "RL");
+}
+
+if (!isset($GRAPH_EXPORT_FORMATS))
+{
+	$GRAPH_EXPORT_FORMATS = array("svg", "png", "gif", "ps");
+}
+
+if (!isset($GRAPH_NODE_SHAPES))
+{
+	$GRAPH_NODE_SHAPES = array("circle", "doublecircle", "oval",
+		"triangle", "box", "rectangle", "diamond", "star", "point",
+		"plaintext", "none"
+	);
+}
+
 class Node
 {
 	public $name;
@@ -22,36 +53,26 @@ class Graph
 	private $nodes = [];
 	private $edges = [];
 	
-	private $supported_types      = ["graph", "digraph"];
-	private $supported_directions = ["TB", "LR", "BT", "RL"];
-	private $supported_formats    = ["ps", "svg", "png", "gif"];
-	private $supported_shapes     = [
-		"box", "oval", "circle", "point", "triangle", "plaintext",
-		"diamond", "doublecircle", "rectangle", "star", "none"
-	];
-	
-	private $edge_symbol = [
-		"graph"   => "--",
-		"digraph" => "->"
-	];
-	
-	
 	public function __construct()
 	{
-		$this->type      = "graph";
-		$this->direction = "LR";
-		$this->format    = "svg";
+		global $GRAPH_TYPES, $GRAPH_DIRECTIONS, $GRAPH_EXPORT_FORMATS;
+
+		$this->type      = $GRAPH_TYPES[0];
+		$this->direction = $GRAPH_DIRECTIONS[0];
+		$this->format    = $GRAPH_EXPORT_FORMATS[0];
 	}
 	
 	
 	public function set_type($type)
 	{
+		global $GRAPH_TYPES;
+		
 		if (gettype($type) !== "string")
 		{
 			trigger_error("The provided graph type must be a string");
 		}
 		
-		if (!in_array($type, $this->supported_types))
+		if (!in_array($type, $GRAPH_TYPES))
 		{
 			trigger_error("The provided graph type is not supported");
 		}
@@ -62,12 +83,14 @@ class Graph
 	
 	public function set_direction($direction)
 	{
+		global $GRAPH_DIRECTIONS;
+		
 		if (gettype($direction) !== "string")
 		{
 			trigger_error("Graph direction must be a string");
 		}
 		
-		if (!in_array($direction, $this->supported_directions))
+		if (!in_array($direction, $GRAPH_DIRECTIONS))
 		{
 			trigger_error("The provided graph direction is not supported");
 		}
@@ -78,12 +101,14 @@ class Graph
 
 	public function set_export_format($format)
 	{
+		global $GRAPH_EXPORT_FORMATS;
+		
 		if (gettype($format) !== "string")
 		{
 			trigger_error("The provided export format must be a string");
 		}
 
-		if (!in_array($format, $this->supported_formats))
+		if (!in_array($format, $GRAPH_EXPORT_FORMATS))
 		{
 			trigger_error("The provided export format is not supported");
 		}
@@ -116,12 +141,14 @@ class Graph
 	
 	public function set_node_shape($name, $shape)
 	{
+		global $GRAPH_NODE_SHAPES;
+		
 		if (gettype($name) !== "string")
 		{
 			trigger_error("The provided node name must be a string");
 		}
-
-		if (!in_array($shape, $this->supported_shapes))
+		
+		if (!in_array($shape, $GRAPH_NODE_SHAPES))
 		{
 			trigger_error("The provided node shape is not supported");
 		}
@@ -206,16 +233,26 @@ class Graph
 		fwrite($handler, $this->compile());
 		fclose($handler);
 		
-		$svg = shell_exec("dot -T" . $this->format . " " . $dotfile);
+		ob_start();
+		system("dot -T{$this->format} {$dotfile}", $return_code);
+		$output = ob_get_clean();
 		
 		unlink($dotfile);
 		
-		return $svg;
+		if ($return_code < 0)
+		{
+			trigger_error("Export Error: dot returned " . $exit);
+			exit(1);
+		}
+		
+		return $output;
 	}
 	
 
 	function compile()
 	{
+		global $GRAPH_EDGE_SYMBOL;
+
 		$dot  = $this->type . " {\n";
 		$dot .= "\tbgcolor=transparent;\n";
 		$dot .= "\trankdir=" . $this->direction . ";\n";
@@ -235,7 +272,7 @@ class Graph
 		foreach ($this->edges as $edge)
 		{
 			$dot .= "\t\"" . $edge->origin->name . "\"";
-			$dot .= " " . $this->edge_symbol[$this->type] . " ";
+			$dot .= " " . $GRAPH_EDGE_SYMBOL[$this->type] . " ";
 			$dot .= "\"" . $edge->destination->name . "\"";
 			
 			if ($edge->label !== NULL)
