@@ -23,6 +23,11 @@ if ($_SERVER["REQUEST_URI"] === "/webhook")
 	header("HTTP/1.1 202 Accepted");
 	exit(0);
 }
+else if ($_SERVER["REQUEST_URI"] == "/supported")
+{
+	print(json_encode(array("hello", "world")));
+	exit(0)
+}
 else
 {
 	$body = http_get_request_body();

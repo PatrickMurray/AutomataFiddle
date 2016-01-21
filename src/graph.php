@@ -15,12 +15,22 @@ if (!isset($GRAPH_EDGE_SYMBOL))
 
 if (!isset($GRAPH_DIRECTIONS))
 {
-	$GRAPH_DIRECTIONS = array("TB", "LR", "BT", "RL");
+	$GRAPH_DIRECTIONS = array(
+		"LR" => "Left to Right",
+		"RL" => "Right to Left",
+		"TB" => "Top to Bottom",
+		"BT" => "Bottom to Top"
+	);
 }
 
 if (!isset($GRAPH_EXPORT_FORMATS))
 {
-	$GRAPH_EXPORT_FORMATS = array("svg", "png", "gif", "ps");
+	$GRAPH_EXPORT_FORMATS = array(
+		"svg" => "SVG Image (.svg)",
+		"png" => "PNG Image (.png)",
+		"gif" => "GIF Image (.gif)",
+		"ps"  => "PostScript Document (.ps)"
+	);
 }
 
 if (!isset($GRAPH_NODE_SHAPES))
@@ -253,9 +263,9 @@ class Graph
 	{
 		global $GRAPH_EDGE_SYMBOL;
 
-		$dot  = $this->type . " {\n";
+		$dot  = "{$this->type} {\n";
 		$dot .= "\tbgcolor=transparent;\n";
-		$dot .= "\trankdir=" . $this->direction . ";\n";
+		$dot .= "\trankdir={$this->direction};\n";
 		
 		foreach ($this->nodes as $node)
 		{
@@ -263,7 +273,7 @@ class Graph
 			
 			if ($node->shape !== NULL)
 			{
-				$dot .= " [shape=" . $node->shape . "]";
+				$dot .= " [shape={$node->shape}]";
 			}
 			
 			$dot .= ";\n";
@@ -271,13 +281,11 @@ class Graph
 		
 		foreach ($this->edges as $edge)
 		{
-			$dot .= "\t\"" . $edge->origin->name . "\"";
-			$dot .= " " . $GRAPH_EDGE_SYMBOL[$this->type] . " ";
-			$dot .= "\"" . $edge->destination->name . "\"";
+			$dot .= "\t\"{$edge->origin->name}\" {$GRAPH_EDGE_SYMBOL[$this->type]} \"{$edge->destination->name}\"";
 			
 			if ($edge->label !== NULL)
 			{
-				$dot .= " [label=\"" . $edge->label . "\"]";
+				$dot .= " [label=\"{$edge->label}\"]";
 			}
 			
 			$dot .= ";\n";
