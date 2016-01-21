@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_URI"] === "/webhook")
 else if ($_SERVER["REQUEST_URI"] == "/supported")
 {
 	print(json_encode(array("hello", "world")));
-	exit(0)
+	exit(0);
 }
 else
 {
