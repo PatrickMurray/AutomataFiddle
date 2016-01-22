@@ -33,7 +33,7 @@ switch ($_SERVER["REQUEST_URI"])
 			"shapes"     => $GRAPH_NODE_SHAPES
 		);
 
-		$supported = json_encode($features);
+		$supported = json_encode($features, JSON_PRETTY_PRINT);
 		
 		if (json_last_error() !== JSON_ERROR_NONE)
 		{
@@ -66,7 +66,17 @@ switch ($_SERVER["REQUEST_URI"])
 			die("Your JSON request is not valid!");
 		}
 		*/
-		$response = handle_request($request);
+		$base64 = base64_render($request);
+		
+		$response = json_encode(array(
+			"src" => $base64
+		));
+		
+		if (json_last_error() !== JSON_ERROR_NONE)
+		{
+			http_response_code(500);
+			trigger_json_response(500, "An error occured while encoding our JSON response!");
+		}
 		
 		http_response_code(200);
 		die($response);
@@ -191,5 +201,6 @@ function handle_request($request)
 	$graph->add_edge("Q2", "Q3", "B");
 	$graph->add_edge("Q3", "Q3", "A, B");
 	
-	return $graph->export();
+	$binary = $graph->export();
+	return base64_encode($binary);
 }
