@@ -26,7 +26,7 @@ switch ($_SERVER["REQUEST_URI"])
 			http_response_code(405);
 			trigger_json_response(405, "Method Not Allowed");
 		}
-
+		
 		$features = array(
 			"directions" => $GRAPH_DIRECTIONS,
 			"formats"    => $GRAPH_EXPORT_FORMATS,
@@ -50,22 +50,22 @@ switch ($_SERVER["REQUEST_URI"])
 			http_response_code(405);
 			trigger_json_response(405, "Method Not Allowed");
 		}
-		/*
+		
 		$payload = file_get_contents("php://input");
 		$request = json_decode($payload);
 		
 		if (json_last_error() !== JSON_ERROR_NONE)
 		{
 			http_response_code(400);
-			die("An error occurred while decoding your JSON request!");
+			trigger_json_response(400, "Bad Request");
 		}
 		
 		if (!valid_request($request))
 		{
 			http_response_code(400);
-			die("Your JSON request is not valid!");
+			trigger_json_response(400, "Bad Request");
 		}
-		*/
+		
 		$base64 = base64_render($request);
 		
 		$message = array(
@@ -73,11 +73,11 @@ switch ($_SERVER["REQUEST_URI"])
 		);
 		
 		$response = json_encode($message, JSON_PRETTY_PRINT);
-
+		
 		if (json_last_error() !== JSON_ERROR_NONE)
 		{
 			http_response_code(500);
-			trigger_json_response(500, "An error occured while encoding our JSON response!");
+			trigger_json_response(500, "Internal Server Error");
 		}
 		
 		http_response_code(200);
@@ -85,7 +85,7 @@ switch ($_SERVER["REQUEST_URI"])
 	
 	default:
 		http_response_code(501);
-		trigger_json_response(501, "Huh, looks like we haven't finished this yet!");
+		trigger_json_response(501, "Not Implemented");
 }
 
 
@@ -110,98 +110,162 @@ function update_source()
 	if ($git_exit < 0 || $apache_exit < 0)
 	{
 		http_response_code(500);
-		trigger_error("Webhook Error: git exited with code {$git_exit}, apache2 exited with code {$apache_exit}");
-		exit(1);
+		trigger_json_response(500, "Internal Server Error");
 	}
 }
 
 
+
+/*
+
+CLIENT -> SERVER
+{
+	"direction": "LR",
+	"export": "svg",
+	"nodes": [
+		{
+			"name": "Q0",
+			"shape": "circle"
+		},
+		{
+			...
+		}
+		.
+		.
+		.
+	],
+	"edges": [
+		{
+			"origin": "Q0",
+			"destination": "Q1",
+			"label": "A"
+		},
+		{
+			...
+		}
+		.
+		.
+		.
+	]
+}
+
+SERVER -> CLIENT
+{
+	"src": "data:image/png;base64,iVBORw0KGg..."
+}
+
+OR
+
+{
+	"error": 501,
+	"message": "An unknown error occurred!"
+}
+
+*/
 function valid_request($request)
 {
+	if (count($request) !== 4                 ||
+	    !array_has_key("direction", $request) ||
+	    !array_has_key("export",    $request) ||
+	    !array_has_key("nodes",     $request) ||
+	    !array_has_key("edges",     $request))
+	{
+		return False;
+	}
+	
+	if (!in_array($request["direction"], $GRAPH_DIRECTIONS)     ||
+	    !in_array($request["export"],    $GRAPH_EXPORT_FORMATS) ||
+	    gettype($request["nodes"]) !== "array"                  ||
+	    gettype($request["edges"]) !== "array")
+	{
+		return False;
+	}
+	
+	$names = array();
+
+	foreach ($request["nodes"] as $node)
+	{
+		if (count($node) !== 2            ||
+		    !array_has_key("name", $node) ||
+		    !array_has_key("shape", $node))
+		{
+			return False;
+		}
+		
+		if (in_array($node["name"], $names))
+		{
+			return False;
+		}
+		
+		array_push($names, $node["name"]);
+		
+		if (!in_array($node["shape"], $GRAPH_NODE_SHAPES))
+		{
+			return False;
+		}
+	}
+	
+	$map = array();
+	
+	foreach ($request["edges"] as $edge)
+	{
+		if (count($edge) !== 3              ||
+		    !in_array("origin",      $edge) ||
+		    !in_array("destination", $edge) ||
+		    !in_array("label",       $edge))
+		{
+			return False;
+		}
+		
+		$origin      = $edge["origin"];
+		$destination = $edge["destination"];
+		
+		if (!in_array($origin,      $names) ||
+		    !in_array($destination, $names))
+		{
+			return False;
+		}
+		
+		if (!in_array($origin, $map))
+		{
+			array_push($map, $origin);
+			$map[$origin] = array();
+		}
+		
+		/* Duplicate Edge */
+		if (in_array($destination, $map[$origin]))
+		{
+			return False;
+		}
+		
+		array_push($map[$origin], $destination);
+	}
+
 	return True;
 }
 
 
 function base64_render($request)
 {
-	/*
-	$body = http_get_request_body();
-	$data = json_decode($body);
-	print_r($data);
-	*/
-	
-	/*
-	
-	CLIENT -> SERVER
-	{
-		"direction": "LR",
-		"export": "svg",
-		"nodes": [
-			{
-				"name": "Q0",
-				"shape": "circle"
-			},
-			{
-				...
-			}
-			.
-			.
-			.
-		],
-		"edges": [
-			{
-				"origin": "Q0",
-				"destination": "Q1",
-				"label": "A"
-			},
-			{
-				...
-			}
-			.
-			.
-			.
-		]
-	}
-
-	SERVER -> CLIENT
-	{
-		"src": "data:image/png;base64,iVBORw0KGg..."
-	}
-
-	OR
-	
-	{
-		"error": 501,
-		"message": "An unknown error occurred!"
-	}
-
-	*/
-
 	$graph = new Graph();
 	
-	$graph->set_direction("LR");
-	$graph->set_export_format("svg");
+	$graph->set_direction($request["direction"]);
+	$graph->set_export_format($request["export"]);
 	
-	$graph->add_node("");
-	$graph->add_node("Q0");
-	$graph->add_node("Q1");
-	$graph->add_node("Q2");
-	$graph->add_node("Q3");
+	foreach ($request["nodes"] as $node)
+	{
+		$graph->add_node($node["name"]);
+		$graph->set_node_shape($node["name"], $node["shape"]);
+	}
 	
-	$graph->set_node_shape("", "none");
-	$graph->set_node_shape("Q0", "circle");
-	$graph->set_node_shape("Q1", "doublecircle");
-	$graph->set_node_shape("Q2", "doublecircle");
-	$graph->set_node_shape("Q3", "circle");
-
-	$graph->add_edge("", "Q0");
-	$graph->add_edge("Q0", "Q1", "A");
-	$graph->add_edge("Q0", "Q3", "B");
-	$graph->add_edge("Q1", "Q1", "A");
-	$graph->add_edge("Q1", "Q2", "B");
-	$graph->add_edge("Q2", "Q2", "A");
-	$graph->add_edge("Q2", "Q3", "B");
-	$graph->add_edge("Q3", "Q3", "A, B");
+	foreach ($request["edges"] as $edge)
+	{
+		$graph->add_edge(
+			$edge["origin"],
+			$edge["destination"],
+			$edge["label"]
+		);
+	}
 	
 	$binary   = $graph->export();
 	$encoding = base64_encode($binary);
