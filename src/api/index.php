@@ -68,10 +68,12 @@ switch ($_SERVER["REQUEST_URI"])
 		*/
 		$base64 = base64_render($request);
 		
-		$response = json_encode(array(
+		$message = array(
 			"src" => $base64
-		));
+		);
 		
+		$response = json_encode($message, JSON_PRETTY_PRINT);
+
 		if (json_last_error() !== JSON_ERROR_NONE)
 		{
 			http_response_code(500);
@@ -201,6 +203,10 @@ function handle_request($request)
 	$graph->add_edge("Q2", "Q3", "B");
 	$graph->add_edge("Q3", "Q3", "A, B");
 	
-	$binary = $graph->export();
-	return base64_encode($binary);
+	$binary   = $graph->export();
+	$encoding = base64_encode($binary);
+
+	$src = "data:image/svg+xml;base64,{$encoding}";
+
+	return $src;
 }
