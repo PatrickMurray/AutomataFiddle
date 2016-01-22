@@ -122,7 +122,7 @@ function valid_request($request)
 }
 
 
-function handle_request($request)
+function base64_render($request)
 {
 	/*
 	$body = http_get_request_body();
