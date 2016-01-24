@@ -4,7 +4,6 @@ $(document).ready(function(){
 
 
 function initialize() {
-	/* Side Menu */
 	sidebar_toggle(".toggle-menu > * header");
 	sidebar_toggle(".toggle-menu .properties header");
 	
@@ -12,6 +11,8 @@ function initialize() {
 		sidebar_hide_all();
 		sidebar_toggle(this);
 	});
+	
+	trigger_error("Test error!");
 }
 
 
@@ -39,4 +40,10 @@ function sidebar_hide_all() {
 			sidebar_toggle(this);
 		}
 	});
+}
+
+
+
+function trigger_error(message) {
+	$(".errors").append("<div class=\"error\">" + message + "</div>");
 }
