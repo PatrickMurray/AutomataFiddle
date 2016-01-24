@@ -12,7 +12,7 @@ function initialize() {
 		sidebar_toggle(this);
 	});
 	
-	$(".errors i.fa-times").click(function() {
+	$(".error .fa-times").click(function() {
 		close_error(this);
 	});
 
