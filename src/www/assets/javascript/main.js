@@ -53,5 +53,6 @@ function trigger_error(message) {
 
 
 function close_error(element) {
-	$(element).parent().remove();
+	window.alert("click firing");
+	//$(element).parent().remove();
 }
