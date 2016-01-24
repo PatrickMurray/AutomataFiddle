@@ -26,7 +26,7 @@ body {
 	border: 1px solid #B71C1C;
 }
 
-.error i.fa-exclamation-triangle {
+.error strong {
 	padding-left: 0.5em;
 }
 
