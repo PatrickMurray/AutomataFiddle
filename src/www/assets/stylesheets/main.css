@@ -28,6 +28,7 @@ body {
 
 .error span {
 	flex: 1;
+	padding: 0 0.5em;
 }
 
 header {

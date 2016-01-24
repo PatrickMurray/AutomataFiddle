@@ -12,7 +12,7 @@ function initialize() {
 		sidebar_toggle(this);
 	});
 	
-	$(".error .fa-times").click(function() {
+	$(".error i.fa-times").click(function() {
 		close_error(this);
 	});
 
@@ -53,6 +53,6 @@ function trigger_error(message) {
 
 
 function close_error(element) {
-	window.alert("click firing");
-	//$(element).parent().remove();
+	window.alert("firing");
+	$(element).parent().remove();
 }
