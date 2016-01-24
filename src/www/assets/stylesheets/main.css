@@ -26,6 +26,10 @@ body {
 	border: 1px solid #B71C1C;
 }
 
+.error i.fa-exclamation-triangle {
+	padding-left: 0.5em;
+}
+
 .error span {
 	flex: 1;
 	padding: 0 0.5em;
