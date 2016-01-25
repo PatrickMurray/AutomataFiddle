@@ -13,7 +13,7 @@ function initialize() {
 	});
 	
 	$(".error i.fa-times").click(function() {
-		close_error(this);
+		close_error(".error i.fa-times");
 	});
 
 	trigger_error("Test error!");
