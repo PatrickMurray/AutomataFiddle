@@ -12,10 +12,10 @@ function initialize() {
 		sidebar_toggle(this);
 	});
 	
-	$(".error i.fa-times").click(function() {
-		close_error(".error i.fa-times");
+	$(".error .fa-times").click(function() {
+		close_error(this);
 	});
-
+	
 	trigger_error("Test error!");
 }
 
