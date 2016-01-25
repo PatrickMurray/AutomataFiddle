@@ -12,10 +12,6 @@ function initialize() {
 		sidebar_toggle(this);
 	});
 	
-	$(".error .fa-times").click(function() {
-		close_error(this);
-	});
-	
 	trigger_error("Test error!");
 }
 
@@ -49,6 +45,9 @@ function sidebar_hide_all() {
 
 function trigger_error(message) {
 	$(".errors").append("<div class=\"error\"><i class=\"fa fa-exclamation-triangle\"></i> <strong>Warning:</strong> <span>" + message + "</span> <i class=\"fa fa-times\"></i></div>");
+	$(".error .fa-times").click(function() {
+		close_error(this);
+	});
 }
 
 
