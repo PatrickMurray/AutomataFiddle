@@ -11,8 +11,6 @@ function initialize() {
 		sidebar_hide_all();
 		sidebar_toggle(this);
 	});
-	
-	trigger_error("Test error!");
 }
 
 
@@ -52,6 +50,5 @@ function trigger_error(message) {
 
 
 function close_error(element) {
-	window.alert("firing");
 	$(element).parent().remove();
 }

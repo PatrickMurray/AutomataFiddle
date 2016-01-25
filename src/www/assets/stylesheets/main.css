@@ -23,7 +23,16 @@ body {
 	text-shadow: 0 1px #B71C1C;
 	
 	padding: 0.5em;
-	border: 1px solid #B71C1C;
+	border-left:  1px solid #B71C1C;
+	border-right: 1px solid #B71C1C;
+}
+
+.error:first-of-type {
+	border-top: 1px solid #B71C1C;
+}
+
+.error:last-of-type {
+	border-bottom: 1px solid #B71C1C;
 }
 
 .error strong {
