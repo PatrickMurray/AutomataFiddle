@@ -11,6 +11,45 @@ function initialize() {
 		sidebar_hide_all();
 		sidebar_toggle(this);
 	});
+	
+
+	$(".actions .refresh").click(function (event) {
+		refresh_event();
+		event.preventDefault();
+	});
+	
+	$(".actions .download").click(function (event) {
+		download_event();
+		event.preventDefault();
+	});
+	
+	$(".actions .save").click(function (event) {
+		save_event();
+		event.preventDefault();
+	});
+	
+	$(".actions .open").click(function (event) {
+		open_event();
+		event.preventDefault();
+	});
+	
+	$(".actions .delete").click(function (event) {
+		/* redirect to blank homepage */
+		event.preventDefault();
+	});
+	
+
+	$(".states button").click(function (event){
+		/* some stuff */
+		render_automata();
+		event.preventDefault();
+	});
+	
+	$(".transitions button").click(function (event) {
+		/* some stuff */
+		render_automata();
+		event.preventDefault();
+	});
 }
 
 
@@ -51,4 +90,32 @@ function trigger_error(message) {
 
 function close_error(element) {
 	$(element).parent().remove();
+}
+
+
+function refresh_event() {
+	
+}
+
+
+function render_event() {
+	
+}
+
+
+function download_event() {
+	
+}
+
+function save_event() {
+	
+}
+
+function open_event() {
+	
+}
+
+
+function delete_event() {
+	
 }

@@ -66,11 +66,7 @@ switch ($_SERVER["REQUEST_URI"])
 			trigger_json_response(400, "Bad Request");
 		}
 		
-		$base64 = base64_render($request);
-		
-		$message = array(
-			"src" => $base64
-		);
+		$message = handle_render_request($request);
 		
 		$response = json_encode($message, JSON_PRETTY_PRINT);
 		
@@ -240,12 +236,12 @@ function valid_request($request)
 		
 		array_push($map[$origin], $destination);
 	}
-
+	
 	return True;
 }
 
 
-function base64_render($request)
+function handle_render_request($request)
 {
 	$graph = new Graph();
 	
@@ -267,10 +263,32 @@ function base64_render($request)
 		);
 	}
 	
-	$binary   = $graph->export();
-	$encoding = base64_encode($binary);
+	$binary    = $graph->export();
+	$mediatype = export_media_type($request);
+	$encoding  = base64_encode($binary);
+	
+	$response = array(
+		"mediatype" => $mediatype,
+		"encoding"  => $encoding
+	);
+	
+	return $response;
+}
 
-	$src = "data:image/svg+xml;base64,{$encoding}";
 
-	return $src;
+function export_media_type($request)
+{
+	switch ($request["export"])
+	{
+		case "svg":
+			return "image/svg+xml";
+		case "png":
+			return "image/png";
+		case "gif":
+			return "image/gif";
+		case "ps":
+			return "application/postscript";
+		default:
+			return "text/plain";
+	}
 }
