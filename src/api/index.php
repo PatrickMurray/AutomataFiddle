@@ -4,8 +4,6 @@
 require_once "../graph.php";
 
 
-header('Content-Type: application/json');
-
 switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 {
 	case "/webhook":
@@ -13,6 +11,7 @@ switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 		{
 			http_response_code(405);;
 			trigger_json_response(405, "Method Not Allowed");
+			die();
 		}
 
 		update_source();
@@ -25,6 +24,7 @@ switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 		{
 			http_response_code(405);
 			trigger_json_response(405, "Method Not Allowed");
+			die();
 		}
 		
 		$features = array(
@@ -42,13 +42,15 @@ switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 		}
 		
 		http_response_code(200);
-		die($supported);
+		json_response($supported);
+		die();
 	
 	case "/render":
 		if ($_SERVER["REQUEST_METHOD"] !== "GET")
 		{
 			http_response_code(405);
 			trigger_json_response(405, "Method Not Allowed");
+			die();
 		}
 		
 		$payload = file_get_contents("php://input");
@@ -58,12 +60,14 @@ switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 		{
 			http_response_code(400);
 			trigger_json_response(400, "Bad Request");
+			die();
 		}
 		
 		if (!valid_request($request))
 		{
 			http_response_code(400);
 			trigger_json_response(400, "Bad Request");
+			die();
 		}
 		
 		$message = handle_render_request($request);
@@ -74,14 +78,17 @@ switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 		{
 			http_response_code(500);
 			trigger_json_response(500, "Internal Server Error");
+			die();
 		}
 		
 		http_response_code(200);
-		die($response);
+		json_response($response);
+		die();
 	
 	default:
 		http_response_code(501);
 		trigger_json_response(501, "Not Implemented");
+		die();
 }
 
 
@@ -91,7 +98,27 @@ function trigger_json_response($code, $message)
 		"code"    => $code,
 		"message" => $message
 	);
-	die(json_encode($error, JSON_PRETTY_PRINT));
+
+	$response = json_encode($error, JSON_PRETTY_PRINT);
+	
+	json_response($response);
+}
+
+
+function json_response($response)
+{
+	header('Content-Type: application/json');
+	
+	if ($_GET["callback"])
+	{
+		print($_GET["callback"]."(".$response.")");
+	}
+	else
+	{
+		print($response);
+	}
+	
+	die();
 }
 
 
