@@ -80,7 +80,7 @@ function init_features() {
 		method: "GET",
 		dataType: "jsonp",
 		success: function (json) {
-			console.log(message);
+			console.log(json);
 		},
 		error: function (json) {
 			trigger_error("Unable to load supported features!");
