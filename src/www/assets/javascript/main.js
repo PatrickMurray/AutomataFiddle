@@ -45,7 +45,7 @@ function init_action_menu() {
 	});
 	
 	$(".actions .delete").click(function (event) {
-		/* redirect to blank homepage */
+		delete_event();
 		event.preventDefault();
 	});
 }
@@ -75,20 +75,17 @@ function init_sidebar() {
 
 
 function init_features() {
-	var request;
-	
-	request = $.ajax({
-		url:    "http://api.automatafiddle.com/supported",
+	$.ajax({
+		url: "http://api.automatafiddle.com/supported",
 		method: "GET",
-	});
-	
-	request.done(function (message){
-		console.log(message);
-	});
-
-	request.fail(function (message){
-		trigger_error("Unable to load supported features!");
-		console.log(message);
+		dataType: "jsonp",
+		success: function (json) {
+			console.log(message);
+		},
+		error: function (json) {
+			trigger_error("Unable to load supported features!");
+			console.log(json);
+		}
 	});
 }
 
