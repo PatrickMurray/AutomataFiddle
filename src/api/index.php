@@ -6,7 +6,7 @@ require_once "../graph.php";
 
 header('Content-Type: application/json');
 
-switch ($_SERVER["REQUEST_URI"])
+switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 {
 	case "/webhook":
 		if ($_SERVER["REQUEST_METHOD"] !== "POST")
