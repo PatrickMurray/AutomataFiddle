@@ -11,6 +11,10 @@ automatons = [
 
 */
 
+
+var supported;
+
+
 $(document).ready(function(){
 	initialize();
 });
@@ -80,11 +84,13 @@ function init_features() {
 		method: "GET",
 		dataType: "jsonp",
 		success: function (json) {
-			console.log(json);
+			console.info("Loaded: http://api.automatafiddle.com/supported");
+			supported = json;
 		},
 		error: function (json) {
 			trigger_error("Unable to load supported features!");
-			console.log(json);
+			console.error("Could not load: http://api.automatafiddle.com/supported");
+			console.debug(json);
 		}
 	});
 }
