@@ -1,18 +1,29 @@
+/*
+
+automatons = [
+	{
+		"id": 9172512,
+		"title": "My Automaton",
+		"description": "",
+
+	}
+]
+
+*/
+
 $(document).ready(function(){
 	initialize();
 });
 
 
 function initialize() {
-	sidebar_toggle(".toggle-menu > * header");
-	sidebar_toggle(".toggle-menu .properties header");
-	
-	$(".toggle-menu header").click(function() {
-		sidebar_hide_all();
-		sidebar_toggle(this);
-	});
-	
+	init_action_menu();
+	init_sidebar();
+	init_features();
+}
 
+
+function init_action_menu() {
 	$(".actions .refresh").click(function (event) {
 		refresh_event();
 		event.preventDefault();
@@ -37,8 +48,18 @@ function initialize() {
 		/* redirect to blank homepage */
 		event.preventDefault();
 	});
-	
+}
 
+
+function init_sidebar() {
+	sidebar_toggle(".toggle-menu > * header");
+	sidebar_toggle(".toggle-menu .properties header");
+	
+	$(".toggle-menu header").click(function() {
+		sidebar_hide_all();
+		sidebar_toggle(this);
+	});
+	
 	$(".states button").click(function (event){
 		/* some stuff */
 		render_automata();
@@ -49,6 +70,25 @@ function initialize() {
 		/* some stuff */
 		render_automata();
 		event.preventDefault();
+	});
+}
+
+
+function init_features() {
+	var request;
+	
+	request = $.ajax({
+		url:    "http://api.automatafiddle.com/supported",
+		method: "GET",
+	});
+	
+	request.done(function (message){
+		console.log(message);
+	});
+
+	request.fail(function (message){
+		trigger_error("Unable to load supported features!");
+		console.log(message);
 	});
 }
 
@@ -94,28 +134,31 @@ function close_error(element) {
 
 
 function refresh_event() {
-	
+	console.log("refresh event");
+	render_event();
 }
 
 
 function render_event() {
-	
+	console.log("render event");
 }
 
 
 function download_event() {
-	
+	console.log("download event");
 }
+
 
 function save_event() {
-	
+	console.log("save event");
 }
 
+
 function open_event() {
-	
+	console.log("save event");
 }
 
 
 function delete_event() {
-	
+	console.log("save event");
 }
