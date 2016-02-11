@@ -87,13 +87,28 @@ function init_features() {
 			console.info("Loaded: http://api.automatafiddle.com/supported");
 			supported = json;
 			
-			/* Directions */
-			var direction;
-			for (direction in supported.directions)
+			var key;
+			
+			/* Graph Directions */
+			for (key in supported.directions)
 			{
-				$(".properties select[name=\"graph-direction\"]").append("<option>" + supported.directions[direction] + "</option>");
+				$(".properties select[name=\"graph-direction\"]").append("<option>" + supported.directions[key] + "</option>");
 			}
 			$(".properties select[name=\"graph-direction\"]:first-of-type").attr("selected");
+			
+			/* Export Format */
+			for (key in supported.formats)
+			{
+				$(".properties select[name=\"export-format\"]").append("<option>" + supported.formats[key] + "</option>");
+			}
+			$(".properties select[name=\"export-format\"]:first-of-type").addr("selected");
+			
+			/* Shapes */
+			for (key in supported.shapes)
+			{
+				$(".states select[name=\"state-shape\"]").append("<option>" + supported.shapes[key] + "</option>");
+			}
+			$(".states select[name=\"state-shape\"]:first-of-type").attr("selected");
 		},
 		error: function (json) {
 			trigger_error("Unable to load supported features!");
