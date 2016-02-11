@@ -86,6 +86,14 @@ function init_features() {
 		success: function (json) {
 			console.info("Loaded: http://api.automatafiddle.com/supported");
 			supported = json;
+			
+			/* Directions */
+			var direction;
+			for (direction in supported.directions)
+			{
+				$(".properties selected[name=\"graph-direction\"]").append("<option>" + supported.directions[direction] + "</option>");
+			}
+			$(".properties selected[name=\"graph-direction\"]:first-of-type").attr("selected");
 		},
 		error: function (json) {
 			trigger_error("Unable to load supported features!");
@@ -93,14 +101,6 @@ function init_features() {
 			console.debug(json);
 		}
 	});
-	
-	/* Directions */
-	var direction;
-	for (direction in supported.directions)
-	{
-		$(".properties selected[name=\"graph-direction\"]").append("<option>" + supported.directions[direction] + "</option>");
-	}
-	$(".properties selected[name=\"graph-direction\"]:first-of-type").attr("selected");
 }
 
 
