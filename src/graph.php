@@ -35,9 +35,18 @@ if (!isset($GRAPH_EXPORT_FORMATS))
 
 if (!isset($GRAPH_NODE_SHAPES))
 {
-	$GRAPH_NODE_SHAPES = array("circle", "doublecircle", "oval",
-		"triangle", "box", "rectangle", "diamond", "star", "point",
-		"plaintext", "none"
+	$GRAPH_NODE_SHAPES = array(
+		"circle"       => "Circle",
+		"doublecircle" => "Double Circle",
+		"oval"         => "Oval",
+		"triangle"     => "Triangle",
+		"box"          => "Box",
+		"rectangle"    => "Rectangle",
+		"diamond"      => "Diamond",
+		"star"         => "Star",
+		"point"        => "Point",
+		"plaintext"    => "Plaintext",
+		"none"         => "None"
 	);
 }
 
