@@ -93,6 +93,14 @@ function init_features() {
 			console.debug(json);
 		}
 	});
+	
+	/* Directions */
+	var direction;
+	for (direction in supported.directions)
+	{
+		$(".properties selected[name=\"graph-direction\"]").append("<option>" + supported.directions[direction] + "</option>");
+	}
+	$(".properties selected[name=\"graph-direction\"]:first-of-type").attr("selected");
 }
 
 
@@ -158,10 +166,10 @@ function save_event() {
 
 
 function open_event() {
-	console.log("save event");
+	console.log("open event");
 }
 
 
 function delete_event() {
-	console.log("save event");
+	console.log("delete event");
 }
