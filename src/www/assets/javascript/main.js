@@ -101,7 +101,7 @@ function init_features() {
 			{
 				$(".properties select[name=\"export-format\"]").append("<option>" + supported.formats[key] + "</option>");
 			}
-			$(".properties select[name=\"export-format\"]:first-of-type").addr("selected");
+			$(".properties select[name=\"export-format\"]:first-of-type").attr("selected");
 			
 			/* Shapes */
 			for (key in supported.shapes)
