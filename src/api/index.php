@@ -133,15 +133,14 @@ function trigger_json_response($code, $message)
 
 function json_response($response)
 {
-	if ($_GET["callback"])
+	if (array_key_exists("callback", $_GET))
 	{
-		print($_GET["callback"]."(".$response.")");
+		print($_GET["callback"] . "(" . $response . ")");
 	}
 	else
 	{
 		print($response);
 	}
-	
 	die();
 }
 
@@ -212,10 +211,10 @@ OR
 function valid_request($request)
 {
 	if (/*count($request) !== 4                 ||*/
-	    !array_has_key("direction", $request) ||
-	    !array_has_key("export",    $request) ||
-	    !array_has_key("nodes",     $request) ||
-	    !array_has_key("edges",     $request))
+	    !array_key_exists("direction", $request) ||
+	    !array_key_exists("export",    $request) ||
+	    !array_key_exists("nodes",     $request) ||
+	    !array_key_exists("edges",     $request))
 	{
 		return False;
 	}
@@ -233,8 +232,8 @@ function valid_request($request)
 	foreach ($request["nodes"] as $node)
 	{
 		if (/*count($node) !== 2            ||*/
-		    !array_has_key("name", $node) ||
-		    !array_has_key("shape", $node))
+		    !array_key_exists("name", $node) ||
+		    !array_key_exists("shape", $node))
 		{
 			return False;
 		}
