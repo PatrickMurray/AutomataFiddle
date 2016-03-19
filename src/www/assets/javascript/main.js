@@ -1,6 +1,54 @@
 /* Globals */
 var supported;
-var current;
+var current = {
+	title:       "My Automata",
+	description: "Hello World",
+	graph: {
+		direction: "LR",
+		export:    "svg",
+		nodes: [
+			{
+				name:  "Start",
+				shape: "none"
+			},
+			{
+				name:  "Q0",
+				shape: "doublecircle"
+			},
+			{
+				name:  "Q1",
+				shape: "circle"
+			}
+		],
+		edges: [
+			{
+				origin:      "Start",
+				destination: "Q0",
+				label:       ""
+			},
+			{
+				origin:      "Q0",
+				destination: "Q0",
+				label:       "1"
+			},
+			{
+				origin:      "Q0",
+				destination: "Q1",
+				label:       "0"
+			},
+			{
+				origin:      "Q1",
+				destination: "Q1",
+				label:       "0"
+			},
+			{
+				origin:      "Q1",
+				destination: "Q0",
+				label:       "1"
+			}
+		]
+	}
+};
 
 
 $(document).ready(function() {
@@ -175,12 +223,15 @@ function render_graph() {
 		url:      "http://api.automatafiddle.com/render",
 		method:   "GET",
 		dataType: "jsonp",
+		data:     current.graph;
 		success: function (json) {
-			// TODO
+			console.info("Rendered graph: http://api.automatafiddle.com/render");
+			consle.debug(json);
 		},
 		error: function (json) {
-			console.error("Render Graph Error:");
-			console.error(json.responseText);
+			trigger_error("Unable to render graph!")
+			console.error("Could not render graph: http://api.automatafiddle.com/render");
+			console.debug(json);
 		}
 	});
 }
