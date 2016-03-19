@@ -210,6 +210,10 @@ OR
 */
 function valid_request($request)
 {
+	global $GRAPH_DIRECTIONS;
+	global $GRAPH_EXPORT_FORMATS;
+	global $GRAPH_NODE_SHAPES;
+
 	if (/*count($request) !== 4                 ||*/
 	    !array_key_exists("direction", $request) ||
 	    !array_key_exists("export",    $request) ||
