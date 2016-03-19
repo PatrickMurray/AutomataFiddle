@@ -244,7 +244,6 @@ function valid_request($request)
 		    !array_key_exists("name", $node) ||
 		    !array_key_exists("shape", $node))
 		{
-			print("3");
 			return False;
 		}
 		
@@ -257,7 +256,6 @@ function valid_request($request)
 		
 		if (!in_array($node["shape"], array_keys($GRAPH_NODE_SHAPES)))
 		{
-			print("4");
 			return False;
 		}
 	}
@@ -271,7 +269,8 @@ function valid_request($request)
 		    !in_array("destination", $edge) ||
 		    !in_array("label",       $edge))
 		{
-			print("5");
+			print("5\n");
+			print_r($edge);
 			return False;
 		}
 		
