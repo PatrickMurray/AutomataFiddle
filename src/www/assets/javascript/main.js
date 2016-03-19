@@ -163,10 +163,10 @@ function init_features() {
 			}
 			$(".states select[name=\"state-shape\"]:first-of-type").attr("selected");
 		},
-		error: function (json) {
+		error: function (xhr, status, error) {
 			trigger_error("Unable to load supported features!");
 			console.error("Could not load: http://api.automatafiddle.com/supported");
-			console.debug(json);
+			console.debug(error);
 		}
 	});
 }
@@ -228,10 +228,10 @@ function render_graph() {
 			console.info("Rendered graph: http://api.automatafiddle.com/render");
 			consle.debug(json);
 		},
-		error: function (json) {
+		error: function (xhr, status, error) {
 			trigger_error("Unable to render graph!")
 			console.error("Could not render graph: http://api.automatafiddle.com/render");
-			console.debug(json);
+			console.debug(error);
 		}
 	});
 }
