@@ -108,16 +108,7 @@ function trigger_json_response($code, $message)
 function json_response($response)
 {
 	/* Handle Cross Site Requests */
-	switch ($_SERVER["HTTP_ORIGIN"])
-	{
-		case 'http://from.com':
-		case 'https://from.com':
-			header('Access-Control-Allow-Origin: ' . $_SERVER["HTTP_ORIGIN"]);
-			header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
-			header('Access-Control-Max-Age: 1000');
-			header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
-			break;
-	}
+	header("Access-Control-Allow-Origin: *");
 	
 	header('Content-Type: application/json');
 	
