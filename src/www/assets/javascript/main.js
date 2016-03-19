@@ -15,7 +15,7 @@ automatons = [
 var supported;
 
 
-$(document).ready(function(){
+$(document).ready(function() {
 	initialize();
 });
 
@@ -187,4 +187,21 @@ function open_event() {
 
 function delete_event() {
 	console.log("delete event");
+}
+
+
+function add_state_event() {
+	// TODO
+}
+
+function remove_state_event() {
+	// TODO
+}
+
+function add_transition_event() {
+	// TODO
+}
+
+function remove_transition_event() {
+	// TODO
 }
