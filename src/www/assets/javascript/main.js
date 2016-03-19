@@ -180,7 +180,7 @@ function render_graph() {
 		},
 		error: function (json) {
 			console.error("Render Graph Error:");
-			console.error(json);
+			console.error(json.responseText);
 		}
 	});
 }
