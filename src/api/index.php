@@ -265,13 +265,13 @@ function valid_request($request)
 	foreach ($request["edges"] as $edge)
 	{
 		if (/*count($edge) !== 3              ||*/
-		    !in_array("origin",      $edge) ||
-		    !in_array("destination", $edge) ||
-		    !in_array("label",       $edge))
+		    !in_array("origin",      array_keys($edge)) ||
+		    !in_array("destination", array_keys($edge)) ||
+		    !in_array("label",       array_keys($edge)))
 		{
-			print((!in_array("origin", $edge)) . "\n");
-			print((!in_array("destination", $edge)) . "\n");
-			print((!in_array("label", $edge)) . "\n");
+			print((!in_array("origin",      array_keys($edge))) . "\n");
+			print((!in_array("destination", array_keys($edge))) . "\n");
+			print((!in_array("label",       array_keys($edge))) . "\n");
 			print_r($edge);
 			return False;
 		}
