@@ -4,14 +4,17 @@
 require_once "../graph.php";
 
 
-switch ($_SERVER["HTTP_ORIGIN"])
+if (array_key_exists("HTTP_ORIGIN", $_SERVER))
 {
-	case "http://automatafiddle.com":
-	case "https://automatafiddle.com":
-		header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
-		header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-		header("Access-Control-Max-Age: 1000");
-		header("Access-Control-Allow-Headers: Content-Type");
+	switch ($_SERVER["HTTP_ORIGIN"])
+	{
+		case "http://automatafiddle.com":
+		case "https://automatafiddle.com":
+			header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
+			header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+			header("Access-Control-Max-Age: 1000");
+			header("Access-Control-Allow-Headers: Content-Type");
+	}
 }
 
 
@@ -68,7 +71,7 @@ switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 			die();
 		}
 		*/
-
+		
 		if (!array_key_exists("data", $_POST))
 		{
 			http_response_code(405);
