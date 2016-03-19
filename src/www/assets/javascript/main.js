@@ -177,10 +177,10 @@ function render_graph() {
 		dataType: "jsonp",
 		success: function (json) {
 			// TODO
-			window.alert(json);
 		},
 		error: function (json) {
-			trigger_error(json);
+			console.error("Render Graph Error:");
+			console.error(json);
 		}
 	});
 }
