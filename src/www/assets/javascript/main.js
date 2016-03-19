@@ -226,52 +226,33 @@ function refresh_event() {
 
 
 function render_graph() {
-	/*
 	$.ajax({
 		type:        "POST",
 		url:         "http://api.automatafiddle.com/render",
 		crossDomain: true,
 		
-		data:        JSON.stringify(current.graph),
-		contentType: "application/json; charset=utf-8",
-		dataType:    "json",
-
-		success: function (data, text) {
-			console.info("Rendered graph: http://api.automatafiddle.com/render");
-			consle.debug(data);
-		},
-		
-		error: function (request, status, error) {
-			trigger_error("Unable to render graph!")
-			console.error("Could not render graph: http://api.automatafiddle.com/render");
-			
-			console.debug(request);
-			console.debug(request.responseText);
-			console.debug(status);
-			console.debug(error);
-		}
-	});
-	*/
-	$.ajax({
-		type:        "POST",
-		url:         "http://api.automatafiddle.com/render",
-		crossDomain: true,
-
 		data:        "data=" + JSON.stringify(current.graph),
 		/*
 		contentType: "application/json; charset=utf-8",
 		dataType:    "json",
 		*/
 
-		success: function(responseData, textStatus, jqXHR)
+		success: function(response, status, error
 		{
-			console.log(responseData);
+			console.info("Rendered graph: http://api.automatafiddle.com/render");
+			console.debug(response);
 		},
 		
-		error: function (responseData, textStatus, errorThrown)
+		error: function(response, status, error)
 		{
-			console.warn(responseData, textStatus, errorThrown);
-			alert("CORS failed - " + textStatus);
+			trigger_error("Unable to render graph!");
+			console.error("Could not render graph: http://api.automatafiddle.com/render");
+			
+			console.debug("Graph Encoding:" + JSON.stringify(current.graph));
+			console.debug("Server Response, Status, and Error:");
+			console.debug(response);
+			console.debug(status);
+			console.debu(error);
 		}
 	});
 }
