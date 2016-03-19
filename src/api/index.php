@@ -222,8 +222,8 @@ function valid_request($request)
 	print_r($request);
 
 	
-	if (!in_array($request["direction"], array_keys($GRAPH_DIRECTIONS))     ||
-	    !in_array($request["export"],    array_keys($GRAPH_EXPORT_FORMATS)) ||
+	if (!in_array($request["direction"], $GRAPH_DIRECTIONS)     ||
+	    !in_array($request["export"],    $GRAPH_EXPORT_FORMATS) ||
 	    gettype($request["nodes"]) !== "array"                              ||
 	    gettype($request["edges"]) !== "array")
 	{
