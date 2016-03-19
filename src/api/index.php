@@ -80,7 +80,7 @@ switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 		}
 		
 		$payload = $_POST["data"]; //file_get_contents("php://input");
-		$request = json_decode($payload);
+		$request = json_decode($payload, True);
 		
 		if (json_last_error() !== JSON_ERROR_NONE)
 		{
@@ -218,9 +218,6 @@ function valid_request($request)
 	{
 		return False;
 	}
-	
-	print_r($request);
-	die();
 	
 	if (!in_array($request["direction"], array_keys($GRAPH_DIRECTIONS))     ||
 	    !in_array($request["export"],    array_keys($GRAPH_EXPORT_FORMATS)) ||
