@@ -226,7 +226,7 @@ function refresh_event() {
 function render_graph() {
 	$.ajax({
 		url:      "http://api.automatafiddle.com/render",
-		method:   "GET",
+		method:   "POST",
 		dataType: "jsonp",
 		data:     current.graph,
 		async:    false,
