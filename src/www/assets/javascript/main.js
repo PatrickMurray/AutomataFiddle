@@ -228,7 +228,7 @@ function render_graph() {
 		url:      "http://api.automatafiddle.com/render",
 		method:   "POST",
 		dataType: "jsonp",
-		data:     current.graph,
+		data:     JSON.stringify(current.graph),
 		async:    false,
 		success: function (data, text) {
 			console.info("Rendered graph: http://api.automatafiddle.com/render");
