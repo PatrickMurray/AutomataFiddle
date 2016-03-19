@@ -174,8 +174,7 @@ function render_graph() {
 	$.ajax({
 		url:      "http://api.automatafiddle.com/render",
 		method:   "GET",
-		/*dataType: "jsonp",*/
-		crossDomain: true,
+		dataType: "jsonp",
 		success: function (json) {
 			// TODO
 			window.alert(json);
