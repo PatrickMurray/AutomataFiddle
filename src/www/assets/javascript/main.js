@@ -1,3 +1,4 @@
+/* Globals */
 var supported;
 var current;
 
@@ -59,6 +60,7 @@ function init_sidebar() {
 		sidebar_toggle(this);
 	});
 	
+
 	$(".states button").click(function (event) {
 		add_state_event();
 		event.preventDefault();
@@ -164,12 +166,24 @@ function close_error(element) {
 
 function refresh_event() {
 	console.log("refresh event");
-	render_event();
+	render_graph();
 }
 
 
-function render_event() {
-	console.log("render event");
+function render_graph() {
+	$.ajax({
+		url:      "http://api.automatafiddle.com/render",
+		method:   "GET",
+		/*dataType: "jsonp",*/
+		crossDomain: true,
+		success: function (json) {
+			// TODO
+			window.alert(json);
+		},
+		error: function (json) {
+			trigger_error(json);
+		}
+	});
 }
 
 
