@@ -46,6 +46,13 @@ switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 		die();
 	
 	case "/render":
+		if ($_SERVER["REQUEST_METHOD"] === "OPTIONS")
+		{
+			http_response_code(200);
+			print("Allow: HEAD, GET, PUT, POST, DELETE, OPTIONS\n");
+			die();
+		}
+		
 		if ($_SERVER["REQUEST_METHOD"] !== "POST")
 		{
 			http_response_code(405);
@@ -109,7 +116,7 @@ function json_response($response)
 {
 	/* Handle Cross Site Requests */
 	header("Access-Control-Allow-Origin: *");
-	header("Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS");
+	header("Access-Control-Allow-Methods: HEAD, GET, PUT, POST, DELETE, OPTIONS");
 	header("Access-Control-Max-Age: 1000");
 	header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
