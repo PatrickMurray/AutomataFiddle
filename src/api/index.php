@@ -216,6 +216,7 @@ function valid_request($request)
 	    !array_key_exists("nodes",     $request) ||
 	    !array_key_exists("edges",     $request))
 	{
+		print("1");
 		return False;
 	}
 	
@@ -224,6 +225,7 @@ function valid_request($request)
 	    gettype($request["nodes"]) !== "array"                              ||
 	    gettype($request["edges"]) !== "array")
 	{
+		print("2");
 		return False;
 	}
 	
@@ -235,6 +237,7 @@ function valid_request($request)
 		    !array_key_exists("name", $node) ||
 		    !array_key_exists("shape", $node))
 		{
+			print("3");
 			return False;
 		}
 		
@@ -247,6 +250,7 @@ function valid_request($request)
 		
 		if (!in_array($node["shape"], $GRAPH_NODE_SHAPES))
 		{
+			print("4");
 			return False;
 		}
 	}
@@ -260,6 +264,7 @@ function valid_request($request)
 		    !in_array("destination", $edge) ||
 		    !in_array("label",       $edge))
 		{
+			print("5");
 			return False;
 		}
 		
@@ -269,6 +274,7 @@ function valid_request($request)
 		if (!in_array($origin,      $names) ||
 		    !in_array($destination, $names))
 		{
+			print("6");
 			return False;
 		}
 		
@@ -281,6 +287,7 @@ function valid_request($request)
 		/* Duplicate Edge */
 		if (in_array($destination, $map[$origin]))
 		{
+			print("7");
 			return False;
 		}
 		
