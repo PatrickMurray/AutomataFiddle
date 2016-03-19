@@ -237,7 +237,7 @@ function render_graph() {
 		dataType:    "json",
 		*/
 
-		success: function(response, status, error
+		success: function(response)
 		{
 			console.info("Rendered graph: http://api.automatafiddle.com/render");
 			console.debug(response);
