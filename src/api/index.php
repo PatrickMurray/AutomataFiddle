@@ -69,7 +69,7 @@ switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 		}
 		*/
 
-		if ($_SERVER["REQUEST_METHOD"] !== "POST")
+		if (!array_key_exists("data", $_POST))
 		{
 			http_response_code(405);
 			trigger_json_response(405, "Method Not Allowed");
