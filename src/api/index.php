@@ -269,7 +269,9 @@ function valid_request($request)
 		    !in_array("destination", $edge) ||
 		    !in_array("label",       $edge))
 		{
-			print("5\n");
+			print((!in_array("origin", $edge)) . "\n");
+			print((!in_array("destination", $edge)) . "\n");
+			print((!in_array("label", $edge)) . "\n");
 			print_r($edge);
 			return False;
 		}
