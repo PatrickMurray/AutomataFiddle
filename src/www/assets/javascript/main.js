@@ -225,11 +225,12 @@ function refresh_event() {
 
 function render_graph() {
 	$.ajax({
-		url:      "http://api.automatafiddle.com/render",
-		method:   "POST",
-		dataType: "jsonp",
-		data:     JSON.stringify(current.graph),
-		async:    false,
+		method:      "POST",
+		url:         "http://api.automatafiddle.com/render",
+		data:        JSON.stringify(current.graph),
+		contentType: "application/json; charset=utf-8",
+		dataType:    "jsonp",
+		async:       false,
 		success: function (data, text) {
 			console.info("Rendered graph: http://api.automatafiddle.com/render");
 			consle.debug(data);
