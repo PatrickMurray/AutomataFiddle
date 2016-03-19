@@ -220,7 +220,8 @@ function valid_request($request)
 	}
 	
 	print_r($request);
-
+	die();
+	
 	if (!in_array($request["direction"], array_keys($GRAPH_DIRECTIONS))     ||
 	    !in_array($request["export"],    array_keys($GRAPH_EXPORT_FORMATS)) ||
 	    gettype($request["nodes"]) !== "array"                              ||
