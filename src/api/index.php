@@ -233,10 +233,6 @@ function valid_request($request)
 	    gettype($request["nodes"]) !== "array"                              ||
 	    gettype($request["edges"]) !== "array")
 	{
-		print(!in_array($request["direction"], array_keys($GRAPH_DIRECTIONS)) . "\n");
-		print(!in_array($request["export"],    array_keys($GRAPH_EXPORT_FORMATS)) . "\n");
-		print((gettype($request["nodes"]) !== "array") . "\n");
-		print((gettype($request["edges"]) !== "array") . "\n");
 		return False;
 	}
 	
@@ -259,7 +255,7 @@ function valid_request($request)
 		
 		array_push($names, $node["name"]);
 		
-		if (!in_array($node["shape"], $GRAPH_NODE_SHAPES))
+		if (!in_array($node["shape"], array_keys($GRAPH_NODE_SHAPES)))
 		{
 			print("4");
 			return False;
