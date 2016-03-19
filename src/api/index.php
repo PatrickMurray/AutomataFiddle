@@ -4,6 +4,20 @@
 require_once "../graph.php";
 
 
+switch ($_SERVER["HTTP_ORIGIN"])
+{
+	case "http://automatafiddle.com":
+	case "https://automatafiddle.com":
+		header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
+		header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+		header("Access-Control-Max-Age: 1000");
+		header("Access-Control-Allow-Headers: Content-Type");
+}
+
+
+header('Content-Type: application/json');
+
+
 switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 {
 	case "/webhook":
@@ -46,13 +60,15 @@ switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 		die();
 	
 	case "/render":
+		/*
 		if ($_SERVER["REQUEST_METHOD"] === "OPTIONS")
 		{
 			http_response_code(200);
 			print("Allow: HEAD, GET, PUT, POST, DELETE, OPTIONS\n");
 			die();
 		}
-		
+		*/
+
 		if ($_SERVER["REQUEST_METHOD"] !== "POST")
 		{
 			http_response_code(405);
@@ -114,19 +130,6 @@ function trigger_json_response($code, $message)
 
 function json_response($response)
 {
-	/* Handle Cross Site Requests */
-	switch ($_SERVER["HTTP_ORIGIN"])
-	{
-		case "http://automatafiddle.com":
-		case "https://automatafiddle.com":
-			header("Access-Control-Allow-Origin: *");
-			header("Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS");
-			header("Access-Control-Max-Age: 1000");
-			header("Access-Control-Allow-Headers: Content-Type, Content-Disposition, Content-Description, Authorization, X-Requested-With");
-	}
-	
-	header('Content-Type: application/json');
-	
 	if ($_GET["callback"])
 	{
 		print($_GET["callback"]."(".$response.")");

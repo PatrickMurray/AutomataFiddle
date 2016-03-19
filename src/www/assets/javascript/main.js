@@ -226,6 +226,7 @@ function refresh_event() {
 
 
 function render_graph() {
+	/*
 	$.ajax({
 		type:        "POST",
 		url:         "http://api.automatafiddle.com/render",
@@ -248,6 +249,27 @@ function render_graph() {
 			console.debug(request.responseText);
 			console.debug(status);
 			console.debug(error);
+		}
+	});
+	*/
+	$.ajax({
+		type:        "POST",
+		url:         "http://api.automatafiddle.com/render",
+		crossDomain: true,
+
+		data:        "data=" + JSON.stringify(current.graph),
+		contentType: "application/json; charset=utf-8",
+		dataType:    "json",
+		
+		success: function(responseData, textStatus, jqXHR)
+		{
+			console.log(responseData);
+		},
+		
+		error: function (responseData, textStatus, errorThrown)
+		{
+			console.warn(responseData, textStatus, errorThrown);
+			alert("CORS failed - " + textStatus);
 		}
 	});
 }
