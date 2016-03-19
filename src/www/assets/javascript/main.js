@@ -229,10 +229,11 @@ function render_graph() {
 	$.ajax({
 		type:        "POST",
 		url:         "http://api.automatafiddle.com/render",
+		crossDomain: true,
+		
 		data:        {data: current.graph},
 		contentType: "application/json; charset=utf-8",
-		dataType:    "jsonp",
-		async:       false,
+		dataType:    "json",
 
 		success: function (data, text) {
 			console.info("Rendered graph: http://api.automatafiddle.com/render");
