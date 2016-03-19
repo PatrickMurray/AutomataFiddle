@@ -187,7 +187,7 @@ OR
 */
 function valid_request($request)
 {
-	if (count($request) !== 4                 ||
+	if (/*count($request) !== 4                 ||*/
 	    !array_has_key("direction", $request) ||
 	    !array_has_key("export",    $request) ||
 	    !array_has_key("nodes",     $request) ||
@@ -208,7 +208,7 @@ function valid_request($request)
 
 	foreach ($request["nodes"] as $node)
 	{
-		if (count($node) !== 2            ||
+		if (/*count($node) !== 2            ||*/
 		    !array_has_key("name", $node) ||
 		    !array_has_key("shape", $node))
 		{
@@ -232,7 +232,7 @@ function valid_request($request)
 	
 	foreach ($request["edges"] as $edge)
 	{
-		if (count($edge) !== 3              ||
+		if (/*count($edge) !== 3              ||*/
 		    !in_array("origin",      $edge) ||
 		    !in_array("destination", $edge) ||
 		    !in_array("label",       $edge))

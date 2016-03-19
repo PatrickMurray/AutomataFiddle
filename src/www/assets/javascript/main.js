@@ -231,6 +231,7 @@ function render_graph() {
 		error: function (xhr, status, error) {
 			trigger_error("Unable to render graph!")
 			console.error("Could not render graph: http://api.automatafiddle.com/render");
+			console.debug(status);
 			console.debug(error);
 		}
 	});
