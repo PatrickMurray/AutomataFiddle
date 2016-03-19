@@ -1,18 +1,5 @@
-/*
-
-automatons = [
-	{
-		"id": 9172512,
-		"title": "My Automaton",
-		"description": "",
-
-	}
-]
-
-*/
-
-
 var supported;
+var current;
 
 
 $(document).ready(function() {
@@ -24,6 +11,14 @@ function initialize() {
 	init_action_menu();
 	init_sidebar();
 	init_features();
+	
+	/* If the client's browser does not support HTML5 Local Storage
+	 * Objects, then notify the user that several functions (Save, Open)
+	 * will not function properly.
+	 */
+	if (typeof(Storage) == "undefined") {
+		trigger_error("Your browser does not support Local Storage, Save and Open functionality will be limited.");
+	}
 }
 
 
@@ -64,15 +59,23 @@ function init_sidebar() {
 		sidebar_toggle(this);
 	});
 	
-	$(".states button").click(function (event){
-		/* some stuff */
-		render_automata();
+	$(".states button").click(function (event) {
+		add_state_event();
 		event.preventDefault();
 	});
 	
+	$(".states .remove").click(function (event) {
+		remove_state_event();
+		event.preventDefault();
+	});
+
 	$(".transitions button").click(function (event) {
-		/* some stuff */
-		render_automata();
+		add_transition_event();
+		event.preventDefault();
+	});
+
+	$(".transitions .remove").click(function (event) {
+		remove_transition_event();
 		event.preventDefault();
 	});
 }
@@ -190,18 +193,20 @@ function delete_event() {
 }
 
 
+
+
 function add_state_event() {
-	// TODO
+	console.log("add state event");
 }
 
 function remove_state_event() {
-	// TODO
+	console.log("remove state event");
 }
 
 function add_transition_event() {
-	// TODO
+	console.log("add transition event");
 }
 
 function remove_transition_event() {
-	// TODO
+	console.log("remove transition event");
 }
