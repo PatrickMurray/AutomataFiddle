@@ -80,6 +80,10 @@ switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 		}
 		
 		$payload = $_POST["data"]; //file_get_contents("php://input");
+		
+		print($payload);
+
+		/*
 		$request = json_decode($payload);
 		
 		if (json_last_error() !== JSON_ERROR_NONE)
@@ -109,6 +113,7 @@ switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 		
 		http_response_code(200);
 		json_response($response);
+		*/
 		die();
 	
 	default:
