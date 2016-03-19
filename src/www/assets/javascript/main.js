@@ -133,9 +133,10 @@ function init_sidebar() {
 
 function init_features() {
 	$.ajax({
-		url: "http://api.automatafiddle.com/supported",
-		method: "GET",
+		url:      "http://api.automatafiddle.com/supported",
+		method:   "GET",
 		dataType: "jsonp",
+		async:    false,
 		success: function (data, text) {
 			console.info("Loaded: http://api.automatafiddle.com/supported");
 			supported = data;
@@ -228,6 +229,7 @@ function render_graph() {
 		method:   "GET",
 		dataType: "jsonp",
 		data:     current.graph,
+		async:    false,
 		success: function (data, text) {
 			console.info("Rendered graph: http://api.automatafiddle.com/render");
 			consle.debug(data);
