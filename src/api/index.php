@@ -53,7 +53,7 @@ switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
 			die();
 		}
 		
-		$payload = file_get_contents("php://input");
+		$payload = $_POST["data"]; //file_get_contents("php://input");
 		$request = json_decode($payload);
 		
 		if (json_last_error() !== JSON_ERROR_NONE)

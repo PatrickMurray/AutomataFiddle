@@ -133,10 +133,11 @@ function init_sidebar() {
 
 function init_features() {
 	$.ajax({
-		url:      "http://api.automatafiddle.com/supported",
 		type:     "GET",
+		url:      "http://api.automatafiddle.com/supported",
 		dataType: "jsonp",
 		async:    false,
+		
 		success: function (data, text) {
 			console.info("Loaded: http://api.automatafiddle.com/supported");
 			supported = data;
@@ -164,6 +165,7 @@ function init_features() {
 			}
 			$(".states select[name=\"state-shape\"]:first-of-type").attr("selected");
 		},
+
 		error: function (request, status, error) {
 			trigger_error("Unable to load supported features!");
 			console.error("Could not load: http://api.automatafiddle.com/supported");
@@ -225,17 +227,18 @@ function refresh_event() {
 
 function render_graph() {
 	$.ajax({
-		method:      "POST",
 		type:        "POST",
 		url:         "http://api.automatafiddle.com/render",
-		data:        JSON.stringify(current.graph),
+		data:        {data: current.graph},
 		contentType: "application/json; charset=utf-8",
 		dataType:    "jsonp",
 		async:       false,
+
 		success: function (data, text) {
 			console.info("Rendered graph: http://api.automatafiddle.com/render");
 			consle.debug(data);
 		},
+		
 		error: function (request, status, error) {
 			trigger_error("Unable to render graph!")
 			console.error("Could not render graph: http://api.automatafiddle.com/render");
