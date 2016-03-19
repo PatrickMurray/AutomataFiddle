@@ -219,9 +219,9 @@ function valid_request($request)
 		return False;
 	}
 	
-	if (!in_array($request["direction"], $GRAPH_DIRECTIONS)     ||
-	    !in_array($request["export"],    $GRAPH_EXPORT_FORMATS) ||
-	    gettype($request["nodes"]) !== "array"                  ||
+	if (!in_array($request["direction"], array_keys($GRAPH_DIRECTIONS))     ||
+	    !in_array($request["export"],    array_keys($GRAPH_EXPORT_FORMATS)) ||
+	    gettype($request["nodes"]) !== "array"                              ||
 	    gettype($request["edges"]) !== "array")
 	{
 		return False;
