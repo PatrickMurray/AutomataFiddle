@@ -134,7 +134,7 @@ function init_sidebar() {
 function init_features() {
 	$.ajax({
 		url:      "http://api.automatafiddle.com/supported",
-		method:   "GET",
+		type:     "GET",
 		dataType: "jsonp",
 		async:    false,
 		success: function (data, text) {
@@ -225,7 +225,7 @@ function refresh_event() {
 
 function render_graph() {
 	$.ajax({
-		method:      "POST",
+		type:        "POST",
 		url:         "http://api.automatafiddle.com/render",
 		data:        JSON.stringify(current.graph),
 		contentType: "application/json; charset=utf-8",
