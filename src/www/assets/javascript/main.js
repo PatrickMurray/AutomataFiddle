@@ -231,7 +231,7 @@ function render_graph() {
 		url:         "http://api.automatafiddle.com/render",
 		crossDomain: true,
 		
-		data:        {data: current.graph},
+		data:        JSON.stringify(current.graph),
 		contentType: "application/json; charset=utf-8",
 		dataType:    "json",
 
