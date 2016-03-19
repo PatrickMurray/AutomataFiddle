@@ -221,12 +221,16 @@ function valid_request($request)
 	
 	print_r($request);
 
+	
 	if (!in_array($request["direction"], array_keys($GRAPH_DIRECTIONS))     ||
 	    !in_array($request["export"],    array_keys($GRAPH_EXPORT_FORMATS)) ||
 	    gettype($request["nodes"]) !== "array"                              ||
 	    gettype($request["edges"]) !== "array")
 	{
-		print("2");
+		print(!in_array($request["direction"], array_keys($GRAPH_DIRECTIONS)) . "\n");
+		print(!in_array($request["export"],    array_keys($GRAPH_EXPORT_FORMATS)) . "\n");
+		print((gettype($request["nodes"]) !== "array") . "\n");
+		print((gettype($request["edges"]) !== "array") . "\n");
 		return False;
 	}
 	
