@@ -258,9 +258,11 @@ function render_graph() {
 		crossDomain: true,
 
 		data:        "data=" + JSON.stringify(current.graph),
+		/*
 		contentType: "application/json; charset=utf-8",
 		dataType:    "json",
-		
+		*/
+
 		success: function(responseData, textStatus, jqXHR)
 		{
 			console.log(responseData);
