@@ -255,7 +255,7 @@ function invert(array) {
 	
 	for (i in array) {
 		value = array[i];
-		inverted[value] = key;
+		inverted[value] = i;
 	}
 	
 	return inverted;
