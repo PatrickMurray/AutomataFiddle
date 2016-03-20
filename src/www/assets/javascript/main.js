@@ -240,7 +240,7 @@ function render_graph() {
 		success: function(response)
 		{
 			console.info("Rendered graph: http://api.automatafiddle.com/render");
-			console.debug(response);
+			$(".preview img").attr("src", "data:" + response.mediatype + ";base64," + response.encoding);
 		},
 		
 		error: function(response, status, error)
