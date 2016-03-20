@@ -248,16 +248,35 @@ function set_initial_graph_state()
 	};
 }
 
-
+function invert(array) {
+	var inverted = [];
+	var key;
+	var value;
+	
+	for (key in array) {
+		value = array[key];
+		inverted[value] = key;
+	}
+	
+	return inverted;
+}
 
 function add_state_event() {
+	var state_name;
+	var state_shape;
+	
+	state_name  = $(".states .form input[name='state-name']").val();
+	state_shape = $(".states .form input[name='state-shape']").val();
+	
+	
+	
 	var node = {
-		name:  $(".states .form input[name='state-name']").val(),
-		shape: $(".states .form input[name='state-shape']").val()
-	};
+		name:  state_name,
+		shape: state_shape
+	}
 	
 	window.alert(node);
-
+	
 	/* Verify that a node with the same name doesn't already exist */
 	
 	/* Verify that the shape is valid */
