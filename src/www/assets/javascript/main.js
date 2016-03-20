@@ -262,28 +262,40 @@ function invert(array) {
 }
 
 function add_state_event() {
+	var name_form;
+	var shape_form;
 	var state_name;
 	var state_shape;
+	var node;
+	var i;
 	
-	state_name  = $(".states .form input[name='state-name']").val();
-	state_shape = $(".states .form select[name='state-shape']").val();
+	name_form  = $(".states .form input[name='state-name']");
+	shape_form = $(".states .form select[name='state-shape']");
 	
-	window.alert(state_name);
-	window.alert(state_shape);
-
+	state_name  = name_form.val();
+	state_shape = shape_form.val();
+	
 	shape_lookup = invert(supported.shapes);
 	
-	var node = {
+	node = {
 		name:  state_name,
 		shape: shape_lookup[state_shape]
 	}
 	
-	console.log(node);
-	
 	/* Verify that a node with the same name doesn't already exist */
+	for (i in current.graph.nodes) {
+		if (i.name == node.name) {
+			trigger_error("States must have unique names, duplicate states are not allowed.");
+			return;
+		}
+	}
 	
 	/* Verify that the shape is valid */
-	
+	if (node.shape == undefined) {
+		trigger_error("The specified shape is not valid.");
+		return;
+	}
+
 	/* Add the node */
 	current.graph.nodes.push(node);
 	
@@ -291,6 +303,9 @@ function add_state_event() {
 	
 	/* Add the node to the transition select menu */
 	
+	/* Clear the form */
+	name_form.val("");
+
 	/* Render graph */
 	render_graph();
 }
