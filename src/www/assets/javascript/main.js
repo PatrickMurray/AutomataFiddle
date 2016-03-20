@@ -250,11 +250,11 @@ function set_initial_graph_state()
 
 function invert(array) {
 	var inverted = {};
-	var key;
+	var i;
 	var value;
 	
-	for (key in array) {
-		value = array[key];
+	for (i in array) {
+		value = array[i];
 		inverted[value] = key;
 	}
 	
@@ -284,7 +284,7 @@ function add_state_event() {
 	
 	/* Verify that a node with the same name doesn't already exist */
 	for (i in current.graph.nodes) {
-		if (i.name == node.name) {
+		if (current.graph.nodes[i].name == node.name) {
 			trigger_error("States must have unique names, duplicate states are not allowed.");
 			return;
 		}
@@ -300,9 +300,12 @@ function add_state_event() {
 	current.graph.nodes.push(node);
 	
 	/* Add the node to the list */
+	$(".states .list").append("<div class=\"element\"><div class=\"expand\">" + state_name + " - " + state_shape + "</div><div class=\"remove\"><i class=\"fa fa-close\"></i></div></div>");
 	
 	/* Add the node to the transition select menu */
-	
+	$(".transitions .form select[name='transition-origin']").append("<option>" + state_name + "</option>");
+	$(".transitions .form select[name='transition-destination']").append("<option>" + state_name + "</option>");
+
 	/* Clear the form */
 	name_form.val("");
 
