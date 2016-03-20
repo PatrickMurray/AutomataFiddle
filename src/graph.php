@@ -1,5 +1,9 @@
 <?php
 
+
+/* GLOBAL VARIABLES */
+
+
 if (!isset($GRAPH_TYPES))
 {
 	$GRAPH_TYPES = array("digraph", "graph");
@@ -50,11 +54,16 @@ if (!isset($GRAPH_NODE_SHAPES))
 	);
 }
 
+
+/* DATA STRUCTURES */
+
+
 class Node
 {
 	public $name;
 	public $shape;
 }
+
 
 class Edge
 {
@@ -63,6 +72,16 @@ class Edge
 	public $label;
 }
 
+
+/*	
+ *	A PHP framework for the GraphViz diagram library to allow for easy
+ *	prototyping with automata diagrams.
+ *	
+ *	@author		Patrick Murray
+ *	@version	0.1
+ *	@since		2015-12-22
+ *	
+ */
 class Graph
 {
 	private $type;
@@ -72,16 +91,30 @@ class Graph
 	private $nodes = [];
 	private $edges = [];
 	
+	
+	/*	
+	 *	Initializes the default configuration for all diagrams.
+	 *	
+	 */
 	public function __construct()
 	{
-		global $GRAPH_TYPES, $GRAPH_DIRECTIONS, $GRAPH_EXPORT_FORMATS;
-
+		global $GRAPH_TYPES;
+		global $GRAPH_DIRECTIONS;
+		global $GRAPH_EXPORT_FORMATS;
+		
 		$this->type      = $GRAPH_TYPES[0];
 		$this->direction = $GRAPH_DIRECTIONS[0];
 		$this->format    = $GRAPH_EXPORT_FORMATS[0];
 	}
 	
 	
+	/*	
+	 *	Changes the type of graph being produced (i.e., digraph, or
+	 *	graph).
+	 *	
+	 *	@param		string
+	 *	
+	 */
 	public function set_type($type)
 	{
 		global $GRAPH_TYPES;
@@ -100,6 +133,13 @@ class Graph
 	}
 	
 	
+	/*	
+	 *	Changes the orientation of the graph being produced (i.e., left
+	 *	to right, top to bottom, right to left, bottom to top).
+	 *	
+	 *	@param		string
+	 *	
+	 */
 	public function set_direction($direction)
 	{
 		global $GRAPH_DIRECTIONS;
@@ -117,7 +157,14 @@ class Graph
 		$this->direction = $direction;
 	}
 	
-
+	
+	/*	
+	 *	Changes the export format of the diagram being produced. (i.e.,
+	 *	svg, png, etc.)
+	 *	
+	 *	@param		string
+	 *	
+	 */
 	public function set_export_format($format)
 	{
 		global $GRAPH_EXPORT_FORMATS;
@@ -126,16 +173,22 @@ class Graph
 		{
 			trigger_error("The provided export format must be a string");
 		}
-
+		
 		if (!in_array($format, $GRAPH_EXPORT_FORMATS))
 		{
 			trigger_error("The provided export format is not supported");
 		}
-
+		
 		$this->format = $format;
 	}
 	
 	
+	/*	
+	 *	TODO
+	 *	
+	 *	@param		string
+	 *	
+	 */
 	public function add_node($name)
 	{
 		if (gettype($name) !== "string")
@@ -158,6 +211,13 @@ class Graph
 	}
 	
 	
+	/*	
+	 *	TODO
+	 *	
+	 *	@param		string
+	 *	@param		string
+	 *	
+	 */
 	public function set_node_shape($name, $shape)
 	{
 		global $GRAPH_NODE_SHAPES;
@@ -189,7 +249,15 @@ class Graph
 		}
 	}
 	
-
+	
+	/*	
+	 *	TODO
+	 *	
+	 *	@param		string
+	 *	@param		string
+	 *	@param		string
+	 *	
+	 */
 	public function add_edge($origin_name, $destination_name, $label=NULL)
 	{
 		if (gettype($origin_name)      !== "string" &&
@@ -244,6 +312,12 @@ class Graph
 	}
 	
 	
+	/*	
+	 *	TODO
+	 *	
+	 *	@return		string		binary image
+	 *	
+	 */
 	public function export()
 	{
 		$dotfile = tempnam(sys_get_temp_dir(), "dot");
@@ -267,7 +341,13 @@ class Graph
 		return $output;
 	}
 	
-
+	
+	/*	
+	 *	TODO
+	 *	
+	 *	@return		string
+	 *	
+	 */
 	function compile()
 	{
 		global $GRAPH_EDGE_SYMBOL;
@@ -305,6 +385,15 @@ class Graph
 		return $dot;
 	}
 	
+	
+	/*	
+	 *	TODO
+	 *	
+	 *	@param		string
+	 *	
+	 *	@return		bool
+	 *	
+	 */
 	private function contains_node($name)
 	{
 		foreach ($this->nodes as $node)
@@ -318,6 +407,16 @@ class Graph
 		return False;
 	}
 	
+	
+	/*	
+	 *	TODO
+	 *	
+	 *	@param		string
+	 *	@param		string
+	 *	
+	 *	@return		bool
+	 *	
+	 */
 	private function contains_edge($origin_name, $destination_name)
 	{
 		foreach ($this->edges as $edge)
@@ -334,7 +433,16 @@ class Graph
 		
 		return False;
 	}
-
+	
+	/*	
+	 *	TODO
+	 *	
+	 *	@param		string
+	 *	@param		bool
+	 *	
+	 *	@return		string
+	 *	
+	 */
 	private function sanitize($input, $preserve_spaces=False)
 	{
 		if (!$preserve_spaces)
