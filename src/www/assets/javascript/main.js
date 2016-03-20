@@ -249,7 +249,7 @@ function set_initial_graph_state()
 }
 
 function invert(array) {
-	var inverted = [];
+	var inverted = {};
 	var key;
 	var value;
 	
