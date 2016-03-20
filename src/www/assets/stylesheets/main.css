@@ -99,6 +99,11 @@ header {
 	margin-right: 0.5em;
 }
 
+.actions .save,
+.actions .open {
+	opacity: 0.5;
+}
+
 .container {
 	display: flex;
 	flex: 1;
