@@ -1,54 +1,6 @@
 /* Globals */
 var supported;
-var current = {
-	title:       "My Automata",
-	description: "Hello World",
-	graph: {
-		direction: "LR",
-		export:    "svg",
-		nodes: [
-			{
-				name:  "Start",
-				shape: "none"
-			},
-			{
-				name:  "Q0",
-				shape: "doublecircle"
-			},
-			{
-				name:  "Q1",
-				shape: "circle"
-			}
-		],
-		edges: [
-			{
-				origin:      "Start",
-				destination: "Q0",
-				label:       ""
-			},
-			{
-				origin:      "Q0",
-				destination: "Q0",
-				label:       "1"
-			},
-			{
-				origin:      "Q0",
-				destination: "Q1",
-				label:       "0"
-			},
-			{
-				origin:      "Q1",
-				destination: "Q1",
-				label:       "0"
-			},
-			{
-				origin:      "Q1",
-				destination: "Q0",
-				label:       "1"
-			}
-		]
-	}
-};
+var current;
 
 
 $(document).ready(function() {
@@ -61,6 +13,9 @@ function initialize() {
 	init_sidebar();
 	init_features();
 	
+	set_initial_graph_state();
+	render_graph();
+
 	/* If the client's browser does not support HTML5 Local Storage
 	 * Objects, then notify the user that several functions (Save, Open)
 	 * will not function properly.
@@ -220,7 +175,6 @@ function close_error(element) {
 
 
 function refresh_event() {
-	console.log("refresh event");
 	render_graph();
 }
 
@@ -274,13 +228,13 @@ function open_event() {
 
 
 function delete_event() {
-	set_empty_graph();
+	set_initial_graph_state();
 	render_graph();
 
 	console.log("delete event");
 }
 
-function set_empty_graph()
+function set_initial_graph_state()
 {
 	current = {
 		title: "",
@@ -297,7 +251,26 @@ function set_empty_graph()
 
 
 function add_state_event() {
-	console.log("add state event");
+	var node = {
+		name:  $(".states .form input[name='state-name']").val(),
+		shape: $(".states .form input[name='state-shape']").val()
+	};
+	
+	window.alert(node);
+
+	/* Verify that a node with the same name doesn't already exist */
+	
+	/* Verify that the shape is valid */
+	
+	/* Add the node */
+	current.graph.nodes.push(node);
+	
+	/* Add the node to the list */
+	
+	/* Add the node to the transition select menu */
+	
+	/* Render graph */
+	render_graph();
 }
 
 function remove_state_event() {
