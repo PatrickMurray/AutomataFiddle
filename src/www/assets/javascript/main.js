@@ -268,6 +268,9 @@ function add_state_event() {
 	state_name  = $(".states .form input[name='state-name']").val();
 	state_shape = $(".states .form input[name='state-shape']").val();
 	
+	window.alert(state_name);
+	window.alert(state_shape);
+
 	shape_lookup = invert(supported.shapes);
 	
 	var node = {
@@ -275,7 +278,7 @@ function add_state_event() {
 		shape: shape_lookup[state_shape]
 	}
 	
-	window.alert(node);
+	console.log(node);
 	
 	/* Verify that a node with the same name doesn't already exist */
 	
