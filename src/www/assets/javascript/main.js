@@ -206,7 +206,7 @@ function render_graph() {
 			console.debug("Server Response, Status, and Error:");
 			console.debug(response);
 			console.debug(status);
-			console.debu(error);
+			console.debug(error);
 		}
 	});
 }
