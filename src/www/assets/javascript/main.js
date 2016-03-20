@@ -268,11 +268,11 @@ function add_state_event() {
 	state_name  = $(".states .form input[name='state-name']").val();
 	state_shape = $(".states .form input[name='state-shape']").val();
 	
-	
+	shape_lookup = invert(supported.shapes);
 	
 	var node = {
 		name:  state_name,
-		shape: state_shape
+		shape: shape_lookup[state_shape]
 	}
 	
 	window.alert(node);
