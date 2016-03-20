@@ -266,7 +266,7 @@ function add_state_event() {
 	var state_shape;
 	
 	state_name  = $(".states .form input[name='state-name']").val();
-	state_shape = $(".states .form input[name='state-shape']").val();
+	state_shape = $(".states .form select[name='state-shape']").val();
 	
 	window.alert(state_name);
 	window.alert(state_shape);
