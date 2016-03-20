@@ -274,19 +274,25 @@ function open_event() {
 
 
 function delete_event() {
-	current                 = {};
-	current.title           = "";
-	current.descruption     = "";
-	current.graph.direction = "LR";
-	current.graph.export    = "svg";
-	current.graph.nodes     = [];
-	current.graph.edges     = [];
-	
+	set_empty_graph();
 	render_graph();
 
 	console.log("delete event");
 }
 
+function set_empty_graph()
+{
+	current = {
+		title: "",
+		description: "",
+		graph: {
+			direction: "LR",
+			export:    "svg",
+			nodes: [],
+			edges: []
+		}
+	};
+}
 
 
 
