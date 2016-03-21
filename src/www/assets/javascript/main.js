@@ -213,7 +213,12 @@ function render_graph() {
 
 
 function download_event() {
+	var temp;
 	console.log("download event");
+
+	temp = window.location.href;
+	window.location.href = $(".preview img").attr("src");
+	window.location.href = temp;
 }
 
 
