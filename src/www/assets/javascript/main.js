@@ -300,8 +300,11 @@ function add_state_event() {
 	current.graph.nodes.push(node);
 	
 	/* Add the node to the list */
-	$(".states .list").append("<div class=\"element\"><div class=\"expand\">" + state_name + " - " + state_shape + "</div><div class=\"remove\"><i class=\"fa fa-close\"></i></div></div>");
-	
+	$(".states .list").append("<div class=\"element\"><div class=\"expand\"><span class=\"name\">" + state_name + "</span> - " + state_shape + "</div><div class=\"remove\"><i class=\"fa fa-close\"></i></div></div>");
+	$(".states .list .element .fa-times").click(function (){
+		remove_state_event(this);
+	});
+
 	/* Add the node to the transition select menu */
 	$(".transitions .form select[name='transition-origin']").append("<option>" + state_name + "</option>");
 	$(".transitions .form select[name='transition-destination']").append("<option>" + state_name + "</option>");
@@ -318,7 +321,12 @@ function remove_state_event() {
 }
 
 function add_transition_event() {
-	console.log("add transition event");
+	var label_form;
+	var label;
+	
+	label_form = $(".transitions .form input[name='transition-label']");
+	label = label_form.val();
+	
 }
 
 function remove_transition_event() {
