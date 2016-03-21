@@ -283,11 +283,9 @@ function add_state_event() {
 	}
 	
 	/* Verify that a node with the same name doesn't already exist */
-	for (i in current.graph.nodes) {
-		if (current.graph.nodes[i].name == node.name) {
-			trigger_error("States must have unique names, duplicate states are not allowed.");
-			return;
-		}
+	if (contains_node(state_name)) {
+		trigger_error("States must have unique names, duplicate states are not allowed.");
+		return;
 	}
 	
 	/* Verify that the shape is valid */
@@ -301,7 +299,7 @@ function add_state_event() {
 	
 	/* Add the node to the list */
 	$(".states .list").append("<div class=\"element\"><div class=\"expand\"><span class=\"name\">" + state_name + "</span> - " + state_shape + "</div><div class=\"remove\"><i class=\"fa fa-close\"></i></div></div>");
-	$(".states .list .element .fa-times").click(function (){
+	$(".states .list .element .fa-close").click(function (){
 		remove_state_event(this);
 	});
 
@@ -318,15 +316,80 @@ function add_state_event() {
 
 function remove_state_event() {
 	console.log("remove state event");
+	
+	/* Get node name */
+	/* Remove node from current nodes */
+	/* Remove all transitions with the node */
+	/* Remove the node from origin and destination select fields */
 }
 
 function add_transition_event() {
 	var label_form;
-	var label;
+	var origin_form;
+	var destination_form;
 	
-	label_form = $(".transitions .form input[name='transition-label']");
-	label = label_form.val();
+	var label_name;
+	var origin_name;
+	var destination_name;
 	
+	var edge;
+	var i;
+
+	label_form       = $(".transitions .form input[name='transition-label']");
+	origin_form      = $(".transitions .form select[name='transition-origin']");
+	destination_form = $(".transitions .form select[name='transition-destination']");
+	
+	label_name       = label_form.val();
+	origin_name      = origin_form.val();
+	destination_name = destination_form.val();
+	
+	/* Verify that the Origin is valid */
+	if (!contains_node(origin_name)) {
+		trigger_error("");
+		return;
+	}
+
+	/* Verify that the Destination is valid */
+	if (!contains_node(destination_name)) {
+		trigger_error("");
+		return;
+	}
+
+	/* Check that the edge doesn't already exist */
+	for (i in current.graph.edges) {
+		if (current.graph.edges[i].origin      == origin_name      &&
+		    current.graph.edges[i].destination == destination_name &&
+		    current.graph.edges[i].label       == label_name) {
+			trigger_error("Transitions must be unique.");
+			return;
+		}
+	}
+	
+	/* Make the edge, and insert it */
+	edge = {
+		origin:      origin_name,
+		destination: destination_name,
+		label:       label_name
+	};
+	
+	/* Add the edge to the list */
+	
+	/* Insert the edge */
+	current.graph.edges.push(edge);
+
+	/* Re-render the graph */
+	render_graph();
+}
+
+function contains_node(node_name) {
+	var i;
+	for (i in current.graph.nodes) {
+		if (current.graph.nodes[i] == node_name) {
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 function remove_transition_event() {
