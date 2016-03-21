@@ -373,6 +373,10 @@ function add_transition_event() {
 	};
 	
 	/* Add the edge to the list */
+	$(".transitions .list").append("<div class=\"element\"><div class=\"expand\"><span class=\"origin\">" + origin_name + "</span> &rarr; <span class=\"destination\">" + destination_name + "</span> : <span class=\"label\">" + label_name + "</span></div><div class=\"remove\"><i class=\"fa fa-close\"></i></div></div>");
+	$(".transitions .list .element .fa-close").click(function (){
+		remove_transition_event(this);
+	});
 	
 	/* Insert the edge */
 	current.graph.edges.push(edge);
