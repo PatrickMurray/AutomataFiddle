@@ -182,12 +182,6 @@ function refresh_event() {
 
 
 function render_graph() {
-	/* If nothing has changed, don't send a render request. */
-	if (previous != undefined &&
-	    current  == previous) {
-		return;
-	}
-
 	$.ajax({
 		type:        "POST",
 		url:         "http://api.automatafiddle.com/render",
@@ -204,7 +198,6 @@ function render_graph() {
 			console.info("Rendered graph: http://api.automatafiddle.com/render");
 			$(".preview img").attr("src", "data:" + response.mediatype + ";base64," + response.encoding);
 			$(".actions .download").attr("href", "data:application/octet-stream;charset=utf-8;base64," + response.encoding);
-			previous = current;
 		},
 		
 		error: function(response, status, error)
