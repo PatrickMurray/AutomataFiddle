@@ -195,7 +195,7 @@ function render_graph() {
 		{
 			console.info("Rendered graph: http://api.automatafiddle.com/render");
 			$(".preview img").attr("src", "data:" + response.mediatype + ";base64," + response.encoding);
-			$(".actions .download").attr("src", "data:application/octet-stream;base64," + response.encoding);
+			$(".actions .download").attr("src", "data:application/octet-stream;charset=utf-8;base64," + response.encoding);
 		},
 		
 		error: function(response, status, error)
