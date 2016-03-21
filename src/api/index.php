@@ -561,6 +561,7 @@ function handle_render_request($request)
 	}
 	
 	/* Export each graph and lookup it's mediatype */
+	error_log($graph->compile());
 	$binary    = $graph->export();
 	$mediatype = export_media_type($request);
 	$encoding  = base64_encode($binary);
