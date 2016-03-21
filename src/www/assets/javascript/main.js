@@ -1,6 +1,8 @@
 /* Globals */
 var supported;
+
 var current;
+var previous;
 
 
 $(document).ready(function() {
@@ -180,6 +182,11 @@ function refresh_event() {
 
 
 function render_graph() {
+	/* If nothing has changed, don't send a render request. */
+	if (current == previous) {
+		return;
+	}
+
 	$.ajax({
 		type:        "POST",
 		url:         "http://api.automatafiddle.com/render",
@@ -196,6 +203,7 @@ function render_graph() {
 			console.info("Rendered graph: http://api.automatafiddle.com/render");
 			$(".preview img").attr("src", "data:" + response.mediatype + ";base64," + response.encoding);
 			$(".actions .download").attr("href", "data:application/octet-stream;charset=utf-8;base64," + response.encoding);
+			previous = current;
 		},
 		
 		error: function(response, status, error)
@@ -364,9 +372,8 @@ function add_transition_event() {
 	/* Check that the edge doesn't already exist */
 	for (i in current.graph.edges) {
 		if (current.graph.edges[i].origin      == origin_name      &&
-		    current.graph.edges[i].destination == destination_name &&
-		    current.graph.edges[i].label       == label_name) {
-			trigger_error("Transitions must be unique.");
+		    current.graph.edges[i].destination == destination_name) {
+			trigger_error("Transitions must have unique origins and destinations.");
 			return;
 		}
 	}
