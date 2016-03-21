@@ -494,7 +494,6 @@ function valid_request($request)
 		
 		$origin      = $edge["origin"];
 		$destination = $edge["destination"];
-		$label       = $edge["label"];
 		
 		/* If the origin or destination nodes are undefined */
 		if (!in_array($origin,      $names) ||
@@ -511,13 +510,13 @@ function valid_request($request)
 		}
 		
 		/* Check for duplicate edges */
-		if (in_array(array($destination => $label), $map[$origin]))
+		if (in_array($destination, $map[$origin]))
 		{
 			return False;
 		}
 		
 		/* Add the valid, origin-destination pair to the map */
-		array_push($map[$origin], array($destination => $label));
+		array_push($map[$origin], $destination);
 	}
 	
 	return True;

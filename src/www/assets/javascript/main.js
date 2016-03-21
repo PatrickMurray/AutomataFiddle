@@ -366,9 +366,8 @@ function add_transition_event() {
 	/* Check that the edge doesn't already exist */
 	for (i in current.graph.edges) {
 		if (current.graph.edges[i].origin      == origin_name      &&
-		    current.graph.edges[i].destination == destination_name &&
-		    current.graph.edges[i].label       == label_name) {
-			trigger_error("Duplicate transition, a transition with the same origin, destination, and label is already in your automata.");
+		    current.graph.edges[i].destination == destination_name) {
+			trigger_error("Transitions must have unique origins and destinations.");
 			return;
 		}
 	}
