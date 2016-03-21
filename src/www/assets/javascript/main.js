@@ -384,7 +384,7 @@ function add_transition_event() {
 function contains_node(node_name) {
 	var i;
 	for (i in current.graph.nodes) {
-		if (current.graph.nodes[i] == node_name) {
+		if (current.graph.nodes[i].name == node_name) {
 			return true;
 		}
 	}
