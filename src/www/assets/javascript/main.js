@@ -183,7 +183,8 @@ function refresh_event() {
 
 function render_graph() {
 	/* If nothing has changed, don't send a render request. */
-	if (current == previous) {
+	if (previous != undefined &&
+	    current  == previous) {
 		return;
 	}
 
