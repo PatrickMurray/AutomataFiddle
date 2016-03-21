@@ -32,12 +32,10 @@ function init_action_menu() {
 		event.preventDefault();
 	});
 	
-	/*
 	$(".actions .download").click(function (event) {
-		download_event();
+		//download_event();
 		event.preventDefault();
 	});
-	*/
 
 	$(".actions .save").click(function (event) {
 		save_event();
