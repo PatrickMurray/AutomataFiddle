@@ -32,11 +32,13 @@ function init_action_menu() {
 		event.preventDefault();
 	});
 	
+	/*
 	$(".actions .download").click(function (event) {
 		download_event();
 		event.preventDefault();
 	});
-	
+	*/
+
 	$(".actions .save").click(function (event) {
 		save_event();
 		event.preventDefault();
@@ -195,6 +197,7 @@ function render_graph() {
 		{
 			console.info("Rendered graph: http://api.automatafiddle.com/render");
 			$(".preview img").attr("src", "data:" + response.mediatype + ";base64," + response.encoding);
+			$(".actions .download").attr("src", "data:application/octet-stream;base64," + response.encoding);
 		},
 		
 		error: function(response, status, error)
@@ -211,7 +214,7 @@ function render_graph() {
 	});
 }
 
-
+/*
 function download_event() {
 	var temp;
 	console.log("download event");
@@ -220,7 +223,7 @@ function download_event() {
 	window.location.href = $(".preview img").attr("src");
 	window.location.href = temp;
 }
-
+*/
 
 function save_event() {
 	console.log("save event");
