@@ -327,7 +327,9 @@ function remove_state_event(element) {
 	var state_name;
 	
 	root = $(element).parent().parent();
-	console.log(root);
+	state_name = root.find(".expand .name").text();
+	
+	console.log(state_name);
 	
 	/* Get node name */
 	/* Remove node from current nodes */
