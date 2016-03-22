@@ -322,8 +322,12 @@ function add_state_event() {
 	render_graph();
 }
 
-function remove_state_event() {
-	console.log("remove state event");
+function remove_state_event(element) {
+	var root;
+	var state_name;
+	
+	root = element.parent().parent();
+	console.log(root);
 	
 	/* Get node name */
 	/* Remove node from current nodes */
