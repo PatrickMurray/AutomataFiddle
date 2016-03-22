@@ -326,7 +326,7 @@ function remove_state_event(element) {
 	var root;
 	var state_name;
 	
-	root = element.parent().parent();
+	root = $(element).parent().parent();
 	console.log(root);
 	
 	/* Get node name */
