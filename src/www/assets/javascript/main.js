@@ -242,7 +242,7 @@ function render_automaton()
 			$(".actions .download").attr("href", "data:application/octet-stream;charset=utf-8;base64," + response.encoding);
 
 			filename  = automaton.title;
-			extension = automaton.graph.format;
+			extension = automaton.graph.export;
 
 			if (filename == "")
 			{
