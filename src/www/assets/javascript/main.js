@@ -242,7 +242,7 @@ function render_automaton()
 	$(".actions .download").attr("download", filename + "." + extension);
 	
 
-	if (Object.is(automaton.graph, last_rendered))
+	if (automaton.graph === last_rendered)
 	{
 		return;
 	}
