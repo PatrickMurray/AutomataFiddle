@@ -28,7 +28,7 @@ function initialize()
 }
 
 
-function trigger_user_error(message)
+function trigger_error(message)
 {
 	$(".errors").append("<div class=\"error\"><i class=\"fa fa-exclamation-triangle\"></i> <strong>Error:</strong> <span>" + message + "</span> <i class=\"fa fa-times\"></i></div>");
 	
