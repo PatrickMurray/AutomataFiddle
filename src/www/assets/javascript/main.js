@@ -1,163 +1,94 @@
-/* Globals */
 var supported;
+var dictionary;
 
-var current;
-var previous;
+var automaton;
+var last_rendered;
 
 
-$(document).ready(function() {
+$(document).ready(function()
+{
 	initialize();
 });
 
 
-function initialize() {
-	init_action_menu();
-	init_sidebar();
-	init_features();
-	
-	set_initial_graph_state();
-	render_graph();
-
-	/* If the client's browser does not support HTML5 Local Storage
-	 * Objects, then notify the user that several functions (Save, Open)
-	 * will not function properly.
-	 */
-	if (typeof(Storage) == "undefined") {
+function initialize()
+{
+	if (typeof(Storage) == undefined)
+	{
 		trigger_error("Your browser does not support Local Storage, Save and Open functionality will be limited.");
 	}
+	
+	fetch_supported_api_features();
+	
+	init_action_menu();
+	init_sidebar();
+	
+	init_default_automaton();
+	render_automaton();
 }
 
 
-function init_action_menu() {
-	$(".actions .refresh").click(function (event) {
-		refresh_event();
-		event.preventDefault();
-	});
+function trigger_user_error(message)
+{
+	$(".errors").append("<div class=\"error\"><i class=\"fa fa-exclamation-triangle\"></i> <strong>Error:</strong> <span>" + message + "</span> <i class=\"fa fa-times\"></i></div>");
 	
-	$(".actions .save").click(function (event) {
-		save_event();
-		event.preventDefault();
-	});
-	
-	$(".actions .open").click(function (event) {
-		open_event();
-		event.preventDefault();
-	});
-	
-	$(".actions .delete").click(function (event) {
-		delete_event();
-		event.preventDefault();
+	$(".error .fa-times").click(function()
+	{
+		$(this).parent().remove();
 	});
 }
 
 
-function init_sidebar() {
-	sidebar_toggle(".toggle-menu > * header");
-	sidebar_toggle(".toggle-menu .properties header");
+function fetch_supported_api_features()
+{
+	var i;
 	
-	$(".toggle-menu header").click(function() {
-		sidebar_hide_all();
-		sidebar_toggle(this);
-	});
-	
-
-	$(".properties input[name='title']").change(function () {
-		current.title = $(this).val();
-	});
-
-	$(".properties textarea[name='description']").change(function () {
-		current.description = $(this).val();
-	});
-
-	$(".properties select[name='graph-direction']").change(function () {
-		var value;
-		var direction_lookup;
-		
-		value = $(this).val();
-		direction_lookup = invert(supported.directions);
-		
-		current.graph.direction = direction_lookup[value];
-		
-		render_graph();
-	});
-	
-	$(".properties select[name='export-format']").change(function () {
-		var value;
-		var format_lookup;
-		
-		value = $(this).val();
-		format_lookup = invert(supported.formats);
-		
-		current.graph.export = format_lookup[value];
-		
-		render_graph();
-	});
-	
-	
-	/* Adding & Removing States and Transitions*/
-	$(".states button").click(function (event) {
-		add_state_event();
-		event.preventDefault();
-	});
-	
-	$(".states .remove").click(function (event) {
-		remove_state_event();
-		event.preventDefault();
-	});
-
-	$(".transitions button").click(function (event) {
-		add_transition_event();
-		event.preventDefault();
-	});
-
-	$(".transitions .remove").click(function (event) {
-		remove_transition_event();
-		event.preventDefault();
-	});
-}
-
-
-function init_features() {
 	$.ajax({
 		type:     "GET",
 		url:      "http://api.automatafiddle.com/supported",
 		dataType: "jsonp",
 		async:    false,
 		
-		success: function (data, text) {
-			console.info("Loaded: http://api.automatafiddle.com/supported");
-			supported = data;
+		success: function (data, text)
+		{
+			supported  = data;
+			dictionary = {
+				directions: invert(data.directions),
+				formats:    invert(data.formats),
+				shapes:     invert(data.shapes)
+			};
 			
-			var key;
 			
-			/* Graph Directions */
-			for (key in supported.directions)
+			for (i in supported.directions)
 			{
-				$(".properties select[name=\"graph-direction\"]").append("<option>" + supported.directions[key] + "</option>");
+				$(".properties select[name=\"graph-direction\"]").append("<option>" + supported.directions[i] + "</option>");
 			}
-			$(".properties select[name=\"graph-direction\"]:first-of-type").attr("selected");
 			
-			/* Export Format */
-			for (key in supported.formats)
-			{
-				$(".properties select[name=\"export-format\"]").append("<option>" + supported.formats[key] + "</option>");
-			}
-			$(".properties select[name=\"export-format\"]:first-of-type").attr("selected");
+			$(".properties select[name=\"graph-direction\"]:first").attr("selected");
 			
-			/* Shapes */
-			for (key in supported.shapes)
+			
+			for (i in supported.formats)
 			{
-				$(".states select[name=\"state-shape\"]").append("<option>" + supported.shapes[key] + "</option>");
+				$(".properties select[name=\"export-format\"]").append("<option>" + supported.formats[i] + "</option>");
 			}
-			$(".states select[name=\"state-shape\"]:first-of-type").attr("selected");
+
+			$(".properties select[name=\"export-format\"]:first").attr("selected");
+			
+			
+			for (i in supported.shapes)
+			{
+				$(".states select[name=\"state-shape\"]").append("<option>" + supported.shapes[i] + "</option>");
+			}
+			
+			$(".states select[name=\"state-shape\"]:first").attr("selected");
 		},
 
-		error: function (request, status, error) {
-			trigger_error("Unable to load supported features!");
-			console.error("Could not load: http://api.automatafiddle.com/supported");
+		error: function (request, status, error)
+		{
+			console.error("An error occurred while fetching: http://api.automatafiddle.com/supported");
+			trigger_error("Unable to fetch supported API features");
 			
 			console.debug(request);
-			console.debug(request.responseText);
 			console.debug(status);
 			console.debug(error);
 		}
@@ -165,11 +96,178 @@ function init_features() {
 }
 
 
-function sidebar_toggle(element) {
+function invert(array)
+{
+	var i;
+	var inverted = {};
+	
+	for (i in array)
+	{
+		inverted[array[i]] = i;
+	}
+	
+	return inverted;
+}
+
+
+function init_action_menu()
+{
+	$(".actions .refresh").click(function (event)
+	{
+		refresh_event();
+		event.preventDefault();
+	});
+	
+	$(".actions .save").click(function (event)
+	{
+		save_event();
+		event.preventDefault();
+	});
+	
+	$(".actions .open").click(function (event)
+	{
+		open_event();
+		event.preventDefault();
+	});
+	
+	$(".actions .delete").click(function (event)
+	{
+		delete_event();
+		event.preventDefault();
+	});
+}
+
+
+function init_sidebar()
+{
+	var temp;
+	
+	sidebar_toggle(".toggle-menu > * header");
+	sidebar_toggle(".toggle-menu .properties header");
+	
+	$(".toggle-menu header").click(function()
+	{
+		sidebar_hide_all();
+		sidebar_toggle(this);
+	});
+	
+	
+	$(".properties input[name='title']").change(function ()
+	{
+		automaton.title = $(this).val();
+	});
+	
+	$(".properties textarea[name='description']").change(function ()
+	{
+		automaton.description = $(this).val();
+	});
+	
+	$(".properties select[name='graph-direction']").change(function ()
+	{
+		temp = $(this).val();
+		
+		automaton.graph.direction = dictionary.directions[temp];
+		render_automaton();
+	});
+	
+	$(".properties select[name='export-format']").change(function ()
+	{
+		temp = $(this).val();
+		
+		automaton.graph.export = dictionary.formats[temp];
+		render_automaton();
+	});
+	
+	
+	$(".states button").click(function (event)
+	{
+		add_state_event();
+		event.preventDefault();
+	});
+	
+	$(".states .remove").click(function (event)
+	{
+		remove_state_event();
+		event.preventDefault();
+	});
+
+	$(".transitions button").click(function (event)
+	{
+		add_transition_event();
+		event.preventDefault();
+	});
+
+	$(".transitions .remove").click(function (event)
+	{
+		remove_transition_event();
+		event.preventDefault();
+	});
+}
+
+
+function init_default_automaton()
+{
+	automaton = {
+		title: "",
+		description: "",
+		graph: {
+			direction: "LR",
+			export:    "svg",
+			nodes: [],
+			edges: []
+		}
+	};
+	
+	/* TODO Form Reset */
+}
+
+
+function render_automaton()
+{
+	var encoding;
+
+	encoding = JSON.stringify(automaton.graph);
+
+	$.ajax({
+		type:        "POST",
+		url:         "http://api.automatafiddle.com/render",
+		crossDomain: true,
+		data:        "data=" + encoding,
+		
+		success: function(response)
+		{
+			$(".preview img").attr("src", "data:" + response.mediatype + ";base64," + response.encoding);
+			$(".actions .download").attr("href", "data:application/octet-stream;charset=utf-8;base64," + response.encoding);
+		},
+		
+		error: function(response, status, error)
+		{
+			console.error("An error occurred while rendering the automaton:");
+			trigger_error("Unable to render automaton!");
+			
+			console.debug("Automaton JSON Encoding:");
+			console.debug(encoding);
+
+			console.debug("Response:");
+			console.debug(response);
+			
+			console.debug("Status:");
+			console.debug(status);
+
+			console.debug("Error:");
+			console.debug(error);
+		}
+	});
+}
+
+
+function sidebar_toggle(element)
+{
 	var icon = $(element).children("i");
 	var pane = $(element).parent();
 	
-	if (icon.hasClass("fa-angle-down")) {
+	if (icon.hasClass("fa-angle-down"))
+	{
 		icon.removeClass("fa-angle-down");
 		icon.addClass("fa-angle-up");
 		$(element).addClass("activated");
@@ -183,72 +281,38 @@ function sidebar_toggle(element) {
 }
 
 
-function sidebar_hide_all() {
-	$(".toggle-menu > * header").each(function () {
-		if ($(this).children("i").hasClass("fa-angle-up")) {
+function sidebar_hide_all()
+{
+	$(".toggle-menu > * header").each(function ()
+	{
+		if ($(this).children("i").hasClass("fa-angle-up"))
+		{
 			sidebar_toggle(this);
 		}
 	});
 }
 
 
-function trigger_error(message) {
-	$(".errors").append("<div class=\"error\"><i class=\"fa fa-exclamation-triangle\"></i> <strong>Error:</strong> <span>" + message + "</span> <i class=\"fa fa-times\"></i></div>");
-	$(".error .fa-times").click(function() {
-		close_error(this);
-	});
+function refresh_event()
+{
+	render_automaton();
 }
 
 
-function close_error(element) {
-	$(element).parent().remove();
+function save_event()
+{
+	/* TODO */
 }
 
 
-function refresh_event() {
-	render_graph();
+function open_event()
+{
+	/* TODO */
 }
 
 
-function render_graph() {
-	$.ajax({
-		type:        "POST",
-		url:         "http://api.automatafiddle.com/render",
-		crossDomain: true,
-		
-		data:        "data=" + JSON.stringify(current.graph),
-
-		success: function(response)
-		{
-			console.info("Rendered graph: http://api.automatafiddle.com/render");
-			$(".preview img").attr("src", "data:" + response.mediatype + ";base64," + response.encoding);
-			$(".actions .download").attr("href", "data:application/octet-stream;charset=utf-8;base64," + response.encoding);
-		},
-		
-		error: function(response, status, error)
-		{
-			trigger_error("Unable to render graph!");
-			console.error("Could not render graph: http://api.automatafiddle.com/render");
-			
-			console.debug("Graph Encoding:" + JSON.stringify(current.graph));
-			console.debug("Server Response, Status, and Error:");
-			console.debug(response);
-			console.debug(status);
-			console.debug(error);
-		}
-	});
-}
-
-function save_event() {
-	console.log("save event");
-}
-
-function open_event() {
-	console.log("open event");
-}
-
-
-function delete_event() {
+function delete_event()
+{
 	/* Reset title and description */
 	$(".properties input[name='title']").val("");
 	$(".properties textarea[name='description']").val("");
@@ -271,36 +335,10 @@ function delete_event() {
 		$(this).remove();
 	});
 	
-	set_initial_graph_state();
-	render_graph();
+	init_default_automaton();
+	render_automaton();
 }
 
-function set_initial_graph_state()
-{
-	current = {
-		title: "",
-		description: "",
-		graph: {
-			direction: "LR",
-			export:    "svg",
-			nodes: [],
-			edges: []
-		}
-	};
-}
-
-function invert(array) {
-	var inverted = {};
-	var i;
-	var value;
-	
-	for (i in array) {
-		value = array[i];
-		inverted[value] = i;
-	}
-	
-	return inverted;
-}
 
 function add_state_event() {
 	var name_form;
@@ -316,44 +354,43 @@ function add_state_event() {
 	state_name  = name_form.val();
 	state_shape = shape_form.val();
 	
-	shape_lookup = invert(supported.shapes);
-	
 	node = {
 		name:  state_name,
-		shape: shape_lookup[state_shape]
+		shape: dictionary.shapes[state_shape]
 	}
 	
-	/* Verify that a node with the same name doesn't already exist */
-	if (contains_node(state_name)) {
-		trigger_error("States must have unique names, duplicate states are not allowed.");
+	if (contains_node(state_name))
+	{
+		trigger_error("States must have unique name, " + state_name + " already exists");
 		return;
 	}
 	
-	/* Verify that the shape is valid */
-	if (node.shape == undefined) {
+	if (node.shape == undefined)
+	{
 		trigger_error("The specified shape is not valid.");
 		return;
 	}
-
-	/* Add the node */
-	current.graph.nodes.push(node);
 	
-	/* Add the node to the list */
+	automaton.graph.nodes.push(node);
+	
+
 	$(".states .list").append("<div class=\"element\"><div class=\"expand\"><span class=\"name\">" + state_name + "</span> - " + state_shape + "</div><div class=\"remove\"><i class=\"fa fa-close\"></i></div></div>");
-	$(".states .list .element .fa-close").click(function (){
+	$(".states .list .element .fa-close").click(function ()
+	{
 		remove_state_event(this);
 	});
-
+	
 	/* Add the node to the transition select menu */
 	$(".transitions .form select[name='transition-origin']").append("<option>" + state_name + "</option>");
 	$(".transitions .form select[name='transition-destination']").append("<option>" + state_name + "</option>");
-
+	
 	/* Clear the form */
 	name_form.val("");
-
+	
 	/* Render graph */
-	render_graph();
+	render_automaton();
 }
+
 
 function remove_state_event(element) {
 	var root;
@@ -363,50 +400,59 @@ function remove_state_event(element) {
 	root = $(element).parent().parent();
 	state_name = root.find(".expand .name").text();
 	
-	console.log(state_name);
-	
 	/* Remove node from current nodes */
-	for (i in current.graph.nodes) {
-		if (current.graph.nodes[i].name == state_name) {
+	for (i in automaton.graph.nodes)
+	{
+		if (automaton.graph.nodes[i].name == state_name)
+		{
 			current.graph.nodes.splice(i, 1);
 			break;
 		}
 	}
 	
 	/* Remove all transitions with the node */
-	for (i in current.graph.edges) {
-		if (current.graph.edges[i].origin      == state_name ||
-		    current.graph.edges[i].destination == state_name) {
-			current.graph.edges.splice(i, 1);
+	for (i in automaton.graph.edges)
+	{
+		if (automaton.graph.edges[i].origin      == state_name ||
+		    automaton.graph.edges[i].destination == state_name)
+		{
+			automaton.graph.edges.splice(i, 1);
 		}
 	}
 	
 	/* Remove states from the list */
-	$(".states .list .element").each(function () {
-		if ($(this).find(".name").text() == state_name) {
+	$(".states .list .element").each(function ()
+	{
+		if ($(this).find(".name").text() == state_name)
+		{
 			$(this).remove();
 		}
 	});
 	
 	/* Remove the node from origin and destination select fields */
-	$(".transitions .form select[name='transition-origin'] option, .transitions .form select[name='transition-destination'] option").each(function () {
+	$(".transitions .form select[name='transition-origin'] option, .transitions .form select[name='transition-destination'] option").each(function ()
+	{
 		if ($(this).prop("disabled") == false &&
-		    $(this).text() == state_name) {
+		    $(this).text() == state_name)
+		{
 			$(this).remove();
 		}
 	});
 	
 	/* Remove transitions with that state */
-	$(".transitions .list .element").each(function () {
-		if ($(this).find(".origin").text() == state_name ||
-		    $(this).find(".destination").text() == state_name) {
+	$(".transitions .list .element").each(function ()
+	{
+		if ($(this).find(".origin").text()      == state_name ||
+		    $(this).find(".destination").text() == state_name)
+		{
 			$(this).remove();
 		}
 	});
 	
 	/* Re-render the graph */
-	render_graph();
+	render_automaton();
 }
+
 
 function add_transition_event() {
 	var label_form;
@@ -429,21 +475,25 @@ function add_transition_event() {
 	destination_name = destination_form.val();
 	
 	/* Verify that the Origin is valid */
-	if (!contains_node(origin_name)) {
-		trigger_error("");
+	if (!contains_node(origin_name))
+	{
+		trigger_error("Invalid Origin");
 		return;
 	}
 
 	/* Verify that the Destination is valid */
-	if (!contains_node(destination_name)) {
-		trigger_error("");
+	if (!contains_node(destination_name))
+	{
+		trigger_error("Invalid Destination");
 		return;
 	}
 
 	/* Check that the edge doesn't already exist */
-	for (i in current.graph.edges) {
-		if (current.graph.edges[i].origin      == origin_name      &&
-		    current.graph.edges[i].destination == destination_name) {
+	for (i in automaton.graph.edges)
+	{
+		if (automaton.graph.edges[i].origin      == origin_name      &&
+		    automaton.graph.edges[i].destination == destination_name)
+		{
 			trigger_error("Transitions must have unique origins and destinations.");
 			return;
 		}
@@ -458,21 +508,25 @@ function add_transition_event() {
 	
 	/* Add the edge to the list */
 	$(".transitions .list").append("<div class=\"element\"><div class=\"expand\"><span class=\"origin\">" + origin_name + "</span> &rarr; <span class=\"destination\">" + destination_name + "</span> : <span class=\"label\">" + label_name + "</span></div><div class=\"remove\"><i class=\"fa fa-close\"></i></div></div>");
-	$(".transitions .list .element .fa-close").click(function (){
+	
+	$(".transitions .list .element .fa-close").click(function ()
+	{
 		remove_transition_event(this);
 	});
 	
 	/* Insert the edge */
-	current.graph.edges.push(edge);
+	automaton.graph.edges.push(edge);
 
 	/* Re-render the graph */
-	render_graph();
+	render_automaton();
 }
 
 function contains_node(node_name) {
 	var i;
-	for (i in current.graph.nodes) {
-		if (current.graph.nodes[i].name == node_name) {
+	for (i in automaton.graph.nodes)
+	{
+		if (automaton.graph.nodes[i].name == node_name)
+		{
 			return true;
 		}
 	}
