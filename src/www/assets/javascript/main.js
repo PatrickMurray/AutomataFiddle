@@ -33,12 +33,7 @@ function init_action_menu() {
 		refresh_event();
 		event.preventDefault();
 	});
-	/*
-	$(".actions .download").click(function (event) {
-		//download_event();
-		event.preventDefault();
-	});
-	*/
+	
 	$(".actions .save").click(function (event) {
 		save_event();
 		event.preventDefault();
@@ -66,6 +61,40 @@ function init_sidebar() {
 	});
 	
 
+	$(".properties input[name='title']").change(function () {
+		current.title = $(this).val();
+	});
+
+	$(".properties textarea[name='description']").change(function () {
+		current.description = $(this).val();
+	});
+
+	$(".properties select[name='graph-direction']").change(function () {
+		var value;
+		var direction_lookup;
+		
+		value = $(this).val();
+		direction_lookup = invert(supported.directions);
+		
+		current.graph.direction = direction_lookup[value];
+		
+		render_graph();
+	});
+	
+	$(".properties select[name='export-format']").change(function () {
+		var value;
+		var format_lookup;
+		
+		value = $(this).val();
+		format_lookup = invert(supported.formats);
+		
+		current.graph.export = format_lookup[value];
+		
+		render_graph();
+	});
+	
+	
+	/* Adding & Removing States and Transitions*/
 	$(".states button").click(function (event) {
 		add_state_event();
 		event.preventDefault();
@@ -188,10 +217,6 @@ function render_graph() {
 		crossDomain: true,
 		
 		data:        "data=" + JSON.stringify(current.graph),
-		/*
-		contentType: "application/json; charset=utf-8",
-		dataType:    "json",
-		*/
 
 		success: function(response)
 		{
@@ -214,21 +239,9 @@ function render_graph() {
 	});
 }
 
-/*
-function download_event() {
-	var temp;
-	console.log("download event");
-
-	temp = window.location.href;
-	window.location.href = $(".preview img").attr("src");
-	window.location.href = temp;
-}
-*/
-
 function save_event() {
 	console.log("save event");
 }
-
 
 function open_event() {
 	console.log("open event");
@@ -236,10 +249,14 @@ function open_event() {
 
 
 function delete_event() {
+	/* Reset title and description */
+	$(".properties input[name='title']").val("");
+	$(".properties textarea[name='description']").val("");
+	$(".properties select[name='graph-direction']").val("");
+	$(".properties select[name='export-format']").val("");
+
 	set_initial_graph_state();
 	render_graph();
-
-	console.log("delete event");
 }
 
 function set_initial_graph_state()
