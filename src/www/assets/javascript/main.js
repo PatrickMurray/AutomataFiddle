@@ -252,9 +252,25 @@ function delete_event() {
 	/* Reset title and description */
 	$(".properties input[name='title']").val("");
 	$(".properties textarea[name='description']").val("");
-	$(".properties select[name='graph-direction']").val("");
-	$(".properties select[name='export-format']").val("");
+	
+	/* Unselect Direction and Export Formats */
+	$(".properties select[name] option").each(function () {
+		$(this).removeAttr("selected");
+	});
 
+	$(".properties select[name='graph-direction'] option:first").attr("selected", "selected");
+	$(".properties select[name='export-format'] option:first").attr("selected", "selected");
+	
+	/* Remove all States */
+	$(".states .list .element").each(function () {
+		$(this).remove();
+	});
+
+	/* Remove all Transitions */
+	$(".transitions .list .element").each(function () {
+		$(this).remove();
+	});
+	
 	set_initial_graph_state();
 	render_graph();
 }
@@ -342,16 +358,33 @@ function add_state_event() {
 function remove_state_event(element) {
 	var root;
 	var state_name;
+	var i;
 	
 	root = $(element).parent().parent();
 	state_name = root.find(".expand .name").text();
 	
 	console.log(state_name);
 	
-	/* Get node name */
 	/* Remove node from current nodes */
+	for (i in current.graph.nodes) {
+		if (current.graph.nodes[i].name == state_name) {
+			delete current.graph.nodes[i];
+			break;
+		}
+	}
+
 	/* Remove all transitions with the node */
+	for (i in current.graph.edges) {
+		if (current.graph.edges[i].origin      == state_name ||
+		    current.graph.edges[i].destination == state_name) {
+			delete current.graph.edges[i];
+		}
+	}
+	
 	/* Remove the node from origin and destination select fields */
+	
+	/* Re-render the graph */
+	render_graph();
 }
 
 function add_transition_event() {
