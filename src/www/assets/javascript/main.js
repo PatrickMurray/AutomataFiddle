@@ -405,7 +405,7 @@ function remove_state_event(element) {
 	{
 		if (automaton.graph.nodes[i].name == state_name)
 		{
-			current.graph.nodes.splice(i, 1);
+			automaton.graph.nodes.splice(i, 1);
 			break;
 		}
 	}
