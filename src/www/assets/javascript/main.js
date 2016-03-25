@@ -555,10 +555,12 @@ function remove_transition_event(element) {
 		    automaton.graph.edges[i].destination == destination_name &&
 		    automaton.graph.edges[i].label       == label_name)
 		{
+			console.log("Removed.");
 			automaton.graph.edges.splice(i, 1);
 			break;
 		}
 	}
 
 	root.remove();
+	render_automaton();
 }
