@@ -545,13 +545,13 @@ function remove_transition_event(element) {
 	
 	root = $(element).parent().parent();
 
-	origin_name      = root.find().text();
-	destination_name = root.find().text();
-	label_name       = root.find().text();
+	origin_name      = root.find(".origin").text();
+	destination_name = root.find(".destination").text();
+	label_name       = root.find(".label").text();
 	
 	for (i in automaton.graph.edges)
 	{
-		if (automaton.graph.edges[i].origin      == origin_name &&
+		if (automaton.graph.edges[i].origin      == origin_name      &&
 		    automaton.graph.edges[i].destination == destination_name &&
 		    automaton.graph.edges[i].label       == label_name)
 		{
