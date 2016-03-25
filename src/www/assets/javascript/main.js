@@ -383,7 +383,7 @@ function remove_state_event(element) {
 	
 	/* Remove states from the list */
 	$(".states .list .element").each(function () {
-		if ($(this).filter(".name").text() == state_name) {
+		if ($(this).find(".name").text() == state_name) {
 			$(this).remove();
 		}
 	});
@@ -398,8 +398,8 @@ function remove_state_event(element) {
 	
 	/* Remove transitions with that state */
 	$(".transitions .list .element").each(function () {
-		if ($(this).filter(".origin").text() == state_name ||
-		    $(this).filter(".destination").text() == state_name) {
+		if ($(this).find(".origin").text() == state_name ||
+		    $(this).find(".destination").text() == state_name) {
 			$(this).remove();
 		}
 	});
