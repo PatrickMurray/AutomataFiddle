@@ -155,6 +155,7 @@ function init_sidebar()
 	$(".properties input[name='title']").change(function ()
 	{
 		automaton.title = $(this).val();
+		render_automaton();
 	});
 	
 	$(".properties textarea[name='description']").change(function ()
@@ -227,9 +228,26 @@ function render_automaton()
 	var encoding;
 	var filename;
 	var extension;
-
+	
 	encoding = JSON.stringify(automaton.graph);
 	
+	filename  = automaton.title;
+	extension = automaton.graph.export;
+	
+	if (filename == "")
+	{
+		filename = "untitled";
+	}
+	
+	$(".actions .download").attr("download", filename + "." + extension);
+	
+
+	if (automaton.graph == last_rendered)
+	{
+		console.log("Supressing render request.");
+		return;
+	}
+
 	$.ajax({
 		type:        "POST",
 		url:         "http://api.automatafiddle.com/render",
@@ -240,16 +258,7 @@ function render_automaton()
 		{
 			$(".preview img").attr("src", "data:" + response.mediatype + ";base64," + response.encoding);
 			$(".actions .download").attr("href", "data:application/octet-stream;charset=utf-8;base64," + response.encoding);
-
-			filename  = automaton.title;
-			extension = automaton.graph.export;
-
-			if (filename == "")
-			{
-				filename = "untitled";
-			}
-			
-			$(".actions .download").attr("download", filename + "." + extension);
+			last_rendered = automaton.graph;
 		},
 		
 		error: function(response, status, error)
