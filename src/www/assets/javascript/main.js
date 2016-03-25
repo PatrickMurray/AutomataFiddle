@@ -372,7 +372,7 @@ function remove_state_event(element) {
 			break;
 		}
 	}
-
+	
 	/* Remove all transitions with the node */
 	for (i in current.graph.edges) {
 		if (current.graph.edges[i].origin      == state_name ||
@@ -381,9 +381,25 @@ function remove_state_event(element) {
 		}
 	}
 	
+	/* Remove states from the list */
+	$(".states .list .element").each(function () {
+		if ($(this).filter(".name").text() == state_name) {
+			$(this).remove();
+		}
+	});
+	
 	/* Remove the node from origin and destination select fields */
 	$(".transitions .form select[name='transition-origin'] option, .transitions .form select[name='transition-destination'] option").each(function () {
-		if ($(this).prop("disabled") == false) {
+		if ($(this).prop("disabled") == false &&
+		    $(this).text() == state_name) {
+			$(this).remove();
+		}
+	});
+	
+	/* Remove transitions with that state */
+	$(".transitions .list .element").each(function () {
+		if ($(this).filter(".origin").text() == state_name ||
+		    $(this).filter(".destination").text() == state_name) {
 			$(this).remove();
 		}
 	});
