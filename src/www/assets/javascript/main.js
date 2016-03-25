@@ -382,6 +382,9 @@ function remove_state_event(element) {
 	}
 	
 	/* Remove the node from origin and destination select fields */
+	$(".transitions .form select option:not(option:[disabled])").each(function () {
+		$(this).remove();
+	});
 	
 	/* Re-render the graph */
 	render_graph();
