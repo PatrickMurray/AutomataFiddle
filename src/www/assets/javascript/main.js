@@ -368,7 +368,7 @@ function remove_state_event(element) {
 	/* Remove node from current nodes */
 	for (i in current.graph.nodes) {
 		if (current.graph.nodes[i].name == state_name) {
-			delete current.graph.nodes[i];
+			current.graph.nodes.splice(i, 1);
 			break;
 		}
 	}
@@ -377,13 +377,15 @@ function remove_state_event(element) {
 	for (i in current.graph.edges) {
 		if (current.graph.edges[i].origin      == state_name ||
 		    current.graph.edges[i].destination == state_name) {
-			delete current.graph.edges[i];
+			current.graph.edges.splice(i, 1);
 		}
 	}
 	
 	/* Remove the node from origin and destination select fields */
-	$(".transitions .form select option:not(option[disabled])").each(function () {
-		$(this).remove();
+	$(".transitions .form select[name='transition-origin'] option, .transitions .form select[name='transition-destination'] option").each(function () {
+		if ($(this).prop("disabled") == false) {
+			$(this).remove();
+		}
 	});
 	
 	/* Re-render the graph */
