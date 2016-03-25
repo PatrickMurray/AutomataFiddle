@@ -242,9 +242,8 @@ function render_automaton()
 	$(".actions .download").attr("download", filename + "." + extension);
 	
 
-	if (automaton.graph == last_rendered)
+	if (Object.is(automaton.graph, last_rendered))
 	{
-		console.log("Supressing render request.");
 		return;
 	}
 
