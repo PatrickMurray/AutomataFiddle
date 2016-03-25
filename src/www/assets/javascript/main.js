@@ -534,6 +534,31 @@ function contains_node(node_name) {
 	return false;
 }
 
-function remove_transition_event() {
-	console.log("remove transition event");
+function remove_transition_event(element) {
+	var root;
+	
+	var origin_name;
+	var destination_name;
+	var label_name;
+	
+	var i;
+	
+	root = $(element).parent().parent();
+
+	origin_name      = root.find().text();
+	destination_name = root.find().text();
+	label_name       = root.find().text();
+	
+	for (i in automaton.graph.edges)
+	{
+		if (automaton.graph.edges[i].origin      == origin_name &&
+		    automaton.graph.edges[i].destination == destination_name &&
+		    automaton.graph.edges[i].label       == label_name)
+		{
+			automaton.graph.edges.splice(i, 1);
+			break;
+		}
+	}
+
+	root.remove();
 }
