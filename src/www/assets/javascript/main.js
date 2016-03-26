@@ -5,6 +5,21 @@ var automaton;
 var last_rendered;
 
 
+/* Thanks, http://stackoverflow.com/questions/30543190 */
+if (!Object.is)
+{
+	Object.is = function(x, y)
+	{
+		if (x === y)
+		{
+			return x !== 0 || 1 / x === 1 / y;
+		} else {
+			return x !== x && y !== y;
+		}
+	};
+}
+
+
 $(document).ready(function()
 {
 	initialize();
@@ -242,7 +257,7 @@ function render_automaton()
 	$(".actions .download").attr("download", filename + "." + extension);
 	
 
-	if (automaton.graph.is(last_rendered))
+	if (Object.is(last_rendered, automaton.graph))
 	{
 		return;
 	}
