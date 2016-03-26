@@ -2,22 +2,6 @@ var supported;
 var dictionary;
 
 var automaton;
-var last_rendered;
-
-
-/* Thanks, http://stackoverflow.com/questions/30543190 */
-if (!Object.is)
-{
-	Object.is = function(x, y)
-	{
-		if (x === y)
-		{
-			return x !== 0 || 1 / x === 1 / y;
-		} else {
-			return x !== x && y !== y;
-		}
-	};
-}
 
 
 $(document).ready(function()
@@ -256,11 +240,6 @@ function render_automaton()
 	
 	$(".actions .download").attr("download", filename + "." + extension);
 	
-
-	if (Object.is(last_rendered, automaton.graph))
-	{
-		return;
-	}
 	
 	$.ajax({
 		type:        "POST",
@@ -272,8 +251,6 @@ function render_automaton()
 		{
 			$(".preview img").attr("src", "data:" + response.mediatype + ";base64," + response.encoding);
 			$(".actions .download").attr("href", "data:application/octet-stream;charset=utf-8;base64," + response.encoding);
-			
-			last_rendered = jQuery.extend(true, {}, automaton.graph);
 		},
 		
 		error: function(response, status, error)
