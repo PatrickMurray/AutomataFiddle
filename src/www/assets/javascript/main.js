@@ -2,6 +2,7 @@ var supported;
 var dictionary;
 
 var automaton;
+var last_rendered;
 
 
 $(document).ready(function()
@@ -240,6 +241,11 @@ function render_automaton()
 	
 	$(".actions .download").attr("download", filename + "." + extension);
 	
+
+	if (automata.graph.is(last_rendered))
+	{
+		return;
+	}
 	
 	$.ajax({
 		type:        "POST",
@@ -251,6 +257,8 @@ function render_automaton()
 		{
 			$(".preview img").attr("src", "data:" + response.mediatype + ";base64," + response.encoding);
 			$(".actions .download").attr("href", "data:application/octet-stream;charset=utf-8;base64," + response.encoding);
+			
+			last_rendered = jQuery.extend(true, {}, automaton.graph);
 		},
 		
 		error: function(response, status, error)
