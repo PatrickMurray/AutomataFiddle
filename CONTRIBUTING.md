@@ -1,4 +1,5 @@
-# Bug Report Guidelines
+# Contributing
+## Bug Report Guidelines
 
 Before filing a bug report, please make sure that:
 - The bug you've encountered is reproducible.

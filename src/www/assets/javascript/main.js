@@ -314,13 +314,32 @@ function refresh_event()
 
 function save_event()
 {
-	/* TODO */
+	var encoding;
+
+	encoding = JSON.stringify(automaton);
+	window.prompt(
+		"Please store your Automaton encoding for future use:",
+		encoding
+	);
 }
 
 
 function open_event()
 {
-	/* TODO */
+	var encoding;
+	
+	encoding = window.prompt("Automaton Encoding:");
+	try
+	{
+		automaton = JSON.parse(encoding);
+		refresh_event();
+	}
+	catch (exception)
+	{
+		trigger_error("Unable to decode the provided automaton!");
+		console.info("Automaton JSON Parse:");
+		console.error(exception);
+	}
 }
 
 
