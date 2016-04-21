@@ -309,7 +309,7 @@ function sidebar_hide_all()
 function refresh_event()
 {
 	/* SET TITLE */
-	$(".properties input[name='title']").text(automaton.title);
+	$(".properties input[name='title']").val(automaton.title);
 	
 	/* SET DESCRIPTION */
 	$(".properties textarea[name='description']").text(automaton.description);
