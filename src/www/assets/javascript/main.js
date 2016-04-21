@@ -308,6 +308,16 @@ function sidebar_hide_all()
 
 function refresh_event()
 {
+	/* SET TITLE */
+	/* SET DESCRIPTION */
+	/* SET GRAPH DIRECTION */
+	/* SET EXPORT FORMAT */
+	/* ERASE STATES */
+	/* ADD STATES */
+	/* ERASE STATES FROM ORIGIN AND DESTINATION */
+	/* ADD STATES TO ORIGIN AND DESTINATION */
+	/* REMOVE TRANSITIONS */
+	/* ADD TRANSITIONS */
 	render_automaton();
 }
 
@@ -318,7 +328,7 @@ function save_event()
 
 	encoding = JSON.stringify(automaton);
 	window.prompt(
-		"Please store your Automaton encoding for future use:",
+		"Save your automaton's encoding for future use:",
 		encoding
 	);
 }
@@ -328,7 +338,11 @@ function open_event()
 {
 	var encoding;
 	
-	encoding = window.prompt("Automaton Encoding:");
+	if ((encoding = window.prompt("Please paste your automaton encoding:")) == null)
+	{
+		return;
+	}
+
 	try
 	{
 		automaton = JSON.parse(encoding);
