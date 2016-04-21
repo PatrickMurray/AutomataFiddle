@@ -309,8 +309,14 @@ function sidebar_hide_all()
 function refresh_event()
 {
 	/* SET TITLE */
+	$(".properties input[name='title']").text(automaton.title);
+	
 	/* SET DESCRIPTION */
+	$(".properties textarea[name='description']").text(automaton.description);
+	
 	/* SET GRAPH DIRECTION */
+	//$(".properties select[name='graph-direction']")
+	//supported.directions[automaton.graph.direction]
 	/* SET EXPORT FORMAT */
 	/* ERASE STATES */
 	/* ADD STATES */
