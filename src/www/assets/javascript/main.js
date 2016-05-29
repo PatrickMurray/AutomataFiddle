@@ -315,9 +315,15 @@ function refresh_event()
 	$(".properties textarea[name='description']").text(automaton.description);
 	
 	/* SET GRAPH DIRECTION */
-	//$(".properties select[name='graph-direction']")
-	//supported.directions[automaton.graph.direction]
+	$(".properties select[name='graph-direction'] option").filter(function (){
+		return ($(this).text() == supported.directions[automaton.graph.direction]);
+	}).prop("selected", true);
+	
 	/* SET EXPORT FORMAT */
+	$(".properties select[name='export-format'] option").filter(function (){
+		return ($(this).text() == supported.formats[automaton.graph.export]);
+	}).prop("selected", true);
+	
 	/* ERASE STATES */
 	/* ADD STATES */
 	/* ERASE STATES FROM ORIGIN AND DESTINATION */

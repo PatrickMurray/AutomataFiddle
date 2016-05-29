@@ -184,7 +184,7 @@ class Graph
 	
 	
 	/*	
-	 *	TODO
+	 *	Adds the provided node name to the graph diagram.
 	 *	
 	 *	@param		string
 	 *	
@@ -212,7 +212,7 @@ class Graph
 	
 	
 	/*	
-	 *	TODO
+	 *	Sets the shape of the specified node name.
 	 *	
 	 *	@param		string
 	 *	@param		string
@@ -251,7 +251,7 @@ class Graph
 	
 	
 	/*	
-	 *	TODO
+	 *	Adds an edge from the origin to the destination in the diagram.
 	 *	
 	 *	@param		string
 	 *	@param		string
@@ -313,7 +313,7 @@ class Graph
 	
 	
 	/*	
-	 *	TODO
+	 *	Returns the raw exported diagram image.
 	 *	
 	 *	@return		string		binary image
 	 *	
@@ -343,7 +343,7 @@ class Graph
 	
 	
 	/*	
-	 *	TODO
+	 *	Converts the internal data structure to a GraphViz dotfile.
 	 *	
 	 *	@return		string
 	 *	
@@ -387,7 +387,7 @@ class Graph
 	
 	
 	/*	
-	 *	TODO
+	 *	Determines if the provided node name is within the diagram.
 	 *	
 	 *	@param		string
 	 *	
@@ -409,7 +409,8 @@ class Graph
 	
 	
 	/*	
-	 *	TODO
+	 *	Determines if there exists an edge from the specified origin to
+	 *	the destination node.
 	 *	
 	 *	@param		string
 	 *	@param		string
@@ -435,7 +436,8 @@ class Graph
 	}
 	
 	/*	
-	 *	TODO
+	 *	Removes potentially harmful data from input so that it does not
+	 *	affect GraphViz.
 	 *	
 	 *	@param		string
 	 *	@param		bool
