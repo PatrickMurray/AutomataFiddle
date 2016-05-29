@@ -354,7 +354,7 @@ function render_states_interface()
 {
 	var state_name;
 	var state_shape;
-
+	
 	/* ERASE STATES */
 	$(".states .list .element").each(function(){
 		$(this).remove();
@@ -380,12 +380,17 @@ function render_states_interface()
 
 function render_transitions_interface()
 {
+	var previous_origin;
+	var previous_destination;
 	var attribute;
 	var state_name;
 	var state_shape;
 	var origin_name;
 	var destination_name;
 	var label_name;
+	
+	previous_origin      = $(".transitions .form select[name='transition-origin']").val();
+	previous_destination = $(".transitions .form select[name='transition-destination']").val();
 
 	/* ERASE STATES FROM ORIGIN AND DESTINATION */
 	$(".transitions .form select[name='transition-origin'] option, .transitions .form select[name='transition-destination'] option").each(function(){
@@ -427,6 +432,14 @@ function render_transitions_interface()
 	{
 		remove_transition_event(this);
 	});
+	
+	$(".transitions .form select[name='transition-origin'] option").filter(function (){
+		return ($(this).text() == previous_origin);
+	}).prop("selected", true);
+	
+	$(".transitions .form select[name='transition-destination'] option").filter(function (){
+		return ($(this).text() == previous_destination);
+	}).prop("selected", true);
 }
 
 
