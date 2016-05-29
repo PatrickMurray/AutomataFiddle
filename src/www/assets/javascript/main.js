@@ -308,8 +308,16 @@ function sidebar_hide_all()
 
 function refresh_event()
 {
-	var attribute;
+	render_properties_interface();
+	render_states_interface();
+	render_transitions_interface();
+	
+	render_automaton();
+}
 
+
+function render_properties_interface()
+{
 	/* SET TITLE */
 	$(".properties input[name='title']").val(automaton.title);
 	
@@ -325,14 +333,46 @@ function refresh_event()
 	$(".properties select[name='export-format'] option").filter(function (){
 		return ($(this).text() == supported.formats[automaton.graph.export]);
 	}).prop("selected", true);
-	
+}
+
+
+function render_states_interface()
+{
+	var state_name;
+	var state_shape;
+
 	/* ERASE STATES */
 	$(".states .list .element").each(function(){
 		$(this).remove();
 	});
 	
 	/* ADD STATES */
-	
+	for (i in automaton.graph.nodes)
+	{
+		state_name  = automaton.graph.nodes[i].name;
+		state_shape = supported.shapes[automaton.graph.nodes[i].shape];
+		
+		/* Add the state to the state's dropdown */
+		$(".states .list").append("<div class=\"element\"><div class=\"expand\"><span class=\"name\">" + state_name + "</span> - " + state_shape + "</div><div class=\"remove\"><i class=\"fa fa-close\"></i></div></div>");
+	}
+
+	/* Add click event listener to the state remove button */
+	$(".states .list .element .fa-close").click(function ()
+	{
+		remove_state_event(this);
+	});
+}
+
+
+function render_transitions_interface()
+{
+	var attribute;
+	var state_name;
+	var state_shape;
+	var origin_name;
+	var destination_name;
+	var label_name;
+
 	/* ERASE STATES FROM ORIGIN AND DESTINATION */
 	$(".transitions .form select[name='transition-origin'] option, .transitions .form select[name='transition-destination'] option").each(function(){
 		attribute = $(this).attr("hidden");
@@ -342,17 +382,37 @@ function refresh_event()
 		}
 	});
 	
-	/* ADD STATES TO ORIGIN AND DESTINATION */
-	
 	/* REMOVE TRANSITIONS */
 	$(".transitions .list .element").each(function(){
 		$(this).remove();
 	});
 
+	/* ADD STATES */
+	for (i in automaton.graph.nodes)
+	{
+		state_name  = automaton.graph.nodes[i].name;
+		state_shape = supported.shapes[automaton.graph.nodes[i].shape];
+		
+		/* Add the state to the transition select menu */
+		$(".transitions .form select[name='transition-origin']").append("<option>" + state_name + "</option>");
+		$(".transitions .form select[name='transition-destination']").append("<option>" + state_name + "</option>");
+	}
+	
 	/* ADD TRANSITIONS */
+	for (i in automaton.graph.edges)
+	{
+		origin_name      = automaton.graph.edges[i].origin;
+		destination_name = automaton.graph.edges[i].destination;
+		label_name       = automaton.graph.edges[i].label;
 
-	/* RE-RENDER AUTOMATON */
-	render_automaton();
+		/* Add the edge to the list */
+		$(".transitions .list").append("<div class=\"element\"><div class=\"expand\"><span class=\"origin\">" + origin_name + "</span> &rarr; <span class=\"destination\">" + destination_name + "</span> : <span class=\"label\">" + label_name + "</span></div><div class=\"remove\"><i class=\"fa fa-close\"></i></div></div>");
+	}
+
+	$(".transitions .list .element .fa-close").click(function ()
+	{
+		remove_transition_event(this);
+	});
 }
 
 
