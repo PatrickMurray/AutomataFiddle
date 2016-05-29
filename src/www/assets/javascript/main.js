@@ -308,6 +308,8 @@ function sidebar_hide_all()
 
 function refresh_event()
 {
+	var attribute;
+
 	/* SET TITLE */
 	$(".properties input[name='title']").val(automaton.title);
 	
@@ -330,7 +332,16 @@ function refresh_event()
 	});
 	
 	/* ADD STATES */
+	
 	/* ERASE STATES FROM ORIGIN AND DESTINATION */
+	$(".transitions .form select[name='transition-origin'] option, .transitions .form select[name='transition-destination'] option").each(function(){
+		attribute = $(this).attr("hidden");
+		if (attribute == undefined || attribute == false)
+		{
+			$(this).remove();
+		}
+	});
+	
 	/* ADD STATES TO ORIGIN AND DESTINATION */
 	
 	/* REMOVE TRANSITIONS */
