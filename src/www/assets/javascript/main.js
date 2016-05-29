@@ -325,11 +325,22 @@ function refresh_event()
 	}).prop("selected", true);
 	
 	/* ERASE STATES */
+	$(".states .list .element").each(function(){
+		$(this).remove();
+	});
+	
 	/* ADD STATES */
 	/* ERASE STATES FROM ORIGIN AND DESTINATION */
 	/* ADD STATES TO ORIGIN AND DESTINATION */
+	
 	/* REMOVE TRANSITIONS */
+	$(".transitions .list .element").each(function(){
+		$(this).remove();
+	});
+
 	/* ADD TRANSITIONS */
+
+	/* RE-RENDER AUTOMATON */
 	render_automaton();
 }
 
