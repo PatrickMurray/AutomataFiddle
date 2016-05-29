@@ -12,29 +12,40 @@ $(document).ready(function()
 
 function initialize()
 {
-	if (typeof(Storage) == undefined)
-	{
-		trigger_error("Your browser does not support Local Storage, Save and Open functionality will be limited.");
-	}
-	
 	fetch_supported_api_features();
 	
 	init_action_menu();
 	init_sidebar();
-	
 	init_default_automaton();
+	
+	render_interface();
 	render_automaton();
 }
 
 
 function trigger_error(message)
 {
-	$(".errors").append("<div class=\"error\"><i class=\"fa fa-exclamation-triangle\"></i> <strong>Error:</strong> <span>" + message + "</span> <i class=\"fa fa-times\"></i></div>");
+	$(".errors").append(error_html(message));
 	
 	$(".error .fa-times").click(function()
 	{
 		$(this).parent().remove();
 	});
+}
+
+
+function error_html(message)
+{
+	var html;
+	
+	html  = "<div class='error'>";
+	html += "  <i class='fa fa-exclamation-triangle'></i>&nbsp;";
+	html += "  <strong>Error:</strong>";
+	html += "  <span>" + message + "</span>";
+	html += "  <i class='fa fa-times'></i>";
+	html += "</div>";
+
+	return html;
 }
 
 
@@ -57,7 +68,7 @@ function fetch_supported_api_features()
 				shapes:     invert(data.shapes)
 			};
 			
-			
+
 			for (i in supported.directions)
 			{
 				$(".properties select[name=\"graph-direction\"]").append("<option>" + supported.directions[i] + "</option>");
@@ -217,8 +228,6 @@ function init_default_automaton()
 			edges: []
 		}
 	};
-	
-	/* TODO Form Reset */
 }
 
 
@@ -308,11 +317,16 @@ function sidebar_hide_all()
 
 function refresh_event()
 {
+	render_interface();
+	render_automaton();
+}
+
+
+function render_interface()
+{
 	render_properties_interface();
 	render_states_interface();
 	render_transitions_interface();
-	
-	render_automaton();
 }
 
 
@@ -440,7 +454,9 @@ function open_event()
 	try
 	{
 		automaton = JSON.parse(encoding);
-		refresh_event();
+		
+		render_interface();
+		render_automaton();
 	}
 	catch (exception)
 	{
@@ -453,29 +469,9 @@ function open_event()
 
 function delete_event()
 {
-	/* Reset title and description */
-	$(".properties input[name='title']").val("");
-	$(".properties textarea[name='description']").val("");
-	
-	/* Unselect Direction and Export Formats */
-	$(".properties select[name] option").each(function () {
-		$(this).removeAttr("selected");
-	});
-
-	$(".properties select[name='graph-direction'] option:first").attr("selected", "selected");
-	$(".properties select[name='export-format'] option:first").attr("selected", "selected");
-	
-	/* Remove all States */
-	$(".states .list .element").each(function () {
-		$(this).remove();
-	});
-
-	/* Remove all Transitions */
-	$(".transitions .list .element").each(function () {
-		$(this).remove();
-	});
-	
 	init_default_automaton();
+
+	render_interface();
 	render_automaton();
 }
 
@@ -493,6 +489,9 @@ function add_state_event() {
 	
 	state_name  = name_form.val();
 	state_shape = shape_form.val();
+	
+	/* Clear the form */
+	name_form.val("");
 	
 	node = {
 		name:  state_name,
@@ -513,21 +512,7 @@ function add_state_event() {
 	
 	automaton.graph.nodes.push(node);
 	
-
-	$(".states .list").append("<div class=\"element\"><div class=\"expand\"><span class=\"name\">" + state_name + "</span> - " + state_shape + "</div><div class=\"remove\"><i class=\"fa fa-close\"></i></div></div>");
-	$(".states .list .element .fa-close").click(function ()
-	{
-		remove_state_event(this);
-	});
-	
-	/* Add the node to the transition select menu */
-	$(".transitions .form select[name='transition-origin']").append("<option>" + state_name + "</option>");
-	$(".transitions .form select[name='transition-destination']").append("<option>" + state_name + "</option>");
-	
-	/* Clear the form */
-	name_form.val("");
-	
-	/* Render graph */
+	render_interface();
 	render_automaton();
 }
 
@@ -560,36 +545,7 @@ function remove_state_event(element) {
 		}
 	}
 	
-	/* Remove states from the list */
-	$(".states .list .element").each(function ()
-	{
-		if ($(this).find(".name").text() == state_name)
-		{
-			$(this).remove();
-		}
-	});
-	
-	/* Remove the node from origin and destination select fields */
-	$(".transitions .form select[name='transition-origin'] option, .transitions .form select[name='transition-destination'] option").each(function ()
-	{
-		if ($(this).prop("disabled") == false &&
-		    $(this).text() == state_name)
-		{
-			$(this).remove();
-		}
-	});
-	
-	/* Remove transitions with that state */
-	$(".transitions .list .element").each(function ()
-	{
-		if ($(this).find(".origin").text()      == state_name ||
-		    $(this).find(".destination").text() == state_name)
-		{
-			$(this).remove();
-		}
-	});
-	
-	/* Re-render the graph */
+	render_interface();
 	render_automaton();
 }
 
@@ -646,18 +602,10 @@ function add_transition_event() {
 		label:       label_name
 	};
 	
-	/* Add the edge to the list */
-	$(".transitions .list").append("<div class=\"element\"><div class=\"expand\"><span class=\"origin\">" + origin_name + "</span> &rarr; <span class=\"destination\">" + destination_name + "</span> : <span class=\"label\">" + label_name + "</span></div><div class=\"remove\"><i class=\"fa fa-close\"></i></div></div>");
-	
-	$(".transitions .list .element .fa-close").click(function ()
-	{
-		remove_transition_event(this);
-	});
-	
 	/* Insert the edge */
 	automaton.graph.edges.push(edge);
 
-	/* Re-render the graph */
+	render_interface();
 	render_automaton();
 }
 
