@@ -574,6 +574,7 @@ function remove_state_event(element) {
 		    automaton.graph.edges[i].destination == state_name)
 		{
 			automaton.graph.edges.splice(i, 1);
+			i--;
 		}
 	}
 	
