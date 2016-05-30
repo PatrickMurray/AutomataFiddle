@@ -552,7 +552,7 @@ function remove_state_event(element) {
 	var root;
 	var state_name;
 	var i;
-	var j;
+	var length;
 	
 	root       = $(element).parent().parent();
 	state_name = root.find(".expand .name").text();
@@ -568,13 +568,12 @@ function remove_state_event(element) {
 	}
 	
 	/* Remove all transitions with the node */
-	for (j in automaton.graph.edges)
+	for (i = 0; i < automaton.graph.edges.length; i++)
 	{
-		if (automaton.graph.edges[j].origin      == state_name ||
-		    automaton.graph.edges[j].destination == state_name)
+		if (automaton.graph.edges[i].origin      == state_name ||
+		    automaton.graph.edges[i].destination == state_name)
 		{
-			automaton.graph.edges.splice(j, 1);
-			j--;
+			automaton.graph.edges.splice(i, 1);
 		}
 	}
 	
