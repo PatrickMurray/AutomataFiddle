@@ -4,13 +4,11 @@ var dictionary;
 var automaton;
 
 
+/*
+ *
+ *
+ */
 $(document).ready(function()
-{
-	initialize();
-});
-
-
-function initialize()
 {
 	fetch_supported_api_features();
 	
@@ -20,9 +18,13 @@ function initialize()
 	
 	render_interface();
 	render_automaton();
-}
+});
 
 
+/*
+ *
+ *
+ */
 function trigger_error(message)
 {
 	$(".errors").append(error_html(message));
@@ -34,6 +36,10 @@ function trigger_error(message)
 }
 
 
+/*
+ *
+ *
+ */
 function error_html(message)
 {
 	var html;
@@ -49,6 +55,10 @@ function error_html(message)
 }
 
 
+/*
+ *
+ *
+ */
 function fetch_supported_api_features()
 {
 	var i;
@@ -106,6 +116,10 @@ function fetch_supported_api_features()
 }
 
 
+/*
+ *
+ *
+ */
 function invert(array)
 {
 	var i;
@@ -120,6 +134,10 @@ function invert(array)
 }
 
 
+/*
+ *
+ *
+ */
 function init_action_menu()
 {
 	$(".actions .refresh").click(function (event)
@@ -549,6 +567,7 @@ function remove_state_event(element) {
 	}
 	
 	/* Remove all transitions with the node */
+	i = 0;
 	for (i in automaton.graph.edges)
 	{
 		if (automaton.graph.edges[i].origin      == state_name ||
