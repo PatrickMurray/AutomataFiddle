@@ -552,8 +552,9 @@ function remove_state_event(element) {
 	var root;
 	var state_name;
 	var i;
+	var j;
 	
-	root = $(element).parent().parent();
+	root       = $(element).parent().parent();
 	state_name = root.find(".expand .name").text();
 	
 	/* Remove node from current nodes */
@@ -567,13 +568,12 @@ function remove_state_event(element) {
 	}
 	
 	/* Remove all transitions with the node */
-	i = 0;
-	for (i in automaton.graph.edges)
+	for (j in automaton.graph.edges)
 	{
-		if (automaton.graph.edges[i].origin      == state_name ||
-		    automaton.graph.edges[i].destination == state_name)
+		if (automaton.graph.edges[j].origin      == state_name ||
+		    automaton.graph.edges[j].destination == state_name)
 		{
-			automaton.graph.edges.splice(i, 1);
+			automaton.graph.edges.splice(j, 1);
 		}
 	}
 	
@@ -643,6 +643,7 @@ function add_transition_event() {
 
 function contains_node(node_name) {
 	var i;
+
 	for (i in automaton.graph.nodes)
 	{
 		if (automaton.graph.nodes[i].name == node_name)
