@@ -81,8 +81,8 @@ ln -s $USER_HOME/AutomataFiddle/config/systemd/automatafiddle-ssl-renew.service 
 chmod +x $USER_HOME/AutomataFiddle/services/automatafiddle-ssl-renew.sh
 
 # Enabling the auto-renew service
-systemctl start automatafiddle-ssl-renew.timer
-systemctl enable automatafiddle-ssl-renew.timer
+systemctl start /etc/systemd/system/automatafiddle-ssl-renew.timer
+systemctl enable /etc/systemd/system/automatafiddle-ssl-renew.timer
 
 
 service apache2 start
