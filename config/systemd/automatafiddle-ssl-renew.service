@@ -1,0 +1,6 @@
+[Unit]
+Description=Attempts to update the Lets Encrypt SSL certificate
+
+[Service]
+Type=simple
+ExecStart=/var/www/AutomataFiddle/services/automatafiddle-ssh-renew.sh

@@ -1,0 +1,10 @@
+[Unit]
+Description=Attempts to renew the Lets Encrypt SSL certificate every twelve hours
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=12h
+Unit=automatafiddle-ssl-renew.service
+
+[Install]
+WantedBy=multi-user.target
