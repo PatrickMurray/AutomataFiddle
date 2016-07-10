@@ -28,7 +28,9 @@ if (array_key_exists("HTTP_ORIGIN", $_SERVER))
 	switch ($_SERVER["HTTP_ORIGIN"])
 	{
 		case "http://automatafiddle.com":
+		case "http://www.automatafiddle.com":
 		case "https://automatafiddle.com":
+		case "https://www.automatafiddle.com":
 			header("Access-Control-Allow-Origin: " . $_SERVER["HTTP_ORIGIN"]);
 			header("Access-Control-Allow-Methods: POST, GET, PUT, PATCH, DELETE, OPTIONS, HEAD");
 			header("Access-Control-Max-Age: 1000");
