@@ -82,14 +82,14 @@ if [ -f /etc/systemd/system/automatafiddle-ssl-renew.service ] ; then
 	rm /etc/systemd/system/automatafiddle-ssl-renew.service;
 fi
 
-cp $USER_HOME/AutomataFiddle/config/systemd/automatafiddle-ssl-renew.timer /etc/systemd/system/automatafiddle-ssl-renew.timer
-cp $USER_HOME/AutomataFiddle/config/systemd/automatafiddle-ssl-renew.service /etc/systemd/system/automatafiddle-ssl-renew.service
+ln -s $USER_HOME/AutomataFiddle/config/systemd/automatafiddle-ssl-renew.timer /etc/systemd/system/automatafiddle-ssl-renew.timer
+ln -s $USER_HOME/AutomataFiddle/config/systemd/automatafiddle-ssl-renew.service /etc/systemd/system/automatafiddle-ssl-renew.service
 
 chmod +x $USER_HOME/AutomataFiddle/services/automatafiddle-ssl-renew.sh
 
 # Enabling the auto-renew service
-systemctl start /etc/systemd/system/automatafiddle-ssl-renew.timer
-systemctl enable /etc/systemd/system/automatafiddle-ssl-renew.timer
+systemctl start  automatafiddle-ssl-renew.timer
+systemctl enable automatafiddle-ssl-renew.timer
 
 
 
