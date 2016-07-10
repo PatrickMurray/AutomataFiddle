@@ -49,12 +49,17 @@ if [ -f /etc/apache2/sites-enabled/000-default.conf ] ; then
 	rm /etc/apache2/sites-enabled/000-default.conf;
 fi
 
-if [ -f /etc/apache2/sites-enabled/automatafiddle.conf ] ; then
-	rm /etc/apache2/sites-enabled/automatafiddle.conf;
+if [ -f /etc/apache2/sites-enabled/www-automatafiddle-com.conf ] ; then
+	rm /etc/apache2/sites-enabled/www-automatafiddle-com.conf;
+fi
+
+if [ -f /etc/apache2/sites-enabled/api-automatafiddle-com.conf ] ; then
+	rm /etc/apache2/sites-enabled/api-automatafiddle-com.conf;
 fi
 
 ln -s $USER_HOME/AutomataFiddle/config/apache2/apache2.conf /etc/apache2/apache2.conf
-ln -s $USER_HOME/AutomataFiddle/config/apache2/automatafiddle.conf /etc/apache2/sites-enabled/automatafiddle.conf
+ln -s $USER_HOME/AutomataFiddle/config/apache2/www-automatafiddle-com.conf /etc/apache2/sites-enabled/www-automatafiddle-com.conf
+ln -s $USER_HOME/AutomataFiddle/config/apache2/api-automatafiddle-com.conf /etc/apache2/sites-enabled/api-automatafiddle-com.conf
 
 a2enmod rewrite
 a2enmod ssl
@@ -66,7 +71,7 @@ a2enmod ssl
 apt-get install python-certbot-apache -t jessie-backports -y
 
 # Get started with CertBot
-certbot --apache certonly
+certbot --apache
 
 # Create systemd service and timer files
 if [ -f /etc/systemd/system/automatafiddle-ssl-renew.timer ] ; then
@@ -77,8 +82,8 @@ if [ -f /etc/systemd/system/automatafiddle-ssl-renew.service ] ; then
 	rm /etc/systemd/system/automatafiddle-ssl-renew.service;
 fi
 
-ln -s $USER_HOME/AutomataFiddle/config/systemd/automatafiddle-ssl-renew.timer /etc/systemd/system/automatafiddle-ssl-renew.timer
-ln -s $USER_HOME/AutomataFiddle/config/systemd/automatafiddle-ssl-renew.service /etc/systemd/system/automatafiddle-ssl-renew.service
+cp $USER_HOME/AutomataFiddle/config/systemd/automatafiddle-ssl-renew.timer /etc/systemd/system/automatafiddle-ssl-renew.timer
+cp $USER_HOME/AutomataFiddle/config/systemd/automatafiddle-ssl-renew.service /etc/systemd/system/automatafiddle-ssl-renew.service
 
 chmod +x $USER_HOME/AutomataFiddle/services/automatafiddle-ssl-renew.sh
 
