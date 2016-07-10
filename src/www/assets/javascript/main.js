@@ -65,7 +65,7 @@ function fetch_supported_api_features()
 	
 	$.ajax({
 		type:     "GET",
-		url:      "http://api.automatafiddle.com/supported",
+		url:      "//api.automatafiddle.com/supported",
 		dataType: "jsonp",
 		async:    false,
 		
@@ -270,7 +270,7 @@ function render_automaton()
 	
 	$.ajax({
 		type:        "POST",
-		url:         "http://api.automatafiddle.com/render",
+		url:         "//api.automatafiddle.com/render",
 		crossDomain: true,
 		data:        "data=" + encoding,
 		
