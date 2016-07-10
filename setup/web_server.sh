@@ -49,17 +49,28 @@ if [ -f /etc/apache2/sites-enabled/000-default.conf ] ; then
 	rm /etc/apache2/sites-enabled/000-default.conf;
 fi
 
-if [ -f /etc/apache2/sites-enabled/www-automatafiddle-com.conf ] ; then
-	rm /etc/apache2/sites-enabled/www-automatafiddle-com.conf;
+if [ -f /etc/apache2/sites-enabled/http-www-automatafiddle-com.conf ] ; then
+	rm /etc/apache2/sites-enabled/http-www-automatafiddle-com.conf;
 fi
 
-if [ -f /etc/apache2/sites-enabled/api-automatafiddle-com.conf ] ; then
-	rm /etc/apache2/sites-enabled/api-automatafiddle-com.conf;
+if [ -f /etc/apache2/sites-enabled/http-api-automatafiddle-com.conf ] ; then
+	rm /etc/apache2/sites-enabled/http-api-automatafiddle-com.conf;
+fi
+
+if [ -f /etc/apache2/sites-enabled/https-www-automatafiddle-com.conf ] ; then
+	rm /etc/apache2/sites-enabled/https-www-automatafiddle-com.conf;
+fi
+
+if [ -f /etc/apache2/sites-enabled/https-api-automatafiddle-com.conf ] ; then
+	rm /etc/apache2/sites-enabled/https-api-automatafiddle-com.conf;
 fi
 
 ln -s $USER_HOME/AutomataFiddle/config/apache2/apache2.conf /etc/apache2/apache2.conf
-ln -s $USER_HOME/AutomataFiddle/config/apache2/www-automatafiddle-com.conf /etc/apache2/sites-enabled/www-automatafiddle-com.conf
-ln -s $USER_HOME/AutomataFiddle/config/apache2/api-automatafiddle-com.conf /etc/apache2/sites-enabled/api-automatafiddle-com.conf
+ln -s $USER_HOME/AutomataFiddle/config/apache2/sites-enabled/http-www-automatafiddle-com.conf /etc/apache2/sites-enabled/http-www-automatafiddle-com.conf
+ln -s $USER_HOME/AutomataFiddle/config/apache2/sites-enabled/http-api-automatafiddle-com.conf /etc/apache2/sites-enabled/http-api-automatafiddle-com.conf
+ln -s $USER_HOME/AutomataFiddle/config/apache2/sites-enabled/https-www-automatafiddle-com.conf /etc/apache2/sites-enabled/https-www-automatafiddle-com.conf
+ln -s $USER_HOME/AutomataFiddle/config/apache2/sites-enabled/https-api-automatafiddle-com.conf /etc/apache2/sites-enabled/https-api-automatafiddle-com.conf
+
 
 a2enmod rewrite
 a2enmod ssl
@@ -71,7 +82,7 @@ a2enmod ssl
 apt-get install python-certbot-apache -t jessie-backports -y
 
 # Get started with CertBot
-certbot --apache
+certbot --apache certonly
 
 # Create systemd service and timer files
 if [ -f /etc/systemd/system/automatafiddle-ssl-renew.timer ] ; then
