@@ -40,6 +40,28 @@ apt-get install python-certbot-apache -t jessie-backports -y
 certbot --apache certonly
 
 
+# Grant www-data permission to use Git and modify the Apache service
+echo "git        ALL = ($USER_NAME) /usr/bin/git"         >> /etc/sudoers
+echo "$USER_NAME ALL = NOPASSWD:    /etc/init.d/apache2" >> /etc/sudoers
+
+# Grant www-data permission to modify /var
+chgrp -R $APACHE_GROUP $USER_HOME
+chmod -R g+w $USER_HOME
+chmod    g+s $USER_HOME
+
+
+# Remove the git repository if it exists, and clone it again.
+cd $USER_HOME;
+if [ -d $USER_NAME ] ; then
+	sudo -u $USER_NAME rm -rf AutomataFiddle
+fi
+
+
+# Clone the repository as the www-data user
+sudo -u $USER_NAME git clone https://github.com/PatrickMurray/AutomataFiddle.git
+cd ~;
+
+
 # Create systemd service and timer files
 if [ -f /etc/systemd/system/automatafiddle-ssl-renew.timer ] ; then
 	rm /etc/systemd/system/automatafiddle-ssl-renew.timer;
@@ -61,26 +83,6 @@ systemctl start  automatafiddle-ssl-renew.timer
 systemctl enable automatafiddle-ssl-renew.timer
 
 
-# Grant www-data permission to use Git and modify the Apache service
-echo "git        ALL = ($USER_NAME) /usr/bin/git"         >> /etc/sudoers
-echo "$USER_NAME ALL = NOPASSWD:    /etc/init.d/apache2" >> /etc/sudoers
-
-# Grant www-data permission to modify /var
-chgrp -R $APACHE_GROUP $USER_HOME
-chmod -R g+w $USER_HOME
-chmod    g+s $USER_HOME
-
-
-# Remove the git repository if it exists, and clone it again.
-cd $USER_HOME;
-if [ -d $USER_NAME ] ; then
-	sudo -u $USER_NAME rm -rf AutomataFiddle
-fi
-
-
-# Clone the repository as the www-data user
-sudo -u $USER_NAME git clone https://github.com/PatrickMurray/AutomataFiddle.git
-cd ~;
 
 
 # Set up the Apache configuration and virtual hosts
