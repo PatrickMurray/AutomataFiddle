@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+# /usr/bin/env bash
 
 
 USER_NAME="www-data"
@@ -86,9 +86,9 @@ systemctl enable automatafiddle-ssl-renew.timer
 
 
 # Set up the Apache configuration and virtual hosts
-if [ -f /etc/apache2/apache2.conf ] ; then
-	rm /etc/apache2/apache2.conf;
-fi
+#if [ -f /etc/apache2/apache2.conf ] ; then
+#	rm /etc/apache2/apache2.conf;
+#fi
 
 if [ -f /etc/apache2/sites-enabled/000-default.conf ] ; then
 	rm /etc/apache2/sites-enabled/000-default.conf;
@@ -118,7 +118,7 @@ if [ -f /etc/apache2/sites-enabled/cdn-automatafiddle-com-ssl.conf ] ; then
 	rm /etc/apache2/sites-enabled/cdn-automatafiddle-com-ssl.conf;
 fi
 
-ln -s $USER_HOME/AutomataFiddle/AutomataFiddle/config/apache2/apache2.conf /etc/apache2/apache2.conf
+#ln -s $USER_HOME/AutomataFiddle/AutomataFiddle/config/apache2/apache2.conf /etc/apache2/apache2.conf
 
 ln -s $USER_HOME/AutomataFiddle/AutomataFiddle/config/apache2/sites-enabled/www-automatafiddle-com.conf     /etc/apache2/sites-enabled/www-automatafiddle-com.conf
 ln -s $USER_HOME/AutomataFiddle/AutomataFiddle/config/apache2/sites-enabled/www-automatafiddle-com-ssl.conf /etc/apache2/sites-enabled/www-automatafiddle-com-ssl.conf
