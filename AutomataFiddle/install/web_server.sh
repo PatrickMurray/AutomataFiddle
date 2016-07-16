@@ -75,7 +75,7 @@ fi
 mv $USER_HOME/AutomataFiddle/AutomataFiddle/config/systemd/system/automatafiddle-ssl-renew.timer /etc/systemd/system/automatafiddle-ssl-renew.timer
 mv $USER_HOME/AutomataFiddle/AutomataFiddle/config/systemd/system/automatafiddle-ssl-renew.service /etc/systemd/system/automatafiddle-ssl-renew.service
 
-chmod +x $USER_HOME/AutomataFiddle/config/systemd/services/automatafiddle-ssl-renew.sh
+chmod +x $USER_HOME/AutomataFiddle/AutomataFiddle/config/systemd/services/automatafiddle-ssl-renew.sh
 
 
 # Enabling the auto-renew service
