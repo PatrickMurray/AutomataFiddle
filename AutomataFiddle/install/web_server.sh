@@ -72,8 +72,8 @@ if [ -f /etc/systemd/system/automatafiddle-ssl-renew.service ] ; then
 fi
 
 
-mv $USER_HOME/AutomataFiddle/config/systemd/system/automatafiddle-ssl-renew.timer /etc/systemd/system/automatafiddle-ssl-renew.timer
-mv $USER_HOME/AutomataFiddle/config/systemd/system/automatafiddle-ssl-renew.service /etc/systemd/system/automatafiddle-ssl-renew.service
+mv $USER_HOME/AutomataFiddle/AutomataFiddle/config/systemd/system/automatafiddle-ssl-renew.timer /etc/systemd/system/automatafiddle-ssl-renew.timer
+mv $USER_HOME/AutomataFiddle/AutomataFiddle/config/systemd/system/automatafiddle-ssl-renew.service /etc/systemd/system/automatafiddle-ssl-renew.service
 
 chmod +x $USER_HOME/AutomataFiddle/config/systemd/services/automatafiddle-ssl-renew.sh
 
@@ -118,16 +118,16 @@ if [ -f /etc/apache2/sites-enabled/cdn-automatafiddle-com-ssl.conf ] ; then
 	rm /etc/apache2/sites-enabled/cdn-automatafiddle-com-ssl.conf;
 fi
 
-ln -s $USER_HOME/AutomataFiddle/config/apache2/apache2.conf /etc/apache2/apache2.conf
+ln -s $USER_HOME/AutomataFiddle/AutomataFiddle/config/apache2/apache2.conf /etc/apache2/apache2.conf
 
-ln -s $USER_HOME/AutomataFiddle/config/apache2/sites-enabled/www-automatafiddle-com.conf     /etc/apache2/sites-enabled/www-automatafiddle-com.conf
-ln -s $USER_HOME/AutomataFiddle/config/apache2/sites-enabled/www-automatafiddle-com-ssl.conf /etc/apache2/sites-enabled/www-automatafiddle-com-ssl.conf
+ln -s $USER_HOME/AutomataFiddle/AutomataFiddle/config/apache2/sites-enabled/www-automatafiddle-com.conf     /etc/apache2/sites-enabled/www-automatafiddle-com.conf
+ln -s $USER_HOME/AutomataFiddle/AutomataFiddle/config/apache2/sites-enabled/www-automatafiddle-com-ssl.conf /etc/apache2/sites-enabled/www-automatafiddle-com-ssl.conf
 
-ln -s $USER_HOME/AutomataFiddle/config/apache2/sites-enabled/api-automatafiddle-com.conf     /etc/apache2/sites-enabled/api-automatafiddle-com.conf
-ln -s $USER_HOME/AutomataFiddle/config/apache2/sites-enabled/api-automatafiddle-com-ssl.conf /etc/apache2/sites-enabled/api-automatafiddle-com-ssl.conf
+ln -s $USER_HOME/AutomataFiddle/AutomataFiddle/config/apache2/sites-enabled/api-automatafiddle-com.conf     /etc/apache2/sites-enabled/api-automatafiddle-com.conf
+ln -s $USER_HOME/AutomataFiddle/AutomataFiddle/config/apache2/sites-enabled/api-automatafiddle-com-ssl.conf /etc/apache2/sites-enabled/api-automatafiddle-com-ssl.conf
 
-ln -s $USER_HOME/AutomataFiddle/config/apache2/sites-enabled/cdn-automatafiddle-com.conf     /etc/apache2/sites-enabled/cdn-automatafiddle-com.conf
-ln -s $USER_HOME/AutomataFiddle/config/apache2/sites-enabled/cdn-automatafiddle-com-ssl.conf /etc/apache2/sites-enabled/cdn-automatafiddle-com-ssl.conf
+ln -s $USER_HOME/AutomataFiddle/AutomataFiddle/config/apache2/sites-enabled/cdn-automatafiddle-com.conf     /etc/apache2/sites-enabled/cdn-automatafiddle-com.conf
+ln -s $USER_HOME/AutomataFiddle/AutomataFiddle/config/apache2/sites-enabled/cdn-automatafiddle-com-ssl.conf /etc/apache2/sites-enabled/cdn-automatafiddle-com-ssl.conf
 
 
 # Enable the apache modules rewrite and ssl
