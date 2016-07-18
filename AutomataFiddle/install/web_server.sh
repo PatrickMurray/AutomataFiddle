@@ -8,46 +8,81 @@ APACHE_GROUP="www-data"
 
 if [ $EUID -ne 0 ] ; then
 	echo "The web server setup script must be run as root."
-	exit 1
+	exit -1
 fi
 
 
 # Add the Debian Jessie backports to install Lets Encrypt and CertBot which are
 # currently in a public beta.
-echo "deb http://http.debian.net/debian jessie-backports main" >> /etc/apt/sources.list
+if [ echo "deb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list ] ; then
+	echo "Successfully added backport to sources.list..."
+else
+	echo "Failed to add backport to sources.list!"
+	exit -1
+fi
 
 
 # Update package list and upgrade all installed packages
-apt-get update
-apt-get upgrade -y
+if [ apt-get update && apt-get upgrade -y ] ; then
+	echo "Successfully updated and upgraded packages..."
+else
+	echo ""
+	exit -1
+fi
 
 
 # Install Fail2Ban, Apache, PHP, MySQL Interface, Git, and GraphViz
-apt-get install sudo fail2ban apache2 php5 libapache2-mod-php5 php5-mysql php5-mcrypt php5-apcu git graphviz -y
-
+if [ apt-get -y install sudo fail2ban apache2 php5 libapache2-mod-php5 php5-mysql php5-mcrypt php5-apcu git graphviz ] ; then
+	echo "Successfully installed core utilities..."
+else
+	echo "Failed to install core utilities!"
+	exit -1
+fi
 
 # Stop the Apache2 service before we continue
-service apache2 stop
+if [ service apache2 stop ] ; then
+	echo "Successfully stopped apache..."
+else
+	echo "Failed to stop apache!"
+	exit -1
+fi
 
 
 # Install Let Encrypt and CertBot
-apt-get install python-certbot-apache -t jessie-backports -y
+if [ apt-get install -y -t jessie-backports python-certbot-apache ] ; then
+	echo "Successfully installed certbot from backports..."
+else
+	echo "Failed to install certbot from the backports!"
+	exit -1
+fi
 
 
 # Launch the CertBot setup wizard and feed in the "certonly" parameter which
 # forces CertBot to create certificates only (not touching the apache virtual
 # hosts)
-certbot --apache certonly
+if [ certbot --apache certonly ] ; then
+	echo "Successfully set up certbot..."
+else
+	echo "Failed to set up certbot!"
+	exit -1
+fi
 
 
 # Grant www-data permission to use Git and modify the Apache service
-echo "git        ALL = ($USER_NAME) /usr/bin/git"         >> /etc/sudoers
-echo "$USER_NAME ALL = NOPASSWD:    /etc/init.d/apache2" >> /etc/sudoers
+if [ echo "git ALL = ($USER_NAME) /usr/bin/git\n$USER_NAME ALL = NOPASSWD: /etc/init.d/apache2" >> /etc/sudoers ] ; then
+	echo "Successfully granted www-data permission to git and service..."
+else
+	echo "Failed to grant www-data permission to modify git and service!"
+	exit -1
+fi
 
 # Grant www-data permission to modify /var
-chgrp -R $APACHE_GROUP $USER_HOME
-chmod -R g+w $USER_HOME
-chmod    g+s $USER_HOME
+if [ chgrp -R $APACHE_GROUP $USER_HOME && chmod -R g+w $USER_HOME && chmod g+s $USER_HOME ] ; then
+	echo "Successfully granted www-data access to $USER_HOME..."
+else
+	echo "Failed to grant www-data permission to access $USER_HOME!"
+	exit -1
+fi
 
 
 # Remove the git repository if it exists, and clone it again.
@@ -58,7 +93,12 @@ fi
 
 
 # Clone the repository as the www-data user
-sudo -u $USER_NAME git clone https://github.com/PatrickMurray/AutomataFiddle.git
+if [ sudo -u $USER_NAME git clone https://github.com/PatrickMurray/AutomataFiddle.git ] ; then
+	echo "Successfully cloned the git repository..."
+else
+	echo "Failed to clone the git repository!"
+	exit -1
+fi
 cd ~;
 
 
@@ -72,15 +112,41 @@ if [ -f /etc/systemd/system/automatafiddle-ssl-renew.service ] ; then
 fi
 
 
-mv $USER_HOME/AutomataFiddle/AutomataFiddle/config/systemd/system/automatafiddle-ssl-renew.timer /etc/systemd/system/automatafiddle-ssl-renew.timer
-mv $USER_HOME/AutomataFiddle/AutomataFiddle/config/systemd/system/automatafiddle-ssl-renew.service /etc/systemd/system/automatafiddle-ssl-renew.service
+if [ mv $USER_HOME/AutomataFiddle/AutomataFiddle/config/systemd/system/automatafiddle-ssl-renew.timer /etc/systemd/system/automatafiddle-ssl-renew.timer ] ; then
+	echo "Successfully moved the ssl renewal timer..."
+else
+	echo "Failed to move ssl renewal timer!"
+	exit -1
+fi
 
-chmod +x $USER_HOME/AutomataFiddle/AutomataFiddle/config/systemd/services/automatafiddle-ssl-renew.sh
+if [ mv $USER_HOME/AutomataFiddle/AutomataFiddle/config/systemd/system/automatafiddle-ssl-renew.service /etc/systemd/system/automatafiddle-ssl-renew.service ] ; then
+	echo "Successfully moved the ssl renewal service..."
+else
+	echo "Failed to move the ssl renewal service!"
+	exit -1
+fi
 
+if [ chmod +x $USER_HOME/AutomataFiddle/AutomataFiddle/config/systemd/services/automatafiddle-ssl-renew.sh ] ; then
+	echo "Successfully marked the ssh renewal script as executable..."
+else
+	echo "Failed to mark the ssh renewal script as executable!"
+	exit -1
+fi
 
 # Enabling the auto-renew service
-systemctl start  automatafiddle-ssl-renew.timer
-systemctl enable automatafiddle-ssl-renew.timer
+if [ systemctl start automatafiddle-ssl-renew.timer ] ; then
+	echo "Successfully started the systemd ssl renewal timer..."
+else
+	echo "Failed to start the systemd ssl renewal timer!"
+	exit -1
+fi
+
+if [ systemctl enable automatafiddle-ssl-renew.timer ] ; then
+	echo "Successfully enabled the systemd ssl renewal timer..."
+else
+	echo "Failed to enable the systemd ssl renewal timer!"
+	exit -1
+fi
 
 
 
