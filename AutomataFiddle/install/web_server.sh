@@ -61,7 +61,7 @@ fi
 # Launch the CertBot setup wizard and feed in the "certonly" parameter which
 # forces CertBot to create certificates only (not touching the apache virtual
 # hosts)
-certbot --apache certonly
+certbot --apache certonly -d www.automatafiddle.com -d api.automatafiddle.com -d cdn.automatafiddle.com
 if [ $? -lt 0 ] ; then
 	echo "Failed to set up certbot!"
 	exit -1
@@ -198,4 +198,4 @@ fi
 
 
 # Start the apache service back up
-service apache2 start
+service apache2 restart
