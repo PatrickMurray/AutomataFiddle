@@ -2,7 +2,7 @@
 
 
 USER_NAME="www-data"
-USER_HOME="/var"
+USER_HOME="/var/www"
 APACHE_GROUP="www-data"
 
 
@@ -69,7 +69,8 @@ fi
 
 
 # Grant www-data permission to use Git and modify the Apache service
-echo "git ALL = ($USER_NAME) /usr/bin/git\n$USER_NAME ALL = NOPASSWD: /etc/init.d/apache2" >> /etc/sudoers
+echo "git ALL = ($USER_NAME) /usr/bin/git"            >> /etc/sudoers
+echo "$USER_NAME ALL = NOPASSWD: /etc/init.d/apache2" >> /etc/sudoers
 if [ $? -lt 0 ] ; then
 	echo "Failed to grant www-data permission to modify git and service!"
 	exit -1

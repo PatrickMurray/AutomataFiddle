@@ -3,4 +3,4 @@ Description=Attempts to update the Lets Encrypt SSL certificate
 
 [Service]
 Type=simple
-ExecStart=/var/AutomataFiddle/config/services/automatafiddle-ssh-renew.sh
+ExecStart=/var/www/AutomataFiddle/AutomataFiddle/config/services/automatafiddle-ssh-renew.sh
