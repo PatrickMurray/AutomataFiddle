@@ -36,7 +36,7 @@ fi
 
 
 # Install Fail2Ban, Apache, PHP, MySQL Interface, Git, and GraphViz
-apt-get -y install sudo fail2ban apache2 php5 libapache2-mod-php5 php5-mysql php5-mcrypt php5-apcu git graphviz
+apt-get -y install --reinstall sudo fail2ban apache2 php5 libapache2-mod-php5 php5-mysql php5-mcrypt php5-apcu git graphviz
 if [ $? -lt 0 ] ; then
 	echo "Failed to install core packages!"
 	exit -1
@@ -51,7 +51,7 @@ fi
 
 
 # Install Let Encrypt and CertBot
-apt-get install -y -t jessie-backports python-certbot-apache
+apt-get install -y -t --reinstall jessie-backports python-certbot-apache
 if [ $? -lt 0 ] ; then
 	echo "Failed to install certbot from the backports!"
 	exit -1
@@ -61,7 +61,7 @@ fi
 # Launch the CertBot setup wizard and feed in the "certonly" parameter which
 # forces CertBot to create certificates only (not touching the apache virtual
 # hosts)
-certbot --apache certonly -d www.automatafiddle.com -d api.automatafiddle.com -d cdn.automatafiddle.com
+certbot --apache certonly -d automatafiddle.com -d www.automatafiddle.com -d api.automatafiddle.com -d cdn.automatafiddle.com
 if [ $? -lt 0 ] ; then
 	echo "Failed to set up certbot!"
 	exit -1
@@ -83,7 +83,7 @@ if [ $? -lt 0 ] ; then
 	exit -1
 fi
 
-
+`
 # Remove the git repository if it exists, and clone it again.
 cd $USER_HOME;
 if [ -d $USER_NAME ] ; then
@@ -198,4 +198,4 @@ fi
 
 
 # Start the apache service back up
-service apache2 restart
+service apache2 start
