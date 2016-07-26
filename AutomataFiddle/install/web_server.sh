@@ -83,7 +83,7 @@ if [ $? -lt 0 ] ; then
 	exit -1
 fi
 
-`
+
 # Remove the git repository if it exists, and clone it again.
 cd $USER_HOME;
 if [ -d $USER_NAME ] ; then
